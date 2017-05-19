@@ -1,7 +1,5 @@
-package init;
+package com.dlf.user.web.init;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class AfterStart implements CommandLineRunner{
 
     public void run(String... strings) throws Exception {
-        System.out.println("commandLineRunner-------------------");
+        System.out.println("Æô¶¯³É¹¦--------------");
     }
 }

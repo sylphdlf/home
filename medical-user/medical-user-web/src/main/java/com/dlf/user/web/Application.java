@@ -1,5 +1,5 @@
-package src.main;
-import listeners.ContextInitListener;
+package com.dlf.user.web;
+import com.dlf.user.web.listeners.ContextInitListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +17,6 @@ public class Application {
     @RequestMapping("/")
     public String greeting() {
         return "Hello World!";
-    }
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
     }
 
     public static void main(String[] args) {
