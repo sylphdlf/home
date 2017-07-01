@@ -11,7 +11,7 @@ public class ContextInitListener implements ApplicationListener{
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if(applicationEvent.getClass().equals(ServletRequestHandledEvent.class)){
-            System.out.println("web·ÃÎÊ¼àÌýÆ÷");
+            System.out.println("web------------");
         }
     }
 }

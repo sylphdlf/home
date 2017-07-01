@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class AfterStart implements CommandLineRunner{
 
     public void run(String... strings) throws Exception {
-        System.out.println("Æô¶¯³É¹¦--------------");
+        System.out.println("å¯åŠ¨æˆåŠŸ--------------");
     }
 }
