@@ -15,5 +15,11 @@
 			<groupId>com.dlf.medical</groupId>
 			<artifactId>medical-business</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.python/jython-standalone -->
+		<dependency>
+			<groupId>org.python</groupId>
+			<artifactId>jython-standalone</artifactId>
+			<version>2.7.0</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -29,6 +29,11 @@
 				<version>${medical.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.dlf.medical</groupId>
+				<artifactId>medical-python</artifactId>
+				<version>${medical.version}</version>
+			</dependency>
+			<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -85,6 +90,7 @@
 		<module>medical-business</module>
 		<module>medical-model</module>
 		<module>medical-web</module>
+		<module>medical-python</module>
 	</modules>
 
 	<build>
