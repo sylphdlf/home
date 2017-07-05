@@ -16,7 +16,7 @@ public class JobCrawlerSchedule {
     @Autowired
     IPythonDataTransferService pythonDataTransferService;
 
-    @Scheduled(cron = "20 * * * * ?")
+    @Scheduled(cron = "0/20 * * * * ?")
     public void getJobKeyword(){
         System.out.println("定时任务执行");
     }
