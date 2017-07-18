@@ -18,4 +18,9 @@ public class LoginAction {
     public String login(Model model){
         return "login";
     }
+
+    @RequestMapping(value = "/main",method = RequestMethod.GET)
+    public String main(){
+        return "menu/main";
+    }
 }

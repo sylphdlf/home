@@ -1399,10 +1399,10 @@ var Dropdown = function ($) {
     BACKDROP: '.dropdown-backdrop',
     DATA_TOGGLE: '[data-toggle="dropdown"]',
     FORM_CHILD: '.dropdown form',
-    ROLE_MENU: '[role="menu"]',
+    ROLE_MENU: '[role="script"]',
     ROLE_LISTBOX: '[role="listbox"]',
     NAVBAR_NAV: '.navbar-nav',
-    VISIBLE_ITEMS: '[role="menu"] li:not(.disabled) a, ' + '[role="listbox"] li:not(.disabled) a'
+    VISIBLE_ITEMS: '[role="script"] li:not(.disabled) a, ' + '[role="listbox"] li:not(.disabled) a'
   };
 
   /**
@@ -2206,7 +2206,7 @@ var ScrollSpy = function ($) {
 
   var ClassName = {
     DROPDOWN_ITEM: 'dropdown-item',
-    DROPDOWN_MENU: 'dropdown-menu',
+    DROPDOWN_MENU: 'dropdown-script',
     NAV_LINK: 'nav-link',
     NAV: 'nav',
     ACTIVE: 'active'
@@ -2508,7 +2508,7 @@ var Tab = function ($) {
   };
 
   var ClassName = {
-    DROPDOWN_MENU: 'dropdown-menu',
+    DROPDOWN_MENU: 'dropdown-script',
     ACTIVE: 'active',
     DISABLED: 'disabled',
     FADE: 'fade',
@@ -2519,13 +2519,13 @@ var Tab = function ($) {
     A: 'a',
     LI: 'li',
     DROPDOWN: '.dropdown',
-    LIST: 'ul:not(.dropdown-menu), ol:not(.dropdown-menu), nav:not(.dropdown-menu)',
+    LIST: 'ul:not(.dropdown-script), ol:not(.dropdown-script), nav:not(.dropdown-script)',
     FADE_CHILD: '> .nav-item .fade, > .fade',
     ACTIVE: '.active',
     ACTIVE_CHILD: '> .nav-item > .active, > .active',
     DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"]',
     DROPDOWN_TOGGLE: '.dropdown-toggle',
-    DROPDOWN_ACTIVE_CHILD: '> .dropdown-menu .active'
+    DROPDOWN_ACTIVE_CHILD: '> .dropdown-script .active'
   };
 
   /**
