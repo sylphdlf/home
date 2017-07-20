@@ -45,7 +45,7 @@ public class Application extends WebMvcConfigurerAdapter{
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static").addResourceLocations("classpath:/script");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static");
     }
 
 }

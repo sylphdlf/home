@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * »ñÈ¡python½Å±¾µÄÊı¾İ
+ * è·å–pythonè„šæœ¬çš„æ•°æ®
  * Created by Administrator on 2017/7/4.
  */
 public class PythonDataTransfer {
