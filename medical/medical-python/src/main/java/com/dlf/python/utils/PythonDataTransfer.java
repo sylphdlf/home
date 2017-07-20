@@ -1,5 +1,7 @@
 package com.dlf.python.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,25 +13,34 @@ import java.io.InputStreamReader;
  */
 public class PythonDataTransfer {
 
-    private static void getStrData() throws IOException, InterruptedException {
-        File file = new File("");
-        Process exec = Runtime.getRuntime().exec("python D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\python\\crawlers\\boss.py");
-        BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream()));
-        BufferedReader errorBr = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
-        String line;
-        while((line = br.readLine()) != null){
-            System.out.println(line);
+    @Value("${job.crawler.location}")
+    private static String jobCrawlerLocation;
+
+    public static String getJobStrData(){
+        String returnLine = "";
+        try {
+            File file = new File("");
+            Process exec = Runtime.getRuntime().exec("python " + jobCrawlerLocation);
+            BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream()));
+            BufferedReader errorBr = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
+            String line;
+            while((line = br.readLine()) != null){
+                returnLine += line;
+            }
+            String errorLine;
+            while ((errorLine = errorBr.readLine()) != null){
+                System.out.println(errorLine);
+            }
+            br.close();
+            exec.waitFor();
+            System.out.println("end");
+        }catch (Exception e){
+            System.out.println("~");
         }
-        String errorLine;
-        while ((errorLine = errorBr.readLine()) != null){
-            System.out.println(errorLine);
-        }
-        br.close();
-        exec.waitFor();
-        System.out.println("end");
+        return returnLine;
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        getStrData();
+        getJobStrData();
     }
 }

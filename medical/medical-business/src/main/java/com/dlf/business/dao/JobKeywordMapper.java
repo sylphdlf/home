@@ -1,6 +1,7 @@
 package com.dlf.business.dao;
 
 import com.dlf.model.po.JobKeyword;
+import org.springframework.stereotype.Component;
 
 public interface JobKeywordMapper {
     int deleteByPrimaryKey(Long id);
