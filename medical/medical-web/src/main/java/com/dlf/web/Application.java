@@ -4,7 +4,9 @@ import com.dlf.web.listeners.ContextInitListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @SpringBootApplication
 @RestController
-@EnableWebMvc
 public class Application extends WebMvcConfigurerAdapter{
 
     protected static Logger logger = LoggerFactory.getLogger(Application.class);

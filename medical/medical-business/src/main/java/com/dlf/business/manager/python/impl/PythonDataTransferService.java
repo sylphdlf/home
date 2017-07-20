@@ -2,8 +2,6 @@ package com.dlf.business.manager.python.impl;
 
 import com.dlf.business.manager.python.IPythonDataTransferService;
 import com.dlf.model.dto.GlobalResultDTO;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
