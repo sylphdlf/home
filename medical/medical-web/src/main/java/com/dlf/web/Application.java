@@ -4,13 +4,17 @@ import com.dlf.web.listeners.ContextInitListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,8 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @SpringBootApplication
 @RestController
-@EnableWebMvc
-public class Application {
+public class Application extends WebMvcConfigurerAdapter{
 
     protected static Logger logger = LoggerFactory.getLogger(Application.class);
 
@@ -39,4 +42,10 @@ public class Application {
         app.run(args);
         logger.debug("1213131313");
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static").addResourceLocations("classpath:/script");
+    }
+
 }
