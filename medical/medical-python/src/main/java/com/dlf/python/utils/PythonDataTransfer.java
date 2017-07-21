@@ -1,10 +1,6 @@
 package com.dlf.python.utils;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -13,18 +9,18 @@ import java.io.InputStreamReader;
  */
 public class PythonDataTransfer {
 
-    @Value("${job.crawler.location}")
-    private static String jobCrawlerLocation;
-
-    public static String getJobStrData(){
+    public static String getJobStrData(String pythonPath){
         String returnLine = "";
         try {
-            File file = new File("");
-            Process exec = Runtime.getRuntime().exec("python " + jobCrawlerLocation);
+            if(null == pythonPath || "".equals(pythonPath)){
+                return "";
+            }
+            Process exec = Runtime.getRuntime().exec("python " + pythonPath);
             BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             BufferedReader errorBr = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
             String line;
             while((line = br.readLine()) != null){
+                line = new String(line.getBytes(),"UTF-8");
                 returnLine += line;
             }
             String errorLine;
@@ -38,9 +34,5 @@ public class PythonDataTransfer {
             System.out.println("~");
         }
         return returnLine;
-    }
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        getJobStrData();
     }
 }

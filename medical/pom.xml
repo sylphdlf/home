@@ -125,7 +125,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<!--<configuration>-->
-					<!--<mainClass>com.dlf.web.Application</mainClass>-->
+					<!--<mainClass>com.dlf.web.com.dlf.python.Application</mainClass>-->
 				<!--</configuration>-->
 				<!--<executions>-->
 					<!--<execution>-->
