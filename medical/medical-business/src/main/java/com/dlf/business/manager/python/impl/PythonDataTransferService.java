@@ -52,4 +52,8 @@ public class PythonDataTransferService implements IPythonDataTransferService{
         }
         return GlobalResultDTO.SUCCESS();
     }
+
+    public GlobalResultDTO transferDataFromWeather(String str) {
+        return null;
+    }
 }

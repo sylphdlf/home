@@ -1,5 +1,9 @@
 package com.dlf.python.utils;
 
+import com.dlf.business.exception.MyException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -9,14 +13,16 @@ import java.io.InputStreamReader;
  */
 public class PythonDataTransfer {
 
-    public static String getJobStrData(String pythonPath){
+    private static Log log = LogFactory.getLog(PythonDataTransfer.class);
+
+    public static String getStrData(String pythonPath) throws MyException{
         String returnLine = "";
         try {
             if(null == pythonPath || "".equals(pythonPath)){
                 return "";
             }
             Process exec = Runtime.getRuntime().exec("python " + pythonPath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream(), "UTF-8"));
             BufferedReader errorBr = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
             String line;
             while((line = br.readLine()) != null){
@@ -25,13 +31,12 @@ public class PythonDataTransfer {
             }
             String errorLine;
             while ((errorLine = errorBr.readLine()) != null){
-                System.out.println(errorLine);
+                log.error(errorLine);
             }
             br.close();
             exec.waitFor();
-            System.out.println("end");
         }catch (Exception e){
-            System.out.println("~");
+            throw new MyException(e.getMessage());
         }
         return returnLine;
     }
