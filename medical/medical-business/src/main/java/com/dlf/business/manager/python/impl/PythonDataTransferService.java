@@ -53,7 +53,14 @@ public class PythonDataTransferService implements IPythonDataTransferService{
         return GlobalResultDTO.SUCCESS();
     }
 
+    /**
+     * 转换天气数据
+     * 格式：[['21日（今天）', '多云', '34', '27'], ['22日（明天）', '多云', '34', '27']]
+     * @param str
+     * @return
+     */
     public GlobalResultDTO transferDataFromWeather(String str) {
+
         return null;
     }
 }

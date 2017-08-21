@@ -22,7 +22,7 @@ public class PythonDataTransfer {
                 return "";
             }
             Process exec = Runtime.getRuntime().exec("python " + pythonPath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream(), "UTF-8"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(exec.getInputStream(), "GBK"));
             BufferedReader errorBr = new BufferedReader(new InputStreamReader(exec.getErrorStream()));
             String line;
             while((line = br.readLine()) != null){

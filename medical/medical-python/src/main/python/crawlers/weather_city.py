@@ -77,13 +77,6 @@ if __name__ == "__main__":
     html = get_html_text(url)
     data = get_7days_temp(html)
     print(data)
-    # for i in data:
-    #     print(i)
-    # url = get_url_by_name("九江")
-    # html = get_html_text(url)
-    # data = get_7days_temp(html)
-    # for i in data:
-    #     print(i)
 
 
 
