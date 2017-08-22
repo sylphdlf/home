@@ -1,8 +1,10 @@
 package com.dlf.business.manager.python.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dlf.business.dao.JobKeywordMapper;
 import com.dlf.business.manager.python.IPythonDataTransferService;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.spider.WeatherReqDTO;
 import com.dlf.model.po.JobKeyword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -55,12 +57,22 @@ public class PythonDataTransferService implements IPythonDataTransferService{
 
     /**
      * 转换天气数据
-     * 格式：[['21日（今天）', '多云', '34', '27'], ['22日（明天）', '多云', '34', '27']]
+     * 格式：{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}
      * @param str
      * @return
      */
     public GlobalResultDTO transferDataFromWeather(String str) {
-
+        String str1 = "{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}";
+        JSONObject jsonObject = JSONObject.parseObject(str);
+        WeatherReqDTO reqDTO = new WeatherReqDTO(jsonObject);
+        System.out.println(jsonObject.toString());
         return null;
+    }
+
+    public static void main(String[] args) {
+        String str1 = "{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}";
+        JSONObject jsonObject = JSONObject.parseObject(str1);
+
+        System.out.println(jsonObject.get("pm25"));
     }
 }

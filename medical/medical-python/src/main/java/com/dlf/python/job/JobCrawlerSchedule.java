@@ -1,6 +1,5 @@
 package com.dlf.python.job;
 
-import com.dlf.business.exception.MyException;
 import com.dlf.business.manager.python.IPythonDataTransferService;
 import com.dlf.python.utils.PythonDataTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Administrator on 2017/7/5.
@@ -35,14 +33,19 @@ public class JobCrawlerSchedule {
 //        String jobStrData = getJobStrData(jobCrawlerLocation);
 //        pythonDataTransferService.transferDataFromWordSplit(jobStrData);
 //    }
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0/20 * * * * ?")
     public void getWeatherData(){
         try {
 //            String jobStrData = PythonDataTransfer.getStrData(jobWeatherLocation);
-            String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\python\\crawlers\\weather_city.py");
+            String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
             pythonDataTransferService.transferDataFromWeather(jobStrData);
         }catch (Exception e){
             e.getMessage();
         }
+    }
+
+    public static void main(String[] args) throws Exception{
+        String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
+        System.out.println(jobStrData);
     }
 }
