@@ -17,6 +17,8 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2017/7/4.
@@ -26,6 +28,7 @@ public class PythonDataTransferService implements IPythonDataTransferService{
 
     @Autowired
     JobKeywordMapper jobKeywordMapper;
+
 
     @Transactional
     public GlobalResultDTO transferDataFromWordSplit(String str) {
@@ -65,14 +68,21 @@ public class PythonDataTransferService implements IPythonDataTransferService{
         String str1 = "{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}";
         JSONObject jsonObject = JSONObject.parseObject(str);
         WeatherReqDTO reqDTO = new WeatherReqDTO(jsonObject);
-        System.out.println(jsonObject.toString());
+
+
         return null;
     }
 
     public static void main(String[] args) {
-        String str1 = "{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}";
-        JSONObject jsonObject = JSONObject.parseObject(str1);
-
-        System.out.println(jsonObject.get("pm25"));
+//        String str1 = "{'pm25': '39 优', 'tempCurrent': '31', 'weatherCurrent': '阴', 'websiteUpdateTime': '今天17:00更新', 'humidity': '湿度 76%', 'wind': '东北风1级', 'remark': '很闷热，感觉像在蒸桑拿。'}";
+//        JSONObject jsonObject = JSONObject.parseObject(str1);
+//
+//        System.out.println(jsonObject.get("pm25"));
+        //去掉中文并转换为时间
+        Pattern pattern = Pattern.compile("\\d+:\\d+");
+        Matcher matcher = pattern.matcher("今天17:00更新");
+        System.out.println(matcher.find());
+        String hourAndMinute = matcher.group();
+        System.out.println(hourAndMinute);
     }
 }

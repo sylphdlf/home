@@ -23,6 +23,6 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.dlf.business.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <table tableName="job_keyword" domainObjectName="JobKeyword" enableCountByExample="ture" enableUpdateByExample="ture" enableDeleteByExample="ture" enableSelectByExample="ture" selectByExampleQueryId="ture"/>
+        <table tableName="weather" domainObjectName="weather" enableCountByExample="ture" enableUpdateByExample="ture" enableDeleteByExample="ture" enableSelectByExample="ture" selectByExampleQueryId="ture"/>
     </context>
 </generatorConfiguration>
