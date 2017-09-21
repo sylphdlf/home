@@ -1,6 +1,5 @@
 # encoding=utf-8
 from urllib import request
-import MoJiHtmlParser
 
 # with request.urlopen('https://tianqi.moji.com/weather/china/shanghai/pudong-new-district') as f:
 #     data = f.read()
