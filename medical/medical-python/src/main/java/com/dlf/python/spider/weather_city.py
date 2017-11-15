@@ -76,7 +76,8 @@ if __name__ == "__main__":
     url = get_url_by_name("上海")
     html = get_html_text(url)
     data = get_7days_temp(html)
-    print(data)
+    for line in data:
+        print(line)
 
 
 
