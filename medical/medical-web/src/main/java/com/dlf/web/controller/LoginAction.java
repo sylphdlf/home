@@ -16,7 +16,7 @@ public class LoginAction {
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(Model model){
-        return "login";
+        return "index";
     }
 
     @RequestMapping(value = "/main",method = RequestMethod.GET)

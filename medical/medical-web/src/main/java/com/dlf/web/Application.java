@@ -40,7 +40,6 @@ public class Application extends WebMvcConfigurerAdapter{
         SpringApplication app = new SpringApplication(Application.class);
         app.addListeners(new ContextInitListener());
         app.run(args);
-        logger.debug("1213131313");
     }
 
     @Override
