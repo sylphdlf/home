@@ -26,7 +26,7 @@ with request.urlopen(req) as f:
     #     print("ok")
     html_data = f.read().decode('utf-8')
     # print(html_data)
-    parser = MoJiHtmlParser.MoJiHtmlParser()
+    parser = moji_html_parser.MoJiHtmlParser()
     parser.feed(html_data)
     print(parser.value_dict)
 

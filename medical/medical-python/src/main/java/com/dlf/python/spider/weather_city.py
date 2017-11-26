@@ -51,7 +51,7 @@ def get_7days_temp(html_text):
             high_temp = info[1].find("span").string
             high_temp = high_temp.replace("℃", "")
         low_temp = info[1].find("i").string
-        low_temp = low_temp.replace("℃","")
+        low_temp = low_temp.replace("℃", "")
         temp.append(high_temp)
         temp.append(low_temp)
         final_data_7d.append(temp)
@@ -76,7 +76,8 @@ if __name__ == "__main__":
     url = get_url_by_name("上海")
     html = get_html_text(url)
     data = get_7days_temp(html)
-    print(data)
+    for line in data:
+        print(line)
 
 
 
