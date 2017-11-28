@@ -4,9 +4,9 @@
     "pages/logs/logs",
     "pages/exam/examIndex",
     "pages/exam/examConf",
-    "pages/exam/examRecord",
-    "pages/exam/examErrorAnalyze",
-    "pages/exam/excelImport"
+    "pages/record/examRecord",
+    "pages/analyze/examErrorAnalyze",
+    "pages/import/excelImport"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -224,6 +224,8 @@ checkbox, radio{
     margin-bottom: 16rpx;
     padding-left: 30rpx;
     padding-right: 30rpx;
+    font-size: medium;
+    color: gray
 }
 .section_gap .section__title{
     padding-left: 0;

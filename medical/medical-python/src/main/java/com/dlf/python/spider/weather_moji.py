@@ -18,6 +18,7 @@ from urllib import request
 # Set-Cookie: liveview_page_cursor=eyJtaW5JZCI6ODE0MDY2OTMsIm1heElkIjo4MTQwODE1NCwibWluQ3JlYXRlVGltZSI6MTUwMzEzMzA0NTEzMywibWF4Q3JlYXRlVGltZSI6MTUwMzEzMzQ3MDAwMH0%3D; path=/
 # Set-Cookie: __ads_session=sftlLIzV9QiDrNamJgA=; domain=.tianqi.moji.com; path=/
 # X-Powered-By-Anquanbao: MISS from pon-bj-mj-ib2
+from com.dlf.python.spider import moji_html_parser
 
 req = request.Request('https://tianqi.moji.com/weather/china/shanghai/pudong-new-district')
 # req = request.Request('https://tianqi.moji.com/weather/china/jiangxi/jiujiang')

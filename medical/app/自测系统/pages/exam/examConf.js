@@ -1,66 +1,41 @@
-// pages/exam/examConf.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    pickerHidden: true,
+    chosen: '',
+    array: ['单选题|多选题|判断题,100题', '单选题|多选题,50题', '单选题,90题', '判断题,50题'],
+    index: 0,
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  pickerConfirm: function (e) {
+    this.setData({
+      pickerHidden: true
+    })
+    this.setData({
+      chosen: e.detail.value
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  pickerCancel: function (e) {
+    this.setData({
+      pickerHidden: true
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  pickerShow: function (e) {
+    this.setData({
+      pickerHidden: false
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  formSubmit: function (e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  formReset: function (e) {
+    console.log('form发生了reset事件，携带数据为：', e.detail.value)
+    this.setData({
+      chosen: ''
+    })
   }
 })

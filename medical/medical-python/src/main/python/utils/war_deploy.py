@@ -174,8 +174,8 @@ def upload_file(current_host, war_name, env):
         sftp = paramiko.SFTPClient.from_transport(sf)
         sftp.put(property_file_dict_local, get_remote_property_path(path, env))
         print("配置文件重新上传成功：" + get_remote_property_path(path, env))
-    except Exception as e:
-        print('exception:', e)
+    except Exception as ex:
+        print('exception:', ex)
     sf.close()
 
 
