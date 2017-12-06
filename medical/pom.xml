@@ -103,6 +103,12 @@
 			<!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
 			<optional>true</optional>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+			<version>1.5.2.RELEASE</version>
+		</dependency>
 	</dependencies>
 	<modules>
 		<module>medical-business</module>
@@ -110,7 +116,6 @@
 		<module>medical-web</module>
 		<module>medical-python</module>
 	</modules>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -125,7 +130,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<!--<configuration>-->
-					<!--<mainClass>com.dlf.web.com.dlf.python.Application</mainClass>-->
+					<!--<mainClass>com.dlf.web.com.dlf.python.com.dlf.web.Application</mainClass>-->
 				<!--</configuration>-->
 				<!--<executions>-->
 					<!--<execution>-->

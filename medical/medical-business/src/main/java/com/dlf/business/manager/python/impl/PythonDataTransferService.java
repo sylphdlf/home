@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,9 +27,8 @@ import java.util.regex.Pattern;
 @Service
 public class PythonDataTransferService implements IPythonDataTransferService{
 
-    @Autowired
-    JobKeywordMapper jobKeywordMapper;
-
+//    @Autowired
+//    JobKeywordMapper jobKeywordMapper;
 
     @Transactional
     public GlobalResultDTO transferDataFromWordSplit(String str) {
@@ -52,7 +52,7 @@ public class PythonDataTransferService implements IPythonDataTransferService{
                 jobKeyword.setKeywordNum(thisEntry.getValue());
                 jobKeyword.setBatchNum(1);
                 jobKeyword.setWebsite("http://www.zhipin.com");
-                jobKeywordMapper.insert(jobKeyword);
+//                jobKeywordMapper.insert(jobKeyword);
             }
         }
         return GlobalResultDTO.SUCCESS();
