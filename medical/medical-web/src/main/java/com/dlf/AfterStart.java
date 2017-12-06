@@ -1,4 +1,4 @@
-package com.dlf.web.init;
+package com.dlf;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
