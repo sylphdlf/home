@@ -1,7 +1,9 @@
 package com.dlf.business.dao;
 
 import com.dlf.model.po.JobKeyword;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface JobKeywordMapper {
     int deleteByPrimaryKey(Long id);
 

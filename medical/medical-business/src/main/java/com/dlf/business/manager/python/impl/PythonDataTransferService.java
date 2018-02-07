@@ -7,14 +7,12 @@ import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.spider.WeatherReqDTO;
 import com.dlf.model.po.JobKeyword;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,9 +24,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class PythonDataTransferService implements IPythonDataTransferService{
-
-//    @Autowired
-//    JobKeywordMapper jobKeywordMapper;
+    @Autowired
+    JobKeywordMapper jobKeywordMapper;
 
     @Transactional
     public GlobalResultDTO transferDataFromWordSplit(String str) {

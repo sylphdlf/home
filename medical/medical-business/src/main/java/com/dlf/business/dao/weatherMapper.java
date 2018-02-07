@@ -1,8 +1,10 @@
 package com.dlf.business.dao;
 
 import com.dlf.model.po.weather;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface weatherMapper {
+@Mapper
+public interface WeatherMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(weather record);

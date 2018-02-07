@@ -1,7 +1,9 @@
 package com.dlf.business.dao;
 
 import com.dlf.model.po.User;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 

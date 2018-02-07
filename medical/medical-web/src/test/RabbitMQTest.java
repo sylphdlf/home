@@ -19,9 +19,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class RabbitMQTest {
     @Autowired
     TestProducer testProducer;
+//    @Autowired
+//    TestProducer2 testProducer2;
     @Test
     public void send(){
         for(int i=0;i<100;i++){
+//            testProducer.send();
             testProducer.send();
         }
     }
