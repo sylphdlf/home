@@ -1,12 +1,32 @@
+# encoding=utf-8
 from urllib import request
 import chardet
+import json
+import time
 
 
-def get_page():
+
+
+# url_page_1 = "https://www.zhipin.com/geek/recommend/jobs.json?page=100&districtCode=0&businessId=0&expectId=54d3c422c0f82cc40nR53ty5Fg~~&cityCode=101020100"
+# url_job_detail = "https://www.zhipin.com/geek/job/detail.json?jobId=77a96f7510c6dc9c1nB939W6FVs~&lid=8a088e75-aa7f-44f0-b267-7aae8f1fb141.phoenix.1&expectId=54d3c422c0f82cc40nR53ty5Fg~~"
+# 获取列表链接
+from src.main.python.dbutils.MysqlUtils import MysqlUtils
+
+
+def get_page_url(page_cur):
+    page_url = "https://www.zhipin.com/geek/recommend/jobs.json?page=" + str(page_cur) + "&districtCode=0&businessId=0&expectId=54d3c422c0f82cc40nR53ty5Fg~~&cityCode=101020100"
+    return page_url
+
+
+# 获取职位详细信息
+def get_detail_url(job_id, lid, expect_id):
+    url_job_detail = "https://www.zhipin.com/geek/job/detail.json?jobId=" + str(job_id) + "&lid=" + str(lid) + "&expectId=" + str(expect_id)
+    return url_job_detail
+
+
+# 通过url获取接口数据
+def get_html(url):
     # java 上海 18~19k
-    url_page_1 = "https://www.zhipin.com/geek/recommend/jobs.json?page=1&districtCode=0&businessId=0&expectId=54d3c422c0f82cc40nR53ty5Fg~~&cityCode=101020100"
-    url_first_detail = "https://www.zhipin.com/geek/job/detail.json?jobId=673e4cfdb5ca76e11nZ-29S7F1A~&lid=6784fdf9-ef61-456d-853f-ea1fec45f4a6.phoenix.1&expectId=54d3c422c0f82cc40nR53ty5Fg~~"
-    url_page_2 = "https://www.zhipin.com/geek/recommend/jobs.json?page=2&districtCode=0&businessId=0&expectId=54d3c422c0f82cc40nR53ty5Fg~~&cityCode=101020100"
     head = {
         "Accept": "application/json, text/plain, */*",
         "Accept-Encoding": "gzip, deflate, br",
@@ -17,13 +37,70 @@ def get_page():
         "Referer": "https://www.zhipin.com/geek/new/index/recommend",
         "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
     }
-    req = request.Request(url_page_1, headers=head)
+    req = request.Request(url, headers=head)
     response = request.urlopen(req)
     html = response.read()
     charset = chardet.detect(html)
     print(charset.get("encoding"))
-    html = html.decode(charset.get("encoding"))
-    print(html)
+    data = html.decode(charset.get("encoding"))
+    return data
+
+
+# 分页循环
+def get_page_loop(page_cur):
+    json_data = get_html(get_page_url(page_cur))
+    json_obj = json.loads(json_data)
+    # 第一层，获取data下的数据
+    data = json_obj['data']
+    # 获取每页数量
+    page_size = data['pageSize']
+    # 当前页数
+    page_cur = data['page']
+    # 是否还有更多数据(判断执行条件)
+    has_more = data['hasMore']
+    # 获取地区列表
+    # district = data['businessDistrict']
+    # 获取职位列表
+    job_list = data['jobSearchInfoList']
+    insert_job_list = []
+    if len(job_list) != 0:
+        for job in job_list:
+            # 获取职位详细信息
+            # detail_json_data = get_job_detail(job['jobId'], job['lid'], job['expectId'])
+            insert_job_list.append(job)
+        insert_db(insert_job_list)
+
+    # 是否有下一页
+    if has_more == 1:
+        # 停一秒（防止被封）
+        time.sleep(1)
+        new_page_index = int(page_cur) + 1
+        get_page_loop(new_page_index)
+
+
+# 获取职位详细信息
+def get_job_detail(job_id, lid, expect_id):
+    detail_url = get_detail_url(job_id, lid, expect_id)
+    return_data = get_html(detail_url)
+    json_obj = json.loads(return_data)
+    return json_obj['data']
+
+
+def insert_db(job_list):
+    sql_list = []
+    if len(job_list) != 0:
+        for job in job_list:
+            company_id = job['brandId']
+            company_name = job['brandName']
+            city_area = job['cityAndArea']
+            scale_name = job['scaleName']
+            stage_name = job['stageName']
+            industry_name = job['industryName']
+            sql = "insert into job_company (company_id, company_name, city_area, scale_name, stage_name, industry_name) " \
+                  "values ('" + str(company_id) + "', '" + str(company_name) + "', '" + str(city_area) + "', '" + str(scale_name) + "', '" + str(stage_name) + "', '" + str(industry_name) + "')"
+            sql_list.append(sql)
+        MysqlUtils.insert(sql_list)
+
 
 if __name__ == '__main__':
-    print(get_page())
+    get_page_loop(1)
