@@ -117,6 +117,7 @@ def get_html_page_loop(page_cur):
     soup = BeautifulSoup(html, 'html.parser')
     job_list = soup.find_all('div', class_='job-primary')
     if len(job_list) != 0:
+        sql_list = []
         for job in job_list:
             obj = {}
             # 获取公司地址(简易)
@@ -127,20 +128,27 @@ def get_html_page_loop(page_cur):
             company_url = company_node.get("href")
             company_url_suffix = company_node.get("ka")
             # https://www.zhipin.com/gongsi/376.html?ka=search_list_company_1
-            get_html_company_detail(url_prefix + company_url + "?ka=" + company_url_suffix, obj)
-            # 等待2秒
-            time.sleep(2)
+            sql = get_html_company_detail(url_prefix + company_url + "?ka=" + company_url_suffix, obj)
+            sql_list.append(sql)
+            # 等待1秒
+            time.sleep(1)
             # 获取职位链接
             # job_detail_url = job.find('a', href=re.compile(r'/job_detail/\d+\.html')).get("href")
             # get_html_job_detail(job_detail_url)
-        # 循环分页
-        # page_cur = int(page_cur) + 1
-        # get_html_page_loop(page_cur)
+        # 入库
+        if len(sql_list) != 0:
+            MysqlUtils.insert(sql_list)
+        # 循环分页(等待2秒)
+        time.sleep(2)
+        page_cur = int(page_cur) + 1
+        get_html_page_loop(page_cur)
 
 
 # 获取公司详细信息
 def get_html_company_detail(url, obj):
+    print(url)
     html = get_html(url)
+    company_id = url[url.rindex("/")+1: url.rindex("html")-1]
     # 创建BS对象
     soup = BeautifulSoup(html, "html.parser")
     # 获取公司标签
@@ -151,31 +159,69 @@ def get_html_company_detail(url, obj):
     company_properties = company_banner.find("p")
     company_properties_list = str(company_properties).split('<em class="vline"></em>')
     # 融资情况
-    stage_name = company_properties_list[0].lstrip("<p>")
-    # 人数
-    scale_name = company_properties_list[1]
-    # 行业
-    industry_name = company_properties_list[2].rstrip("</p>")
+    print(company_properties_list)
+    if len(company_properties_list) > 0:
+        temp1 = company_properties_list[0].lstrip("<p>")
+        # 如果第一个是数字,则为公司人数
+        if re.match(r'\d+', temp1):
+            stage_name = ""
+            scale_name = company_properties_list[0].lstrip("<p>")
+            # 如果列表长度为2则有行业参数
+            if len(company_properties_list) == 2:
+                # 行业
+                industry_name = company_properties_list[1].rstrip("</p>")
+            else:
+                industry_name = ""
+        else:
+            if len(company_properties_list) == 1:
+                # 融资情况
+                stage_name = temp1
+                scale_name = ""
+                industry_name = ""
+            else:
+                if len(company_properties_list) == 2:
+                    # 判断第二个元素是否包含数字
+                    temp2 = company_properties_list[1]
+                    if re.match(r'\d+', temp2):
+                        stage_name = ""
+                        # 人数
+                        scale_name = temp2
+                        # 行业
+                        industry_name = company_properties_list[2].rstrip("</p>")
+                    else:
+                        stage_name = ""
+                        scale_name = ""
+                        # 行业
+                        industry_name = company_properties_list[1].rstrip("</p>")
+                else:
+                    stage_name = company_properties_list[0].lstrip("<p>")
+                    scale_name = company_properties_list[1]
+                    industry_name = company_properties_list[2].rstrip("</p>")
     # 公司注册信息
     bus_detail = soup.find("div", class_="business-detail").find_all("li")
     # 注册资本
-    company_asset = bus_detail[1].contents[1]
+    company_asset = ""
+    if len(bus_detail[1].contents) > 1:
+        company_asset = re.findall(r'\d+', str(bus_detail[1].contents[1]))[0]
     # 成立时间
-    company_established = bus_detail[2].contents[1]
+    company_established = ""
+    if len(bus_detail[2].contents) > 1:
+        company_established = bus_detail[2].contents[1]
     # 公司描述
-    company_info = soup.find("div", class_="text fold-text").contents[0]
+    if soup.find("div", class_="text fold-text"):
+        company_info = soup.find("div", class_="text fold-text").contents[0]
+    else:
+        company_info = ""
     # 公司详细地址
     address_detail = soup.find("div", class_="location-item show-map").get_text()
-
-    print(company_name)
-    print(stage_name)
-    print(scale_name)
-    print(industry_name)
-    print(company_asset)
-    print(company_established)
-    print(company_info)
-    print(obj["address_summary"])
-    print(address_detail)
+    # 公司简介
+    address_summary = obj["address_summary"]
+    # 拼接sql
+    sql = "insert into job_company (company_id, company_name, company_info, company_asset, company_established, address_summary, address_detail, scale_name, stage_name, industry_name)" \
+              "VALUES ('" + str(company_id) + "', '" + str(company_name) + "', '" + str(company_info) + "', '" + str(company_asset) + "', '" + str(company_established) + "','" \
+              + str(address_summary) + "', '" + str(address_detail).strip() + "', '" + str(scale_name) + "', '" + str(stage_name) + "', '" + str(industry_name) + "')"
+    print(sql)
+    return sql
 
 
 # 获取静态页面职位详细信息
@@ -194,13 +240,27 @@ def insert_db(job_list):
             stage_name = job['stageName']
             industry_name = job['industryName']
             # 插入公司信息
-            sql = "insert into job_company (company_id, company_name, city_area, scale_name, stage_name, industry_name) " \
+            sql = "insert into job_company (company_id, company_name, company_info, company_asset, company_established, address_summary, address_detail, scale_name, stage_name, industry_name) " \
                   "values ('" + str(company_id) + "', '" + str(company_name) + "', '" + str(city_area) + "', '" + str(scale_name) + "', '" + str(stage_name) + "', '" + str(industry_name) + "')"
             sql_list.append(sql)
         MysqlUtils.insert(sql_list)
 
 
 if __name__ == '__main__':
-    get_html_page_loop(1)
-    # get_json_page_loop(1)
-    # get_html_company_detail("https://www.zhipin.com/gongsi/376.html?ka=search_list_company_1")
+    # get_html_page_loop(2)
+
+    obj = {}
+    obj["address_summary"] = "12121212"
+    sql = get_html_company_detail("https://www.zhipin.com/gongsi/1170048.html?ka=search_list_company_65", obj)
+    print(sql)
+    sql_list = [sql]
+    MysqlUtils.insert(sql_list)
+
+    # str = "https://www.zhipin.com/gongsi/376.html?ka=search_list_company_1"
+    # print(str.rindex("/"))
+    # print(str.rindex("html"))
+    # print(str[str.rindex("/")+1:str.rindex("html")-1])
+
+    # dt = "1987-12-22 00:00:00"
+    # timeArray = time.strptime(dt, "%Y-%m-%d %H:%M:%S")
+    # print(timeArray)
