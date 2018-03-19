@@ -40,8 +40,7 @@ public class Application extends SpringBootServletInitializer {
         app.run(args);
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**").addResourceLocations("classpath:/static");
-//    }
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static");
+    }
 }

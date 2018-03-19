@@ -2,7 +2,6 @@ package com.dlf.model.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.util.resources.TimeZoneNames_zh_CN;
 
 import java.text.DateFormat;
 import java.text.ParseException;
