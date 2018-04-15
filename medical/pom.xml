@@ -123,9 +123,9 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>medical-business</module>
-		<module>medical-model</module>
 		<module>medical-web</module>
-		<module>medical-python</module>
+		<module>medical-business</module>
+		<module>medical-common</module>
+		<module>medical-model</module>
 	</modules>
 </project>

@@ -20,7 +20,7 @@ public class LoginAction {
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(Model model){
-        return "index";
+        return "login";
     }
 
     @RequestMapping(value = "/main",method = RequestMethod.GET)
