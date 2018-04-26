@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by Administrator on 2017/5/7.
  */
 @Controller
 public class LoginAction {
-
-    @Autowired
-    IPythonDataTransferService pythonDataTransferService;
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(Model model){
@@ -25,6 +24,8 @@ public class LoginAction {
 
     @RequestMapping(value = "/main",method = RequestMethod.GET)
     public String main(){
+        AtomicInteger atomicInteger = new AtomicInteger();
+        atomicInteger.getAndIncrement();
         return "main";
     }
 }

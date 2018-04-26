@@ -153,5 +153,8 @@ public class GlobalResultDTO<T> implements Serializable{
     public static GlobalResultDTO FAIL(String message) {
         return new GlobalResultDTO(message, false);
     }
+    public static GlobalResultDTO FAIL(String code, String message) {
+        return new GlobalResultDTO(code, message);
+    }
 
 }
