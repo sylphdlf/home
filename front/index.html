@@ -83,8 +83,8 @@
 				<h2 data-animation="animated bounceInDown">基于比特股底层代码的去中心化交易所</h2>
 				<h1 data-animation="animated bounceInUp">&nbsp;</h1>
 				<!--<a href="#" class="btn btn-ghost btn-lg" data-animation="animated fadeInLeft">Start Tour</a>-->
-				<a href="#" class="btn btn-info btn-lg" data-animation="animated fadeInRight">苹果下载</a>
-				<a href="#" class="btn btn-info btn-lg" data-animation="animated fadeInRight">安卓下载</a>
+				<a class="btn btn-info btn-lg" data-animation="animated fadeInLeft" id="ios_download">苹果下载</a>
+				<a class="btn btn-info btn-lg" data-animation="animated fadeInRight" id="android_download">安卓下载</a>
 			</div>
 		</div>
 		<!-- /.item -->
@@ -946,6 +946,24 @@
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/wow.min.js"></script>
 <script src="js/common.js"></script>
+<script>
+    $(function(){
+        console.info("hello");
+        // $('[data-toggle="popover"]').popover();
+        $("#ios_download").popover({
+            html:true,
+            placement:'bottom',
+            toggle:'popover',
+            content: '<img src="images/test/1525760096.png" width="120">'
+        });
+        $("#android_download").popover({
+            html:true,
+            placement:'bottom',
+            toggle:'popover',
+            content: '<img src="images/test/1525760096.png" width="120">'
+        });
+    });
+</script>
 </body>
 </html>
 
