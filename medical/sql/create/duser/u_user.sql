@@ -21,7 +21,25 @@ CREATE TABLE `user_` (
   `update_userid` BIGINT(20) DEFAULT 0 COMMENT '最后修改人ID',
   `update_username` VARCHAR(100) DEFAULT '' COMMENT '最后修改人姓名',
   `update_time` TIMESTAMP NULL DEFAULT NULL COMMENT '最后修改时间',
-  `is_deleted` TINYINT(1) DEFAULT 0 COMMENT '是否逻辑删除:默认0正常;1已删除',
+  `is_deleted` TINYINT(2) DEFAULT 0 COMMENT '是否逻辑删除:默认0正常;1已删除',
   PRIMARY KEY (`id`),
   KEY `username` (`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+DROP TABLE IF EXISTS `user_bebuy`;
+
+CREATE TABLE `user_bebuy` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
+  `password` VARCHAR(50) NOT NULL COMMENT '密码',
+  `password_str` VARCHAR(200) NOT NULL COMMENT '密码字符串',
+  `status` TINYINT(2) DEFAULT '0' COMMENT '状态：0：待审核；1：审核通过；2：审核不通过；',
+  `remarks` VARCHAR(255) DEFAULT '' COMMENT '备注',
+  `create_time` TIMESTAMP NULL DEFAULT current_timestamp COMMENT '创建时间',
+  `update_time` TIMESTAMP NULL DEFAULT NULL COMMENT '修改时间',
+  `is_deleted` TINYINT(2) DEFAULT 0 COMMENT '是否逻辑删除:默认0正常;1已删除',
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表-bebuy';
+
+

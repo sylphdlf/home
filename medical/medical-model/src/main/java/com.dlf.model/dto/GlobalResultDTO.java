@@ -14,12 +14,12 @@ public class GlobalResultDTO<T> implements Serializable{
     /**
      * 正确代码
      */
-    public static final String SUCCESS_CODE = "0";
+    private static final String SUCCESS_CODE = "0";
 
     /**
      * 错误代码
      */
-    public static final String ERROR_CODE = "1";
+    private static final String ERROR_CODE = "1";
 
 
     /**
