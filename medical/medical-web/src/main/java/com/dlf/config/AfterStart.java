@@ -1,4 +1,4 @@
-package com.dlf;
+package com.dlf.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
