@@ -4,7 +4,7 @@ html,body {
 	height:100%;
 }
 body {
-	font-family:Open Sans,'Helvetica Neue',Arial,sans-serif;
+	font-family:Open Sans,'微软雅黑',Arial,sans-serif;
 	font-size:15px;
 	color:#777;
 	line-height:1.7;
@@ -27,7 +27,7 @@ a:hover,a:focus {
 	color:#eb3812;
 }
 h1,h2,h3,h4,h5,h6 {
-	font-family:'Dosis','Helvetica Neue',Arial,sans-serif;
+	font-family:'Dosis','微软雅黑',Arial,sans-serif;
 }
 p {
 	margin-bottom:20px;
@@ -66,7 +66,7 @@ aside {
 }
 .navbar-default {
 	border-color:rgba(34,34,34,.05);
-	font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
+	font-family:'Open Sans','微软雅黑',Arial,sans-serif;
 	background-color:#fff;
 	-webkit-transition:all .35s;
 	-moz-transition:all .35s;
@@ -74,7 +74,7 @@ aside {
 }
 .navbar-default .navbar-header .navbar-brand {
 	text-transform:uppercase;
-	font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
+	font-family:'Open Sans','微软雅黑',Arial,sans-serif;
 	font-weight:700;
 	color:#f05f40;
 }
@@ -188,8 +188,8 @@ header .header-content .header-content-inner p {
 .section-heading {
 	margin-top:0;
 	line-height:1.4;
-	font-size:34px;
-	 color:#111;
+	font-size:32px;
+	color:#fd7715;
 }
 .service-box {
 	margin:50px auto 0;
@@ -315,7 +315,7 @@ header .header-content .header-content-inner p {
 	border:0;
 	border-radius:300px;
 	text-transform:uppercase;
-	font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
+	font-family:'Open Sans','微软雅黑',Arial,sans-serif;
 	font-weight:700;
 }
 .btn-xl {
@@ -1006,6 +1006,13 @@ h1.bottombrand:first-letter {
 }
 input.error,textarea.error {
 	border:1px solid red;
+}
+.section-heading-en{
+    font-family:Open Sans,'微软雅黑',Arial,sans-serif;
+    margin-top:0;
+    line-height:1.4;
+    font-size:14px;
+    color:#909090;
 }
 @media only screen and (max-width:768px) {
 	.wow {
