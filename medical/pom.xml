@@ -138,7 +138,7 @@
 	<modules>
 		<module>medical-web</module>
 		<module>medical-business</module>
-		<module>medical-common</module>
 		<module>medical-model</module>
+		<module>medical-common</module>
 	</modules>
 </project>
