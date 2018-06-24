@@ -19,12 +19,14 @@ public class StringRedisController {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
-    @Resource(name = "stringRedisTemplate")
-    ValueOperations<String,String> valueOperations;
+
+//    @Resource(name = "stringRedisTemplate")
+//    ValueOperations<String,String> valueOperations;
 
     @RequestMapping("setKeyAndValue")
     public String setKeyAndValue(String key,String value){
         logger.debug("访问set:key={},value={}",key,value);
+        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
         valueOperations.set(key, value);
         return "Set Ok";
     }
@@ -32,6 +34,7 @@ public class StringRedisController {
     @RequestMapping("/getKey")
     public String getKey(String key){
         logger.debug("key============="+key);
+        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
         String value = valueOperations.get(key);
         logger.debug("value==========="+value);
         return value;

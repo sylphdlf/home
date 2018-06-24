@@ -10,10 +10,4 @@
 	<artifactId>medical-common</artifactId>
 	<packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.dlf.medical</groupId>
-			<artifactId>medical-model</artifactId>
-		</dependency>
-	</dependencies>
 </project>

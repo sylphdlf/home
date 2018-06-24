@@ -1,6 +1,7 @@
 package com.dlf.web.exception;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
+import com.dlf.model.dto.enums.user.UserResultEnum;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -17,24 +18,25 @@ import java.util.Map;
  */
 public class MyExceptionHandler implements HandlerExceptionResolver {
 
+    private static String CODE = "code";
+    private static String MSG = "msg";
+
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception ex) {
         ModelAndView mv = new ModelAndView();
         FastJsonJsonView view = new FastJsonJsonView();
         Map<String, Object> attributes = new HashMap<String, Object>();
         if (ex instanceof UnauthenticatedException) {
-            attributes.put("code", "1000001");
-            attributes.put("msg", "token错误");
+            attributes.put(CODE, UserResultEnum.TOKEN_ERROR.getCode());
+            attributes.put(MSG, UserResultEnum.TOKEN_ERROR.getMsg());
         } else if (ex instanceof UnauthorizedException) {
-            attributes.put("code", "1000002");
-            attributes.put("msg", "用户无权限");
+            attributes.put(CODE, UserResultEnum.PERMISSION_DENIED.getCode());
+            attributes.put(MSG, UserResultEnum.PERMISSION_DENIED.getMsg());
         } else if (ex instanceof IncorrectCredentialsException){
-            attributes.put("code", "1000003");
-            attributes.put("msg", "用户名或密码错误");
+            attributes.put(CODE, UserResultEnum.USERNAME_OR_PASSWORD_ERROR.getCode());
+            attributes.put(MSG, UserResultEnum.USERNAME_OR_PASSWORD_ERROR.getMsg());
         } else {
-            attributes.put("code", "1000004");
-            attributes.put("msg", ex.getMessage());
+            ex.printStackTrace();
         }
-
         view.setAttributesMap(attributes);
         mv.setView(view);
         return mv;

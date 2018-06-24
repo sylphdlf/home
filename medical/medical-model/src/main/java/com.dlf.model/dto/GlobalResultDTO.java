@@ -1,6 +1,7 @@
 package com.dlf.model.dto;
 
 
+import com.dlf.model.dto.enums.GlobalResultEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -10,27 +11,27 @@ import java.io.Serializable;
  */
 public class GlobalResultDTO<T> implements Serializable{
 
-    private static final long serialVersionUID = 6580635395865198847L;
+    private static final long serialVersionUID = 3147080607075035747L;
+
     /**
      * 正确代码
      */
-    private static final String SUCCESS_CODE = "0";
+    private static final String SUCCESS_CODE = GlobalResultEnum.SUCCESS.getCode();
 
     /**
      * 错误代码
      */
-    private static final String ERROR_CODE = "1";
-
+    private static final String ERROR_CODE = GlobalResultEnum.FAIL.getCode();
 
     /**
      * 返回（正确/错误）代码
      */
-    protected String code;
+    private String code;
 
     /**
      * 返回信息描述
      */
-    protected String msg;
+    private String msg;
 
     /**
      * 返回结果集

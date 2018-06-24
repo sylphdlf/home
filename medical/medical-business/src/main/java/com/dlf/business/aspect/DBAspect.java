@@ -1,17 +1,44 @@
 package com.dlf.business.aspect;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+import java.util.Date;
 
 @Aspect
 @Component
 public class DBAspect {
 
-    @Before(value = "execution(* com.dlf.business.manager.*.*(..))" )
-    public void beforeInsert(JoinPoint joinPoint){
-        System.out.println(joinPoint);
+    @Pointcut("execution(* com.dlf.model.mapper.*.insert(..))")
+    private void beforeInsert(){};
+
+    /**
+     * 对于插入语句自动添加create_time, is_deleted
+     * @param jp
+     */
+    @Before("beforeInsert()")
+    public void insert(JoinPoint jp){
+        if (jp.getArgs() == null) {
+            return;
+        }
+        for(Object bean : jp.getArgs()){
+            if(bean instanceof String){
+                continue;
+            }
+            try {
+                PropertyUtils.setProperty(bean, "createTime", new Date());
+                PropertyUtils.setProperty(bean, "isDeleted", (byte)0);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }

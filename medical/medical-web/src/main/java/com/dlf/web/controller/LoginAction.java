@@ -1,15 +1,16 @@
 package com.dlf.web.controller;
 
-import com.dlf.business.manager.python.IPythonDataTransferService;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.user.UserBebuyReqDTO;
+import com.dlf.model.dto.user.UserReqDTO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,33 +18,32 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Administrator on 2017/5/7.
  */
 @Controller
+@RequestMapping("/login")
 public class LoginAction {
 
     @RequestMapping(value = "/loginAjax",method = RequestMethod.POST)
     @ResponseBody
-    public GlobalResultDTO loginAjax(@RequestBody UserBebuyReqDTO reqDTO){
+    public GlobalResultDTO loginAjax(@RequestBody UserReqDTO reqDTO) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(reqDTO.getUsername(), reqDTO.getPassword());
         try {
             subject.login(token);
-        }catch (Exception e){
+            return GlobalResultDTO.SUCCESS(subject.getSession().getId().toString());
+        } catch (Exception e) {
             return GlobalResultDTO.FAIL(e.getMessage());
         }
-
-        System.out.println(111);
-        return GlobalResultDTO.SUCCESS();
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(Model model){
-        System.out.println(111);
-        return "login";
-    }
-
-    @RequestMapping(value = "/main",method = RequestMethod.GET)
-    public String main(){
-        AtomicInteger atomicInteger = new AtomicInteger();
-        atomicInteger.getAndIncrement();
-        return "main";
+    @RequestMapping(value = "/logoutAjax",method = RequestMethod.GET)
+    @ResponseBody
+    public GlobalResultDTO logoutAjax(){
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.logout();
+            return GlobalResultDTO.SUCCESS();
+        }catch (Exception e){
+            e.printStackTrace();
+            return GlobalResultDTO.FAIL(e.getMessage());
+        }
     }
 }

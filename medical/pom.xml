@@ -47,15 +47,15 @@
 				<artifactId>spring-boot-starter-mail</artifactId>
 				<version>1.5.3.RELEASE</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>javax.mail-api</artifactId>
+				<version>1.5.6</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<version>1.5.4.RELEASE</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -122,7 +122,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.7</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
@@ -132,8 +131,9 @@
 		<dependency>
 			<groupId>org.crazycake</groupId>
 			<artifactId>shiro-redis</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
+
 	</dependencies>
 	<modules>
 		<module>medical-web</module>

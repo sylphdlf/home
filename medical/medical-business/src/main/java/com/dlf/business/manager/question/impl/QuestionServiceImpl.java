@@ -4,6 +4,7 @@ import com.dlf.business.manager.question.QuestionService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.enums.GlobalResultEnum;
 import com.dlf.model.dto.question.QuestionReqDTO;
+import com.dlf.model.dto.question.QuestionSearchDTO;
 import com.dlf.model.mapper.QuestionMapper;
 import com.dlf.model.po.Question;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +32,16 @@ public class QuestionServiceImpl implements QuestionService{
         }catch (Exception e){
             e.printStackTrace();
             return GlobalResultDTO.FAIL(GlobalResultEnum.FAIL.getCode(),e.getMessage());
+        }
+    }
+
+    public GlobalResultDTO queryPageByParams(QuestionSearchDTO questionSearchDTO) {
+        try {
+
+            return GlobalResultDTO.SUCCESS();
+        }catch (Exception e){
+            e.printStackTrace();
+            return GlobalResultDTO.FAIL("");
         }
     }
 }

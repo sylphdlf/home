@@ -3,7 +3,7 @@ package com.dlf.model.dto.enums;
 public enum GlobalResultEnum {
 
     SUCCESS("0","success"),
-    FAIL("-1","fail")
+    FAIL("-1","fail"),
     ;
 
     private String code;

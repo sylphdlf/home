@@ -3,65 +3,44 @@
 <mapper namespace="com.dlf.model.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.dlf.model.po.User">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="type" jdbcType="TINYINT" property="type" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
-    <result column="realname" jdbcType="VARCHAR" property="realname" />
-    <result column="sex" jdbcType="BIT" property="sex" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password_str" jdbcType="VARCHAR" property="passwordStr" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
-    <result column="check_user_id" jdbcType="BIGINT" property="checkUserId" />
-    <result column="version_no" jdbcType="INTEGER" property="versionNo" />
-    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
-    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
-    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, username, password, nickname, realname, sex, mobile, status, remarks, check_time, 
-    check_user_id, version_no, create_userid, create_username, create_time, update_userid, 
-    update_username, update_time, is_deleted
+    id, username, password, password_str, status, remarks, create_time, update_time, 
+    is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user_
+    from u_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user_
+    delete from u_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dlf.model.po.User">
-    insert into user_ (id, type, username, 
-      password, nickname, realname, 
-      sex, mobile, status, remarks, 
-      check_time, check_user_id, version_no, 
-      create_userid, create_username, create_time, 
-      update_userid, update_username, update_time, 
-      is_deleted)
-    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=BIT}, #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, 
-      #{checkTime,jdbcType=TIMESTAMP}, #{checkUserId,jdbcType=BIGINT}, #{versionNo,jdbcType=INTEGER}, 
-      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT})
+    insert into u_user (id, username, password, 
+      password_str, status, remarks, 
+      create_time, update_time, is_deleted
+      )
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{passwordStr,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.dlf.model.po.User">
-    insert into user_
+    insert into u_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="type != null">
-        type,
       </if>
       <if test="username != null">
         username,
@@ -69,17 +48,8 @@
       <if test="password != null">
         password,
       </if>
-      <if test="nickname != null">
-        nickname,
-      </if>
-      <if test="realname != null">
-        realname,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="mobile != null">
-        mobile,
+      <if test="passwordStr != null">
+        password_str,
       </if>
       <if test="status != null">
         status,
@@ -87,29 +57,8 @@
       <if test="remarks != null">
         remarks,
       </if>
-      <if test="checkTime != null">
-        check_time,
-      </if>
-      <if test="checkUserId != null">
-        check_user_id,
-      </if>
-      <if test="versionNo != null">
-        version_no,
-      </if>
-      <if test="createUserid != null">
-        create_userid,
-      </if>
-      <if test="createUsername != null">
-        create_username,
-      </if>
       <if test="createTime != null">
         create_time,
-      </if>
-      <if test="updateUserid != null">
-        update_userid,
-      </if>
-      <if test="updateUsername != null">
-        update_username,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -122,26 +71,14 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=TINYINT},
-      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="realname != null">
-        #{realname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=BIT},
-      </if>
-      <if test="mobile != null">
-        #{mobile,jdbcType=VARCHAR},
+      <if test="passwordStr != null">
+        #{passwordStr,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -149,61 +86,28 @@
       <if test="remarks != null">
         #{remarks,jdbcType=VARCHAR},
       </if>
-      <if test="checkTime != null">
-        #{checkTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="checkUserId != null">
-        #{checkUserId,jdbcType=BIGINT},
-      </if>
-      <if test="versionNo != null">
-        #{versionNo,jdbcType=INTEGER},
-      </if>
-      <if test="createUserid != null">
-        #{createUserid,jdbcType=BIGINT},
-      </if>
-      <if test="createUsername != null">
-        #{createUsername,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateUserid != null">
-        #{updateUserid,jdbcType=BIGINT},
-      </if>
-      <if test="updateUsername != null">
-        #{updateUsername,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isDeleted != null">
-        #{isDeleted,jdbcType=BIT},
+        #{isDeleted,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.User">
-    update user_
+    update u_user
     <set>
-      <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
-      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="realname != null">
-        realname = #{realname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=BIT},
-      </if>
-      <if test="mobile != null">
-        mobile = #{mobile,jdbcType=VARCHAR},
+      <if test="passwordStr != null">
+        password_str = #{passwordStr,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
@@ -211,60 +115,28 @@
       <if test="remarks != null">
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
-      <if test="checkTime != null">
-        check_time = #{checkTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="checkUserId != null">
-        check_user_id = #{checkUserId,jdbcType=BIGINT},
-      </if>
-      <if test="versionNo != null">
-        version_no = #{versionNo,jdbcType=INTEGER},
-      </if>
-      <if test="createUserid != null">
-        create_userid = #{createUserid,jdbcType=BIGINT},
-      </if>
-      <if test="createUsername != null">
-        create_username = #{createUsername,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateUserid != null">
-        update_userid = #{updateUserid,jdbcType=BIGINT},
-      </if>
-      <if test="updateUsername != null">
-        update_username = #{updateUsername,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=BIT},
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.User">
-    update user_
-    set type = #{type,jdbcType=TINYINT},
-      username = #{username,jdbcType=VARCHAR},
+    update u_user
+    set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      realname = #{realname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=BIT},
-      mobile = #{mobile,jdbcType=VARCHAR},
+      password_str = #{passwordStr,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       remarks = #{remarks,jdbcType=VARCHAR},
-      check_time = #{checkTime,jdbcType=TIMESTAMP},
-      check_user_id = #{checkUserId,jdbcType=BIGINT},
-      version_no = #{versionNo,jdbcType=INTEGER},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=BIT}
+      is_deleted = #{isDeleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
