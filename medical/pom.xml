@@ -136,7 +136,7 @@
 
 	</dependencies>
 	<modules>
-		<module>medical-web</module>
+		<module>project-web</module>
 		<module>medical-business</module>
 		<module>medical-model</module>
 		<module>medical-common</module>
