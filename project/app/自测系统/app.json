@@ -1,0 +1,17 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/exam/examIndex",
+    "pages/exam/examConf",
+    "pages/record/examRecord",
+    "pages/analyze/examErrorAnalyze",
+    "pages/import/excelImport"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "自测工具",
+    "navigationBarTextStyle":"black"
+  }
+}

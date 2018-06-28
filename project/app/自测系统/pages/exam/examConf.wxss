@@ -1,0 +1,19 @@
+/* pages/exam/examConf.wxss */
+wx-button {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+wx-label {
+  display: block; 
+  margin-top: 10rpx;
+  margin-left: 20rpx;
+}
+.picker-text {
+  margin-left: 20rpx;
+  position: relative;
+}
+.picker{
+  padding: 26rpx;
+  background-color: #FFFFFF;
+}
+
