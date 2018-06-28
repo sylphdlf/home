@@ -37,7 +37,7 @@ public class JobCrawlerSchedule {
     public void getWeatherData(){
         try {
 //            String jobStrData = PythonDataTransfer.getStrData(jobWeatherLocation);
-            String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
+            String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\project\\project-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
             pythonDataTransferService.transferDataFromWeather(jobStrData);
         }catch (Exception e){
             e.getMessage();
@@ -45,7 +45,7 @@ public class JobCrawlerSchedule {
     }
 
     public static void main(String[] args) throws Exception{
-        String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\medical\\medical-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
+        String jobStrData = PythonDataTransfer.getStrData("D:\\develop\\workspace-home\\project\\project-python\\src\\main\\java\\com\\dlf\\python\\spider\\weather_moji.py");
         System.out.println(jobStrData);
     }
 }
