@@ -47,12 +47,6 @@
 				<artifactId>spring-boot-starter-mail</artifactId>
 				<version>1.5.3.RELEASE</version>
 			</dependency>
-			<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>javax.mail-api</artifactId>
-				<version>1.5.6</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -133,7 +127,12 @@
 			<artifactId>shiro-redis</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.6</version>
+		</dependency>
 	</dependencies>
 	<modules>
 		<module>project-web</module>
