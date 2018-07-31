@@ -29,7 +29,7 @@
 DROP TABLE IF EXISTS `u_user`;
 
 CREATE TABLE `u_user` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(255) NOT NULL COMMENT '用户名',
   `password` VARCHAR(60) NOT NULL,
   `real_name` VARCHAR(60) DEFAULT NULL COMMENT '真实姓名',
@@ -45,13 +45,13 @@ CREATE TABLE `u_user` (
   `update_user_id` BIGINT(20) NULL COMMENT '最后修改人',
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除;1已删除',
   PRIMARY KEY (`id`),
-  KEY `username` (`username`) USING BTREE
+  UNIQUE KEY `uk_username` (`username`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 DROP TABLE IF EXISTS `u_organization`;
 
 CREATE TABLE `u_organization` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) DEFAULT NULL COMMENT '组织机构代码',
   `parent_code` VARCHAR(32) DEFAULT '0' COMMENT '上级组织机构代码',
   `name` VARCHAR(255) DEFAULT NULL COMMENT '组织机构名',
@@ -65,10 +65,10 @@ CREATE TABLE `u_organization` (
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='组织机构表';
 
-DROP TABLE IF EXISTS `u_organization_user`;
+DROP TABLE IF EXISTS `u_org_user`;
 
 CREATE TABLE `u_org_user` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `org_id` BIGINT(20) DEFAULT NULL COMMENT '组织机构id',
   `user_id` BIGINT(20) DEFAULT '0' COMMENT '用户id',
   `remarks` VARCHAR(255) DEFAULT NULL COMMENT '备注',
@@ -85,7 +85,7 @@ CREATE TABLE `u_org_user` (
 DROP TABLE IF EXISTS `u_user_role`;
 
 CREATE TABLE `u_user_role` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT(20) NOT NULL COMMENT '用户id',
   `role_id` BIGINT(20) NOT NULL COMMENT '角色id',
   `create_time` TIMESTAMP NULL DEFAULT NULL COMMENT '创建时间',
@@ -100,7 +100,7 @@ CREATE TABLE `u_user_role` (
 DROP TABLE IF EXISTS `u_org_role`;
 
 CREATE TABLE `u_org_role` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `org_id` BIGINT(20) NOT NULL COMMENT '组织机构id',
   `role_id` BIGINT(20) NOT NULL COMMENT '角色id',
   `create_time` TIMESTAMP NULL DEFAULT NULL COMMENT '创建时间',
@@ -115,7 +115,7 @@ CREATE TABLE `u_org_role` (
 DROP TABLE IF EXISTS `u_role`;
 
 CREATE TABLE `u_role` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(60) DEFAULT NULL COMMENT '角色编码,方便业务系统赋权限',
   `name` VARCHAR(128) NOT NULL COMMENT '角色名称',
   `remarks` VARCHAR(255) DEFAULT NULL COMMENT '备注',
@@ -131,7 +131,7 @@ CREATE TABLE `u_role` (
 DROP TABLE IF EXISTS `u_role_function`;
 
 CREATE TABLE `u_role_function` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `role_id` BIGINT(20) NOT NULL COMMENT '角色id',
   `function_id` BIGINT(20) NOT NULL COMMENT '权限id',
   `create_time` TIMESTAMP NULL DEFAULT NULL COMMENT '创建时间',
@@ -146,7 +146,7 @@ CREATE TABLE `u_role_function` (
 DROP TABLE IF EXISTS `u_function`;
 
 CREATE TABLE `u_function` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) DEFAULT NULL COMMENT '权限code',
   `parent_code` VARCHAR(32) NOT NULL DEFAULT '0' COMMENT '父节点',
   `type` INT(2) NOT NULL COMMENT '权限类型 1 菜单、2按钮、3资源',

@@ -40,17 +40,20 @@ public class UserServiceImpl implements UserService {
     public GlobalResultDTO queryUserByUsername(UserReqDTO reqDTO) {
         try {
             if(StringUtils.isBlank(reqDTO.getUsername())){
-                return GlobalResultDTO.FAIL("用户名不能为空");
+                return GlobalResultDTO.FAIL(UserResultEnum.USERNAME_NULL.getMsg());
             }
             User user = new User();
             BeanUtils.copyProperties(reqDTO, user);
             user = userMapper.selectByUsername(user);
-            UserResDTO resDTO = new UserResDTO();
-            BeanUtils.copyProperties(user, resDTO);
-            return new GlobalResultDTO<UserResDTO>(resDTO);
+            if(null == user){
+                return GlobalResultDTO.FAIL(UserResultEnum.USER_NULL.getMsg());
+            }else{
+                UserResDTO resDTO = new UserResDTO();
+                BeanUtils.copyProperties(user, resDTO);
+                return new GlobalResultDTO<UserResDTO>(resDTO);
+            }
         }catch (Exception e){
-            e.printStackTrace();
-            return GlobalResultDTO.FAIL("注册");
+            return GlobalResultDTO.FAIL(GlobalResultEnum.FAIL.getMsg());
         }
     }
 
@@ -58,14 +61,10 @@ public class UserServiceImpl implements UserService {
         try {
             //注册验证
             registerVerify(reqDTO);
-            //注册验证码验证
-            GlobalResultDTO resultDTO = checkCodeVerify(reqDTO, true, RedisPrefixEnums.REGISTER_MESSAGE.getCode());
-            if(!resultDTO.isSuccess()){
-                return resultDTO;
-            }
             User user = new User();
             BeanUtils.copyProperties(reqDTO, user);
-            user.setStatus((byte)1);
+            //FIXME 状态
+            user.setStatus(1);
             //对密码做加密处理
             String afterMd5 = DigestUtils.md5Hex(user.getPassword());
             user.setPassword(afterMd5.toUpperCase());
@@ -78,9 +77,9 @@ public class UserServiceImpl implements UserService {
                 e.printStackTrace();
             }
             return GlobalResultDTO.SUCCESS();
-        }catch (Exception e){
+        }catch (MyException e){
             e.printStackTrace();
-            return GlobalResultDTO.FAIL(UserResultEnum.REGISTER_FAIL.getMsg());
+            return GlobalResultDTO.FAIL(e.getMessage());
         }
     }
 
@@ -127,10 +126,19 @@ public class UserServiceImpl implements UserService {
      */
     private void registerVerify(UserReqDTO reqDTO) throws MyException  {
         if(StringUtils.isBlank(reqDTO.getUsername())){
-            throw new MyException("用户名不能为空");
-        }else if(StringUtils.isBlank(reqDTO.getPassword())){
-            throw new MyException("密码不能为空");
+            throw new MyException(UserResultEnum.USERNAME_NULL.getMsg());
+        }else if(StringUtils.isBlank(reqDTO.getPassword())) {
+            throw new MyException(UserResultEnum.PASSWORD_NULL.getMsg());
+        }else if(StringUtils.isBlank(reqDTO.getPasswordRepeat())){
+            throw new MyException(UserResultEnum.PASSWORD_REPEAT_NULL.getMsg());
+        }else if(!reqDTO.getPassword().equals(reqDTO.getPasswordRepeat())){
+            throw new MyException(UserResultEnum.PASSWORD_REPEAT_NOT_MATCH.getMsg());
         }
+        //注册验证码验证
+//            GlobalResultDTO resultDTO = checkCodeVerify(reqDTO, true, RedisPrefixEnums.REGISTER_MESSAGE.getCode());
+//            if(!resultDTO.isSuccess()){
+//                return resultDTO;
+//            }
     }
 
     /**

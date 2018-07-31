@@ -1,6 +1,6 @@
 <template>
     <div class="login-wrap">
-        <div class="ms-title">TMS登录</div>
+        <div class="ms-title">后台管理系统</div>
         <div class="ms-login">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
                 <el-form-item prop="username">
@@ -12,8 +12,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p style="font-size:12px;line-height:30px;color:#999;">或者&nbsp;<a style="color: blue;cursor: pointer" @click="redirect('register')">去注册</a></p>
-                <p style="font-size:12px;line-height:30px;color:red;">{{messageShow.error}}</p>
+                <p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
@@ -24,11 +23,8 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: '13761053109',
-                    password: '13761053109'
-                },
-                messageShow:{
-                    error:"",
+                    username: 'admin',
+                    password: '123123'
                 },
                 rules: {
                     username: [
@@ -45,24 +41,12 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         localStorage.setItem('ms_username',this.ruleForm.username);
-                        // this.$router.push('/readme');
+                        this.$router.push('/readme');
                     } else {
                         console.log('error submit!!');
                         return false;
                     }
                 });
-                this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
-                    console.info(result);
-                    if(result.data.code === "0"){
-                        this.$router.push('/charts');
-                    }else{
-                        this.messageShow.error = result.data.msg;
-                        return false;
-                    }
-                });
-            },
-            redirect(name){
-                this.$router.push('/' + name);
             }
         }
     }

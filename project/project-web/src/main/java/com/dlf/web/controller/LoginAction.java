@@ -1,6 +1,7 @@
 package com.dlf.web.controller;
 
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.enums.GlobalResultEnum;
 import com.dlf.model.dto.user.UserReqDTO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -20,7 +21,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Controller
 @RequestMapping("/login")
 public class LoginAction {
-
+    /**
+     * 登录
+     * @param reqDTO
+     * @return
+     */
     @RequestMapping(value = "/loginAjax",method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO loginAjax(@RequestBody UserReqDTO reqDTO) {
@@ -34,6 +39,21 @@ public class LoginAction {
         }
     }
 
+    /**
+     * 未登录
+     * @param reqDTO
+     * @return
+     */
+    @RequestMapping(value = "/unauth",method = RequestMethod.POST)
+    @ResponseBody
+    public GlobalResultDTO unauth(@RequestBody UserReqDTO reqDTO) {
+        return GlobalResultDTO.FAIL(GlobalResultEnum.FAIL.getMsg());
+    }
+
+    /**
+     * 登出
+     * @return
+     */
     @RequestMapping(value = "/logoutAjax",method = RequestMethod.GET)
     @ResponseBody
     public GlobalResultDTO logoutAjax(){

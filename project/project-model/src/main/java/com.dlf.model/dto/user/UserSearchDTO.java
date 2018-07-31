@@ -1,17 +1,14 @@
 package com.dlf.model.dto.user;
 
+import com.dlf.model.dto.PageDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserReqDTO {
+public class UserSearchDTO extends PageDTO {
     //用户名
     private String username;
-    //密码值
-    private String password;
-    //再次输入密码
-    private String passwordRepeat;
     //真实姓名
     private String realName;
     //手机
@@ -22,8 +19,4 @@ public class UserReqDTO {
     private Integer gender;
     //组织机构代码
     private String orgCode;
-    //验证码
-    private String checkCode;
-    //备注
-    private String remarks;
 }

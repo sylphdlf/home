@@ -23,6 +23,6 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.dlf.model.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
-        <table tableName="pay_notify_log" domainObjectName="PayNotifyLog" enableCountByExample="ture" enableUpdateByExample="ture" enableDeleteByExample="ture" enableSelectByExample="ture" selectByExampleQueryId="ture"/>
+        <table tableName="u_user" domainObjectName="User" enableCountByExample="ture" enableUpdateByExample="ture" enableDeleteByExample="ture" enableSelectByExample="ture" selectByExampleQueryId="ture"/>
     </context>
 </generatorConfiguration>

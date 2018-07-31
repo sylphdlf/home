@@ -2,10 +2,15 @@ package com.dlf.model.dto.enums.user;
 
 public enum UserResultEnum {
 
-    TOKEN_ERROR("0001","TOKEN_ERROR"),
-    PERMISSION_DENIED("0002","PERMISSION_DENIED"),
-    USERNAME_OR_PASSWORD_ERROR("0003","USERNAME_OR_PASSWORD_ERROR"),
-    REGISTER_FAIL("0004","注册失败"),
+    TOKEN_ERROR("user_001","TOKEN_ERROR"),
+    PERMISSION_DENIED("user_002","PERMISSION_DENIED"),
+    USERNAME_OR_PASSWORD_ERROR("user_003","USERNAME_OR_PASSWORD_ERROR"),
+    REGISTER_FAIL("user_004","注册失败"),
+    USERNAME_NULL("user_005","用户名不能为空"),
+    PASSWORD_NULL("user_006","密码不能为空"),
+    PASSWORD_REPEAT_NULL("user_007","请再次输入密码"),
+    PASSWORD_REPEAT_NOT_MATCH("user_008","2次输入的密码不一致"),
+    USER_NULL("user_009","没有此用户，请确认用户名是否输入正确"),
     ;
 
     private String code;

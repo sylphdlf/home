@@ -30,10 +30,21 @@
             return {
                 collapse: false,
                 items: [
+                    // {
+                    //     icon: 'el-icon-setting',
+                    //     index: 'readme',
+                    //     title: '自述文件'
+                    // },
                     {
-                        icon: 'el-icon-setting',
-                        index: 'readme',
-                        title: '自述文件'
+                        icon: 'el-icon-tickets',
+                        index: '1',
+                        title: '用户管理',
+                        subs: [
+                            {
+                                index: 'userMgr',
+                                title: '用户管理'
+                            }
+                        ]
                     },
                     {
                         icon: 'el-icon-tickets',

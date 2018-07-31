@@ -15,8 +15,20 @@ export default new Router({
             children:[
                 {
                     path: '/',
-                    component: resolve => require(['../components/page/Readme.vue'], resolve)
+                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)
                 },
+                {
+                    path: '/userMgr',
+                    component: resolve => require(['../components/page/user/UserMgr.vue'], resolve)
+                },
+
+
+
+
+
+
+
+
                 {
                     path: '/table',
                     component: resolve => require(['../components/page/BaseTable.vue'], resolve)
@@ -24,7 +36,7 @@ export default new Router({
                 {
                     // vue-datasource组件
                     path: '/datasource',
-                    component: resolve => require(['../components/page/VueTable.vue'], resolve)     
+                    component: resolve => require(['../components/page/VueTable.vue'], resolve)
                 },
                 {
                     path: '/form',
@@ -33,22 +45,22 @@ export default new Router({
                 {
                     // 富文本编辑器组件
                     path: '/editor',
-                    component: resolve => require(['../components/page/VueEditor.vue'], resolve)    
+                    component: resolve => require(['../components/page/VueEditor.vue'], resolve)
                 },
                 {
                     // markdown组件
                     path: '/markdown',
-                    component: resolve => require(['../components/page/Markdown.vue'], resolve)     
+                    component: resolve => require(['../components/page/Markdown.vue'], resolve)
                 },
                 {
                     // 图片上传组件
                     path: '/upload',
-                    component: resolve => require(['../components/page/Upload.vue'], resolve)       
+                    component: resolve => require(['../components/page/Upload.vue'], resolve)
                 },
                 {
                     // vue-schart组件
                     path: '/charts',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)   
+                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)
                 },
                 {
                     // 拖拽列表组件
@@ -66,6 +78,10 @@ export default new Router({
         {
             path: '/login',
             component: resolve => require(['../components/page/Login.vue'], resolve)
+        },
+        {
+            path: '/register',
+            component: resolve => require(['../components/page/Register.vue'], resolve)
         },
     ]
 })

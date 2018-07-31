@@ -9,13 +9,14 @@ import "babel-polyfill";
 
 Vue.use(ElementUI, { size: 'small' });
 Vue.prototype.$axios = axios;
+Vue.prototype.$projectUrl = "/project-web"
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     if(to.meta.permission){
         const role = localStorage.getItem('ms_username');
         // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-        role === 'admin' ? next() : next('/login');
+        role === '13761053109' ? next() : next('/login');
     }else{
         // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
         if(navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor'){

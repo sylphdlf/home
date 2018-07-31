@@ -31,7 +31,7 @@ public class DBAspect {
             }
             try {
                 PropertyUtils.setProperty(bean, "createTime", new Date());
-                PropertyUtils.setProperty(bean, "isDeleted", (byte)0);
+                PropertyUtils.setProperty(bean, "isDeleted", 0);
             }catch (Exception e){
                 e.printStackTrace();
             }

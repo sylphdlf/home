@@ -28,10 +28,9 @@ public class Application extends SpringBootServletInitializer {
     protected static Logger logger = LoggerFactory.getLogger(Application.class);
 
     @RequestMapping("/")
-    @ResponseBody
     public String greeting(HttpServletRequest request, Model model) {
         model.addAttribute("1", "2");
-        return "HelloWorld";
+        return "/index";
     }
 
     public static void main(String[] args) {

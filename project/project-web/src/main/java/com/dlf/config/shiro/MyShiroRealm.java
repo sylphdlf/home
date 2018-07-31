@@ -58,10 +58,10 @@ public class MyShiroRealm extends AuthorizingRealm {
         String password = redisService.get(RedisPrefixEnums.USER_LOGIN_CACHE.getCode() + username);
         if(StringUtils.isBlank(password)){
             GlobalResultDTO resultDTO = userService.queryUserByUsername(reqDTO);
-            UserResDTO resDTO = (UserResDTO)resultDTO.getData();
             if(!resultDTO.isSuccess()){
-                return null;
+                throw new AuthenticationException(resultDTO.getMsg());
             }
+            UserResDTO resDTO = (UserResDTO)resultDTO.getData();
             password = resDTO.getPassword();
             //存入redis中
             redisService.put(RedisPrefixEnums.USER_LOGIN_CACHE.getCode() + username, password, Long.parseLong(redisTimeout));
