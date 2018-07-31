@@ -4,17 +4,23 @@ import com.alibaba.fastjson.JSONArray;
 import com.dlf.business.exception.MyException;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.PageDTO;
 import com.dlf.model.dto.enums.GlobalResultEnum;
 import com.dlf.model.dto.enums.RedisPrefixEnums;
 import com.dlf.model.dto.enums.user.UserResultEnum;
+import com.dlf.model.dto.user.UserDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserResDTO;
+import com.dlf.model.dto.user.UserSearchDTO;
 import com.dlf.model.mapper.UserMapper2;
 import com.dlf.model.po.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -190,5 +196,18 @@ public class UserServiceImpl implements UserService {
             return GlobalResultDTO.FAIL("没有找到相关用户");
         }
         return GlobalResultDTO.FAIL("密码更新失败");
+    }
+
+    @Override
+    public GlobalResultDTO queryListByParams(UserSearchDTO searchDTO) {
+        try {
+            PageInfo<UserDTO> pageInfo = new PageInfo<UserDTO>();
+            PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
+            List<UserDTO> list = userMapper.queryListByParams(searchDTO);
+            pageInfo.setList(list);
+            return new GlobalResultDTO(pageInfo);
+        }catch (Exception e){
+            return GlobalResultDTO.FAIL(e.getMessage());
+        }
     }
 }

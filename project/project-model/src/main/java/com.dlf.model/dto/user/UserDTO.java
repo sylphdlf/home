@@ -1,8 +1,14 @@
 package com.dlf.model.dto.user;
 
 import com.dlf.model.dto.PageDTO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class UserDTO extends PageDTO<UserDTO> {
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+public class UserDTO{
 
     private String username;
 
@@ -13,4 +19,6 @@ public class UserDTO extends PageDTO<UserDTO> {
     private String mobile;
 
     private String telephone;
+
+    private Date createTime;
 }

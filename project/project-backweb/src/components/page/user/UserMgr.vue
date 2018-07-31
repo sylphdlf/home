@@ -2,8 +2,8 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-tickets"></i> 表格</el-breadcrumb-item>
-                <el-breadcrumb-item>基础表格</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-tickets"></i> 用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>用户列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -11,7 +11,7 @@
                 <el-input v-model="select_word" placeholder="用户名或手机号码" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="data" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="username" label="用户名"></el-table-column>
                 <el-table-column prop="realName" label="真实姓名"></el-table-column>
@@ -57,23 +57,24 @@
         },
         computed: {
             data(){
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if(d.name === this.del_list[i].name){
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if(!is_del){
-                        if(d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                            d.address.indexOf(this.select_word) > -1)
-                        ){
-                            return d;
-                        }
-                    }
-                })
+                // return this.tableData.filter((d) => {
+                    // console.info(d);
+                //     let is_del = false;
+                //     for (let i = 0; i < this.del_list.length; i++) {
+                //         if(d.name === this.del_list[i].name){
+                //             is_del = true;
+                //             break;
+                //         }
+                //     }
+                //     if(!is_del){
+                //         if(d.address.indexOf(this.select_cate) > -1 &&
+                //             (d.name.indexOf(this.select_word) > -1 ||
+                //             d.address.indexOf(this.select_word) > -1)
+                //         ){
+                //             return d;
+                //         }
+                //     }
+                // })
             }
         },
         methods: {
@@ -85,19 +86,24 @@
             // 获取 easy-mock 的模拟数据
             getData(){
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if(process.env.NODE_ENV === 'development'){
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {page:this.cur_page}).then((res) => {
-                    this.tableData = res.data.list;
+                // if(process.env.NODE_ENV === 'development'){
+                //     this.url = '/ms/table/list';
+                // };
+                this.$axios.post(this.url, {pageNum:this.cur_page}).then((res) => {
+                    console.info(res.data);
+                    this.tableData = res.data.data.list;
                 })
             },
             search(){
                 this.is_search = true;
             },
-            formatter(row, column) {
-                return row.address;
-            },
+            // dateFormat:function(row, column) {
+            //     var date = row[column.property];
+            //     if (date == undefined) {
+            //         return "";
+            //     }
+            //     return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
+            // },
             filterTag(value, row) {
                 return row.tag === value;
             },

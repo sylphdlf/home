@@ -1,7 +1,10 @@
 package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.PageDTO;
+import com.dlf.model.dto.user.UserDTO;
 import com.dlf.model.dto.user.UserReqDTO;
+import com.dlf.model.dto.user.UserSearchDTO;
 
 public interface UserService {
     /**
@@ -39,4 +42,10 @@ public interface UserService {
      */
     GlobalResultDTO resetPassword(UserReqDTO reqDTO);
 
+    /**
+     * 查询用户列表
+     * @param searchDTO
+     * @return
+     */
+    GlobalResultDTO queryListByParams(UserSearchDTO searchDTO);
 }

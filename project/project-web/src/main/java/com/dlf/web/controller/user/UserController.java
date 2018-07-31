@@ -4,6 +4,7 @@ import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.UserSearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/queryListByParams",method = RequestMethod.POST)
-    public GlobalResultDTO queryListByParams(UserSearchDTO searchDTO) {
+    public GlobalResultDTO queryListByParams(@RequestBody UserSearchDTO searchDTO) {
         return userService.queryListByParams(searchDTO);
     }
 }

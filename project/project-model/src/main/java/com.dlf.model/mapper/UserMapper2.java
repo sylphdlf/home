@@ -1,5 +1,6 @@
 package com.dlf.model.mapper;
 
+import com.dlf.model.dto.user.UserSearchDTO;
 import com.dlf.model.po.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,4 +27,6 @@ public interface UserMapper2 extends UserMapper{
      * @param user
      */
     int updatePwdByUsername(User user);
+
+    int countByParams(UserSearchDTO searchDTO);
 }

@@ -1,11 +1,13 @@
 package com.dlf;
 
 import com.dlf.web.listeners.ContextInitListener;
+import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Properties;
 
 
 /**
@@ -41,5 +44,16 @@ public class Application extends SpringBootServletInitializer {
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static");
+    }
+    //配置mybatis的分页插件pageHelper
+    @Bean
+    public PageHelper pageHelper(){
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("offsetAsPageNum","true");
+        properties.setProperty("rowBoundsWithCount","true");
+        properties.setProperty("reasonable","true");
+        pageHelper.setProperties(properties);
+        return pageHelper;
     }
 }
