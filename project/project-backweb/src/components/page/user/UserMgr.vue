@@ -8,7 +8,7 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="select_word" placeholder="用户名/真实姓名/手机号码" class="handle-input mr10"></el-input>
+                <el-input v-model="select_word" placeholder="用户名/手机号码" class="handle-input mr10" @keyup.enter.native="search"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -61,13 +61,18 @@
             return {
                 url: this.$projectUrl + '/user/queryListByParams',
                 tableData: [],
-                cur_page: 1,
                 multipleSelection: [],
                 select_word: '',
                 del_list: [],
                 is_search: false,
                 dataTotal:1,
                 dialogFormVisible: false,
+                searchForm: {
+                    username: '',
+                    mobile: '',
+                    realName: '',
+                    pageNum: 1
+                },
                 userData: {
                     id: '',
                     username: '',
@@ -106,7 +111,7 @@
         methods: {
             // 分页导航
             handleCurrentChange(val){
-                this.cur_page = val;
+                this.searchForm.pageNum = val;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
@@ -115,23 +120,29 @@
                 // if(process.env.NODE_ENV === 'development'){
                 //     this.url = '/ms/table/list';
                 // };
-                this.$axios.post(this.url, {pageNum:this.cur_page}).then((res) => {
-                    console.info(res.data);
+                this.$axios.post(this.url, this.searchForm).then((res) => {
                     this.tableData = res.data.data.list;
                     this.dataTotal = res.data.data.total;
                 })
             },
             search(){
                 this.is_search = true;
-                console.info(this.select_word);
+                //清空数据
+                if(this.select_word === ""){
+                    this.searchForm.mobile = ""
+                    this.searchForm.username = ""
+                }
                 //正则判断是否是手机
-                var rex = /^1[3456789]\d{9}$/;
+                let rex = /^1[3456789]\d{9}$/;
                 //手机
                 if (rex.test(this.select_word)) {
-                    
+                    this.searchForm.mobile = this.select_word;
+                    this.searchForm.username = "";
                 }else{
-
+                    this.searchForm.mobile  = "";
+                    this.searchForm.username = this.select_word;
                 }
+                this.getData();
             },
             // dateFormat:function(row, column) {
             //     var date = row[column.property];
@@ -147,7 +158,6 @@
                 // this.$message('编辑第'+(index+1)+'行');
                 this.dialogFormVisible = true;
                 this.userData = row;
-                console.info(row)
             },
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');
