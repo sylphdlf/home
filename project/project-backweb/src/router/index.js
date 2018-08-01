@@ -21,6 +21,10 @@ export default new Router({
                     path: '/userMgr',
                     component: resolve => require(['../components/page/user/UserMgr.vue'], resolve)
                 },
+                {
+                    path: '/orgMgr',
+                    component: resolve => require(['../components/page/user/OrgMgr.vue'], resolve)
+                },
 
 
 

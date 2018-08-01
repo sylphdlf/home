@@ -43,6 +43,10 @@
                             {
                                 index: 'userMgr',
                                 title: '用户列表'
+                            },
+                            {
+                                index: 'orgMgr',
+                                title: '组织管理'
                             }
                         ]
                     },
