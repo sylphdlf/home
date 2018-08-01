@@ -1,91 +1,193 @@
 <template>
-    <div class="container">
-        <div class="block">
-            <p>银联中国</p>
-            <el-tree :data="data5" show-checkbox node-key="id" default-expand-all :expand-on-click-node="false">
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                    <span>{{ node.label }}</span>
-                    <span>
-                        <el-button type="text" size="mini" @click="() => append(data)">新增</el-button>
-                        <el-button type="text" size="mini" @click="() => remove(node, data)">删除</el-button>
-                    </span>
-                </span>
-            </el-tree>
+    <div class="table">
+        <div class="crumbs">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item><i class="el-icon-tickets"></i> 用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+            </el-breadcrumb>
         </div>
+        <div class="container">
+            <div class="handle-box">
+                <el-input v-model="select_word" placeholder="用户名/手机号码" class="handle-input mr10" @keyup.enter.native="search"></el-input>
+                <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="search" @click="search">新增机构</el-button>
+            </div>
+            <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="35"></el-table-column>
+                <el-table-column prop="name" label="机构名称"></el-table-column>
+                <el-table-column prop="code" label="机构编码"></el-table-column>
+                <el-table-column prop="parentCode" label="父机构编码"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                <el-table-column label="操作" width="100">
+                    <template slot-scope="scope">
+                        <el-button size="small"
+                                   @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination">
+                <el-pagination
+                    @current-change ="handleCurrentChange"
+                    layout="prev, pager, next, total"
+                    :total="dataTotal">
+                </el-pagination>
+            </div>
+        </div>
+        <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="25%">
+            <el-form :model="userData" label-width="70px">
+                <el-form-item label="用户名">
+                    <el-input v-model="userData.username" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="真实姓名">
+                    <el-input v-model="userData.realName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机">
+                    <el-input v-model="userData.mobile" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="座机">
+                    <el-input v-model="userData.telephone" auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
-    let id = 1000;
-
     export default {
         data() {
-            const data = [{
-                id: 1,
-                label: '银联上海' + '(YLSH)',
-                children: [{
-                    id: 4,
-                    label: '银联浦东',
-                    children: [{
-                        id: 9,
-                        label: '银联浦东张江'
-                    }, {
-                        id: 10,
-                        label: '银联浦东唐镇'
-                    }]
-                }]
-            }, {
-                id: 2,
-                label: '银联北京',
-                children: [{
-                    id: 5,
-                    label: '银联海淀'
-                }, {
-                    id: 6,
-                    label: '银联房山'
-                }]
-            }, {
-                id: 3,
-                label: '银联深圳',
-                children: [{
-                    id: 7,
-                    label: '银联福田'
-                }, {
-                    id: 8,
-                    label: '银联罗湖'
-                }]
-            }];
             return {
-                data4: JSON.parse(JSON.stringify(data)),
-                data5: JSON.parse(JSON.stringify(data))
+                url: this.$projectUrl + '/user/queryListByParams',
+                tableData: [],
+                multipleSelection: [],
+                select_word: '',
+                del_list: [],
+                is_search: false,
+                dataTotal:1,
+                dialogFormVisible: false,
+                searchForm: {
+                    username: '',
+                    mobile: '',
+                    realName: '',
+                    pageNum: 1
+                },
+                userData: {
+                    id: '',
+                    username: '',
+                    realName: '',
+                    mobile: '',
+                    telephone: ''
+                },
+                // formLabelWidth: '50px'
             }
         },
-
+        created(){
+            this.getData();
+        },
+        computed: {
+            data(){
+                // return this.tableData.filter((d) => {
+                // console.info(d);
+                //     let is_del = false;
+                //     for (let i = 0; i < this.del_list.length; i++) {
+                //         if(d.name === this.del_list[i].name){
+                //             is_del = true;
+                //             break;
+                //         }
+                //     }
+                //     if(!is_del){
+                //         if(d.address.indexOf(this.select_cate) > -1 &&
+                //             (d.name.indexOf(this.select_word) > -1 ||
+                //             d.address.indexOf(this.select_word) > -1)
+                //         ){
+                //             return d;
+                //         }
+                //     }
+                // })
+            }
+        },
         methods: {
-            append(data) {
-                const newChild = { id: id++, label: 'testtest', children: [] };
-                if (!data.children) {
-                    this.$set(data, 'children', []);
+            // 分页导航
+            handleCurrentChange(val){
+                this.searchForm.pageNum = val;
+                this.getData();
+            },
+            // 获取 easy-mock 的模拟数据
+            getData(){
+                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
+                // if(process.env.NODE_ENV === 'development'){
+                //     this.url = '/ms/table/list';
+                // };
+                this.$axios.post(this.url, this.searchForm).then((res) => {
+                    this.tableData = res.data.data.list;
+                    this.dataTotal = res.data.data.total;
+                })
+            },
+            search(){
+                this.is_search = true;
+                //清空数据
+                if(this.select_word === ""){
+                    this.searchForm.mobile = ""
+                    this.searchForm.username = ""
                 }
-                data.children.push(newChild);
+                //正则判断是否是手机
+                let rex = /^1[3456789]\d{9}$/;
+                //手机
+                if (rex.test(this.select_word)) {
+                    this.searchForm.mobile = this.select_word;
+                    this.searchForm.username = "";
+                }else{
+                    this.searchForm.mobile  = "";
+                    this.searchForm.username = this.select_word;
+                }
+                this.getData();
             },
-
-            remove(node, data) {
-                const parent = node.parent;
-                const children = parent.data.children || parent.data;
-                const index = children.findIndex(d => d.id === data.id);
-                children.splice(index, 1);
+            // dateFormat:function(row, column) {
+            //     var date = row[column.property];
+            //     if (date == undefined) {
+            //         return "";
+            //     }
+            //     return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
+            // },
+            filterTag(value, row) {
+                return row.tag === value;
             },
+            handleEdit(index, row) {
+                // this.$message('编辑第'+(index+1)+'行');
+                this.dialogFormVisible = true;
+                this.userData = row;
+            },
+            handleDelete(index, row) {
+                this.$message.error('删除第'+(index+1)+'行');
+            },
+            delAll(){
+                const length = this.multipleSelection.length;
+                let str = '';
+                this.del_list = this.del_list.concat(this.multipleSelection);
+                for (let i = 0; i < length; i++) {
+                    str += this.multipleSelection[i].name + ' ';
+                }
+                this.$message.error('删除了'+str);
+                this.multipleSelection = [];
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            }
         }
-    };
+    }
 </script>
-<style>
-    .custom-tree-node {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        padding-right: 8px;
+<style scoped>
+    .handle-box{
+        margin-bottom: 20px;
+    }
+    .handle-select{
+        width: 120px;
+    }
+    .handle-input{
+        width: 300px;
+        display: inline-block;
     }
 </style>
 

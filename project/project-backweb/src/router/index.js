@@ -23,7 +23,7 @@ export default new Router({
                 },
                 {
                     path: '/orgMgr',
-                    component: resolve => require(['../components/page/user/OrgMgr.vue'], resolve)
+                    component: resolve => require(['../components/page/user/OrgMgr_tree.vue'], resolve)
                 },
 
 
