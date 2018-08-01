@@ -11,6 +11,7 @@ public enum UserResultEnum {
     PASSWORD_REPEAT_NULL("user_007","请再次输入密码"),
     PASSWORD_REPEAT_NOT_MATCH("user_008","2次输入的密码不一致"),
     USER_NULL("user_009","没有此用户，请确认用户名是否输入正确"),
+    USERNAME_EXIST("user_010","该用户已存在"),
     ;
 
     private String code;

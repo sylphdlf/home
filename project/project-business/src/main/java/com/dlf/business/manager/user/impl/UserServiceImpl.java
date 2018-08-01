@@ -20,6 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.SetOperations;
@@ -83,8 +84,9 @@ public class UserServiceImpl implements UserService {
                 e.printStackTrace();
             }
             return GlobalResultDTO.SUCCESS();
+        }catch(DuplicateKeyException e){
+            return GlobalResultDTO.FAIL(UserResultEnum.USERNAME_EXIST.getMsg());
         }catch (MyException e){
-            e.printStackTrace();
             return GlobalResultDTO.FAIL(e.getMessage());
         }
     }
