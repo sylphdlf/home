@@ -17,7 +17,7 @@
                 <el-table-column prop="realName" label="真实姓名"></el-table-column>
                 <el-table-column prop="mobile" label="手机"></el-table-column>
                 <el-table-column prop="telephone" label="座机"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat"></el-table-column>
                 <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button size="small"
@@ -144,13 +144,13 @@
                 }
                 this.getData();
             },
-            // dateFormat:function(row, column) {
-            //     var date = row[column.property];
-            //     if (date == undefined) {
-            //         return "";
-            //     }
-            //     return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
-            // },
+            dateFormat:function(row, column) {
+                let date = row.createTime;
+                if (date === undefined) {
+                    return "";
+                }
+                return this.$moment(date).format("YYYY-MM-DD HH-mm");
+            },
             filterTag(value, row) {
                 return row.tag === value;
             },
