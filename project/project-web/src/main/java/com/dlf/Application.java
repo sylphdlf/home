@@ -45,15 +45,5 @@ public class Application extends SpringBootServletInitializer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static");
     }
-    //配置mybatis的分页插件pageHelper
-    @Bean
-    public PageHelper pageHelper(){
-        PageHelper pageHelper = new PageHelper();
-        Properties properties = new Properties();
-        properties.setProperty("offsetAsPageNum","true");
-        properties.setProperty("rowBoundsWithCount","true");
-        properties.setProperty("reasonable","true");
-        pageHelper.setProperties(properties);
-        return pageHelper;
-    }
+
 }

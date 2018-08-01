@@ -10,6 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserDTO{
 
+    private Long id;
+
     private String username;
 
     private String realName;

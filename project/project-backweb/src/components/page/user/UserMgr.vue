@@ -8,7 +8,7 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="select_word" placeholder="用户名或手机号码" class="handle-input mr10"></el-input>
+                <el-input v-model="select_word" placeholder="用户名/真实姓名/手机号码" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -18,26 +18,43 @@
                 <el-table-column prop="mobile" label="手机"></el-table-column>
                 <el-table-column prop="telephone" label="座机"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间"></el-table-column>
-                <el-table-column label="操作" width="180">
+                <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button size="small"
                                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger"
-                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="pagination">
                 <el-pagination
                         @current-change ="handleCurrentChange"
-                        layout="prev, pager, next"
-                        :total="1000">
+                        layout="prev, pager, next, total"
+                        :total="dataTotal">
                 </el-pagination>
             </div>
         </div>
+        <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="25%">
+            <el-form :model="userData" label-width="70px">
+                <el-form-item label="用户名">
+                    <el-input v-model="userData.username" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="真实姓名">
+                    <el-input v-model="userData.realName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机">
+                    <el-input v-model="userData.mobile" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="座机">
+                    <el-input v-model="userData.telephone" auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
-
 <script>
     export default {
         data() {
@@ -46,10 +63,19 @@
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
-                select_cate: '',
                 select_word: '',
                 del_list: [],
-                is_search: false
+                is_search: false,
+                dataTotal:1,
+                dialogFormVisible: false,
+                userData: {
+                    id: '',
+                    username: '',
+                    realName: '',
+                    mobile: '',
+                    telephone: ''
+                },
+                // formLabelWidth: '50px'
             }
         },
         created(){
@@ -92,10 +118,20 @@
                 this.$axios.post(this.url, {pageNum:this.cur_page}).then((res) => {
                     console.info(res.data);
                     this.tableData = res.data.data.list;
+                    this.dataTotal = res.data.data.total;
                 })
             },
             search(){
                 this.is_search = true;
+                console.info(this.select_word);
+                //正则判断是否是手机
+                var rex = /^1[3456789]\d{9}$/;
+                //手机
+                if (rex.test(this.select_word)) {
+                    
+                }else{
+
+                }
             },
             // dateFormat:function(row, column) {
             //     var date = row[column.property];
@@ -108,7 +144,10 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
-                this.$message('编辑第'+(index+1)+'行');
+                // this.$message('编辑第'+(index+1)+'行');
+                this.dialogFormVisible = true;
+                this.userData = row;
+                console.info(row)
             },
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');

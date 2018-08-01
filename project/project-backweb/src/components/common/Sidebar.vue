@@ -46,44 +46,44 @@
                             }
                         ]
                     },
-                    // {
-                    //     icon: 'el-icon-tickets',
-                    //     index: '2',
-                    //     title: '常用表格',
-                    //     subs: [
-                    //         {
-                    //             index: 'table',
-                    //             title: '基础表格'
-                    //         },
-                    //         {
-                    //             index: 'datasource',
-                    //             title: 'datasource表格'
-                    //         }
-                    //     ]
-                    // },
-                    // {
-                    //     icon: 'el-icon-date',
-                    //     index: '3',
-                    //     title: '表单相关',
-                    //     subs: [
-                    //         {
-                    //             index: 'form',
-                    //             title: '基本表单'
-                    //         },
-                    //         {
-                    //             index: 'editor',
-                    //             title: '富文本编辑器'
-                    //         },
-                    //         {
-                    //             index: 'markdown',
-                    //             title: 'markdown编辑器'
-                    //         },
-                    //         {
-                    //             index: 'upload',
-                    //             title: '文件上传'
-                    //         }
-                    //     ]
-                    // },
+                    {
+                        icon: 'el-icon-tickets',
+                        index: '2',
+                        title: '常用表格',
+                        subs: [
+                            {
+                                index: 'table',
+                                title: '基础表格'
+                            },
+                            {
+                                index: 'datasource',
+                                title: 'datasource表格'
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-date',
+                        index: '3',
+                        title: '表单相关',
+                        subs: [
+                            {
+                                index: 'form',
+                                title: '基本表单'
+                            },
+                            {
+                                index: 'editor',
+                                title: '富文本编辑器'
+                            },
+                            {
+                                index: 'markdown',
+                                title: 'markdown编辑器'
+                            },
+                            {
+                                index: 'upload',
+                                title: '文件上传'
+                            }
+                        ]
+                    },
                     {
                         icon: 'el-icon-star-on',
                         index: 'charts',

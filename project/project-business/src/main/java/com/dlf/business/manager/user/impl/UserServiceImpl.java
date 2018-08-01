@@ -203,10 +203,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public GlobalResultDTO queryListByParams(UserSearchDTO searchDTO) {
         try {
-            PageInfo<UserDTO> pageInfo = new PageInfo<UserDTO>();
             PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
             List<UserDTO> list = userMapper.queryListByParams(searchDTO);
-            pageInfo.setList(list);
+            PageInfo<UserDTO> pageInfo = new PageInfo<UserDTO>(list);
             return new GlobalResultDTO(pageInfo);
         }catch (Exception e){
             return GlobalResultDTO.FAIL(e.getMessage());
