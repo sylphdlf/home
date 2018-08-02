@@ -10,4 +10,11 @@ public interface OrgService {
      * @return
      */
     GlobalResultDTO getOrgTree(OrgReqDTO reqDTO);
+
+    /**
+     * 新增节点
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO addOrgNode(OrgReqDTO reqDTO);
 }

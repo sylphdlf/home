@@ -3,9 +3,11 @@ package com.dlf.model.dto.user;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class OrgReqDTO {
+public class TreeNode {
 
     private Long id;
 
@@ -13,9 +15,9 @@ public class OrgReqDTO {
 
     private String code;
 
-    private String parentCode;
+    private String label;
 
-    private Integer level;
+    private String parent;
 
-    private String remarks;
+    private List<TreeNode> children;
 }

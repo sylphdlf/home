@@ -3,9 +3,11 @@ package com.dlf.model.dto.user;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
-public class OrgReqDTO {
+public class OrgResDTO {
 
     private Long id;
 
@@ -18,4 +20,6 @@ public class OrgReqDTO {
     private Integer level;
 
     private String remarks;
+
+    private Date createTime;
 }

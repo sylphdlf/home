@@ -26,4 +26,14 @@ public class OrgController {
     public GlobalResultDTO getOrgTree(@RequestBody OrgReqDTO reqDTO) {
         return orgService.getOrgTree(reqDTO);
     }
+
+    /**
+     * 新增节点
+     * @param reqDTO
+     * @return
+     */
+    @RequestMapping(value = "/addOrgNode", method = RequestMethod.POST)
+    public GlobalResultDTO addOrgNode(@RequestBody OrgReqDTO reqDTO){
+        return orgService.addOrgNode(reqDTO);
+    }
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class DBAspect {
 
-    @Pointcut("execution(* com.dlf.model.mapper.*.insert(..))")
+    @Pointcut("execution(* com.dlf.model.mapper.*.insert*(..))")
     private void beforeInsert(){};
 
     /**

@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <div class="block">
-            <p>银联中国</p>
             <el-tree :data="dataParse" node-key="id" default-expand-all :expand-on-click-node="false">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span>{{ node.label }}</span>
@@ -42,55 +41,55 @@
 <script>
     export default {
         data: function() {
-            // const data = [{
-            //     id: 1,
-            //     label: '银联上海(YLSH)',
-            //     parent:"01",
-            //     children: [{
-            //         id: 4,
-            //         label: '银联浦东(YLSH01)',
-            //         parent:"0101",
-            //         children: [{
-            //             id: 9,
-            //             label: '银联浦东张江(YLSH0101)',
-            //             parent:"010101",
-            //         }, {
-            //             id: 10,
-            //             label: '银联浦东唐镇(YLSH0102)',
-            //             parent:"010102",
-            //         }]
-            //     }]
-            // }, {
-            //     id: 2,
-            //     label: '银联北京',
-            //     parent:"02",
-            //     children: [{
-            //         id: 5,
-            //         label: '银联海淀',
-            //         parent:"0201"
-            //     }, {
-            //         id: 6,
-            //         label: '银联房山',
-            //         parent:"0202"
-            //     }]
-            // }, {
-            //     id: 3,
-            //     label: '银联深圳',
-            //     parent:"03",
-            //     children: [{
-            //         id: 7,
-            //         label: '银联福田',
-            //         parent:"0301"
-            //     }, {
-            //         id: 8,
-            //         label: '银联罗湖',
-            //         parent:"0302"
-            //     }]
-            // }];
+            // const data = [];
+            const data = [{
+                id: 1,
+                label: '银联上海(YLSH)',
+                parent:"01",
+                children: [{
+                    id: 4,
+                    label: '银联浦东(YLSH01)',
+                    parent:"0101",
+                    children: [{
+                        id: 9,
+                        label: '银联浦东张江(YLSH0101)',
+                        parent:"010101",
+                    }, {
+                        id: 10,
+                        label: '银联浦东唐镇(YLSH0102)',
+                        parent:"010102",
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '银联北京',
+                parent:"02",
+                children: [{
+                    id: 5,
+                    label: '银联海淀',
+                    parent:"0201"
+                }, {
+                    id: 6,
+                    label: '银联房山',
+                    parent:"0202"
+                }]
+            }, {
+                id: 3,
+                label: '银联深圳',
+                parent:"03",
+                children: [{
+                    id: 7,
+                    label: '银联福田',
+                    parent:"0301"
+                }, {
+                    id: 8,
+                    label: '银联罗湖',
+                    parent:"0302"
+                }]
+            }];
             return {
                 addRootBtn:false,
-                // dataParse: JSON.parse(JSON.stringify(data)),
-                dataParse: [],
+                dataParse: JSON.parse(JSON.stringify(data)),
                 dialogFormVisible: false,
                 orgData: {
                     id: '',
@@ -110,40 +109,41 @@
                 },
                 treeReqForm: {
                     id: "",
-                }
+                },
+                curNodeData:{}
             }
         },
         mounted: function () {
             //获取初始化tree节点
-            this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
-
-                if(result.data.code === "0"){
-
-                //无节点，展示新增根节点按钮
-                }else if(result.data.code === "org_001"){
-                    this.addRootBtn = true;
-                }else{
-                    this.messageShow.error = result.data.msg;
-                    return false;
-                }
-            });
+            this.refreshNode();
         },
         methods: {
-            addRoot() {
+            refreshNode() {
+                this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
+
+                    if(result.data.code === "0"){
+                        console.info(result.data.data)
+                        this.dataParse = result.data.data;
+                    }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
+                        this.addRootBtn = true;
+                    }else{
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
+            },
+            addRoot(data) {
                 this.orgData = {};
                 this.dialogFormVisible = true;
+                this.curNodeData = data;
             },
             append(data) {
                 this.orgData = {};
                 //设置dialog信息
-                this.orgData.parentCode = data.parent;
-                this.orgData.parentName = data.label;
+                this.orgData.parentCode = data.code;
+                this.orgData.parentName = data.name;
                 this.dialogFormVisible = true;
-                // const newChild = { id: id++, label: 'testtest', children: [] };
-                // if (!data.children) {
-                //     this.$set(data, 'children', []);
-                // }
-                // data.children.push(newChild);
+                this.curNodeData = data;
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -153,15 +153,31 @@
                         return false;
                     }
                 });
-                // this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
-                //     console.info(result);
-                //     if(result.data.code === "0"){
-                //         this.$router.push('/charts');
-                //     }else{
-                //         this.messageShow.error = result.data.msg;
-                //         return false;
-                //     }
-                // });
+                this.orgData.code = this.orgData.parentCode + this.orgData.code;
+                this.$axios.post("/project-web/org/addOrgNode", this.orgData).then(result =>{
+                    if(result.data.code === "0"){
+                        this.dialogFormVisible = false;
+                        if(result.data.data.parentCode === "0"){
+                            this.refreshNode();
+                        }else{
+                            //处理节点
+                            const newChild = { id: result.data.data.id,
+                                label: result.data.data.name + "(" + result.data.data.code + ")",
+                                code: result.data.data.code,
+                                name: result.data.data.name,
+                                children: [] };
+                            this.data = newChild;
+                            if (!this.curNodeData.children) {
+                                this.$set(this.curNodeData, 'children', []);
+                            }
+                            this.curNodeData.children.push(newChild);
+                            this.orgData = {};
+                        }
+                    }else{
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
             },
             remove(node, data) {
                 const parent = node.parent;

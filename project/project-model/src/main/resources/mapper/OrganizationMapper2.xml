@@ -19,9 +19,28 @@
     update_user_id, is_deleted
   </sql>
 
-  <select id="getAll" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM u_organization WHERE is_deleted = 0
-  </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM u_organization WHERE is_deleted = 0
+    </select>
+    <select id="getAllAsTreeNode" resultType="com.dlf.model.dto.user.TreeNode">
+        SELECT
+            id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
+        FROM u_organization WHERE is_deleted = 0
+    </select>
+
+  <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Organization">
+      insert into u_organization (id, code, parent_code,
+                                  name, level, remarks,
+                                  create_time, update_time, create_user_id,
+                                  update_user_id, is_deleted)
+      values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR},
+          #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR},
+          #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT},
+          #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
+      <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
 </mapper>
