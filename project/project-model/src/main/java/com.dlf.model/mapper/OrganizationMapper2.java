@@ -1,0 +1,16 @@
+package com.dlf.model.mapper;
+
+import com.dlf.model.po.Organization;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface OrganizationMapper2 extends OrganizationMapper{
+    /**
+     * 获取所有数据
+     * @return
+     */
+    List<Organization> getAll();
+
+}
