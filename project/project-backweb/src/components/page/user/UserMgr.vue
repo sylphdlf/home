@@ -10,6 +10,8 @@
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="用户名/手机号码" class="handle-input mr10" @keyup.enter.native="search"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="search" @click="search">新增(todo)</el-button>
+                <el-button type="primary" icon="search" @click="search">批量新增(todo)</el-button>
             </div>
             <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="35"></el-table-column>
@@ -21,7 +23,7 @@
                 <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button size="small"
-                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                @click="handleEdit(scope.$index, scope.row)">编辑(todo)</el-button>
                     </template>
                 </el-table-column>
             </el-table>
