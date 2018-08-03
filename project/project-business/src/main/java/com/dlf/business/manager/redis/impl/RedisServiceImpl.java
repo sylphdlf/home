@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -42,17 +44,14 @@ public class RedisServiceImpl implements RedisService {
         int time = 0;
         boolean flag;
         do{
-            time ++;
             try {
+                redisTemplate.setKeySerializer(new StringRedisSerializer());
+                redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
                 ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
                 valueOperations.set(key, value);
                 flag = true;
             }catch (Throwable e){
                 flag = false;
-                //FIXME
-                if(time == 1){
-                    //发送邮件
-                }
             }
         }while (!flag && time < MAX_RETRY_TIME);
     }
@@ -79,5 +78,15 @@ public class RedisServiceImpl implements RedisService {
     public String get(String key) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
         return valueOperations.get(key);
+    }
+
+    public Object getObj(String key) {
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(key);
+    }
+
+    @Override
+    public void removeKey(String key) {
+        redisTemplate.delete(key);
     }
 }

@@ -41,52 +41,52 @@
 <script>
     export default {
         data: function() {
-            // const data = [];
-            const data = [{
-                id: 1,
-                label: '银联上海(YLSH)',
-                parent:"01",
-                children: [{
-                    id: 4,
-                    label: '银联浦东(YLSH01)',
-                    parent:"0101",
-                    children: [{
-                        id: 9,
-                        label: '银联浦东张江(YLSH0101)',
-                        parent:"010101",
-                    }, {
-                        id: 10,
-                        label: '银联浦东唐镇(YLSH0102)',
-                        parent:"010102",
-                    }]
-                }]
-            }, {
-                id: 2,
-                label: '银联北京',
-                parent:"02",
-                children: [{
-                    id: 5,
-                    label: '银联海淀',
-                    parent:"0201"
-                }, {
-                    id: 6,
-                    label: '银联房山',
-                    parent:"0202"
-                }]
-            }, {
-                id: 3,
-                label: '银联深圳',
-                parent:"03",
-                children: [{
-                    id: 7,
-                    label: '银联福田',
-                    parent:"0301"
-                }, {
-                    id: 8,
-                    label: '银联罗湖',
-                    parent:"0302"
-                }]
-            }];
+            const data = [];
+            // const data = [{
+            //     id: 1,
+            //     label: '银联上海(YLSH)',
+            //     parent:"01",
+            //     children: [{
+            //         id: 4,
+            //         label: '银联浦东(YLSH01)',
+            //         parent:"0101",
+            //         children: [{
+            //             id: 9,
+            //             label: '银联浦东张江(YLSH0101)',
+            //             parent:"010101",
+            //         }, {
+            //             id: 10,
+            //             label: '银联浦东唐镇(YLSH0102)',
+            //             parent:"010102",
+            //         }]
+            //     }]
+            // }, {
+            //     id: 2,
+            //     label: '银联北京',
+            //     parent:"02",
+            //     children: [{
+            //         id: 5,
+            //         label: '银联海淀',
+            //         parent:"0201"
+            //     }, {
+            //         id: 6,
+            //         label: '银联房山',
+            //         parent:"0202"
+            //     }]
+            // }, {
+            //     id: 3,
+            //     label: '银联深圳',
+            //     parent:"03",
+            //     children: [{
+            //         id: 7,
+            //         label: '银联福田',
+            //         parent:"0301"
+            //     }, {
+            //         id: 8,
+            //         label: '银联罗湖',
+            //         parent:"0302"
+            //     }]
+            // }];
             return {
                 addRootBtn:false,
                 dataParse: JSON.parse(JSON.stringify(data)),
@@ -120,13 +120,15 @@
         methods: {
             refreshNode() {
                 this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
-
+                    console.info(result);
                     if(result.data.code === "0"){
                         console.info(result.data.data)
                         this.dataParse = result.data.data;
+                        this.addRootBtn = false;
                     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
                         this.addRootBtn = true;
                     }else{
+                        this.addRootBtn = false;
                         // this.messageShow.error = result.data.msg;
                         return false;
                     }
@@ -153,7 +155,9 @@
                         return false;
                     }
                 });
-                this.orgData.code = this.orgData.parentCode + this.orgData.code;
+                if(this.orgData.parentCode!=null){
+                    this.orgData.code = this.orgData.parentCode + this.orgData.code;
+                }
                 this.$axios.post("/project-web/org/addOrgNode", this.orgData).then(result =>{
                     if(result.data.code === "0"){
                         this.dialogFormVisible = false;

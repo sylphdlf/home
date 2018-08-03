@@ -23,4 +23,7 @@ public interface RedisService {
      * @return
      */
     String get(String key);
+    Object getObj(String key);
+
+    void removeKey(String key);
 }

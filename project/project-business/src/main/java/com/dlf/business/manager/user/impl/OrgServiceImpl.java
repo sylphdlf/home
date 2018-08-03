@@ -1,8 +1,11 @@
 package com.dlf.business.manager.user.impl;
 
+import com.dlf.business.anno.ExecuteTimeAnno;
 import com.dlf.business.exception.MyException;
+import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.OrgService;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.enums.RedisPrefixEnums;
 import com.dlf.model.dto.enums.user.OrgResultEnum;
 import com.dlf.model.dto.user.OrgReqDTO;
 import com.dlf.model.dto.user.OrgResDTO;
@@ -23,17 +26,29 @@ public class OrgServiceImpl implements OrgService {
 
     @Resource
     private OrganizationMapper2 organizationMapper;
-
+    @Resource
+    private RedisService redisService;
     @Override
+    @ExecuteTimeAnno
     public GlobalResultDTO getOrgTree(OrgReqDTO reqDTO) {
+        //从缓存中拿数据
+            List<TreeNode> treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+        if(!CollectionUtils.isEmpty(treeNode)){
+            return new GlobalResultDTO(treeNode);
+        }
         List<TreeNode> list = null;
         if(null == reqDTO.getId()){
+            long start = System.currentTimeMillis();
             list = organizationMapper.getAllAsTreeNode();
+            long end = System.currentTimeMillis();
+            System.out.println("查库时间：" + (end - start));
         }
         if(!CollectionUtils.isEmpty(list)){
             //组装节点
-            list = this.nodePackage(list);
-            return new GlobalResultDTO(list.get(0));
+            treeNode = this.nodePackage(list);
+            //放到缓存中
+            redisService.put(RedisPrefixEnums.ORG_TREE_NODE.getCode(),treeNode);
+            return new GlobalResultDTO(treeNode);
         }else{
             //无节点数据
             return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
@@ -43,6 +58,7 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO) {
         try {
+            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
             if(StringUtils.isBlank(reqDTO.getParentCode())){
                 reqDTO.setParentCode("0");
             }
@@ -63,34 +79,37 @@ public class OrgServiceImpl implements OrgService {
      * @param list
      * @return
      */
+    @ExecuteTimeAnno
     private List<TreeNode> nodePackage(List<TreeNode> list){
-        //转为map，格式为<code,TreeNode>
-        Map<String, TreeNode> thisMap = new HashMap<String, TreeNode>();
-        TreeNode root = new TreeNode();
+        //取出根节点
+        TreeNode root = null;
         for(TreeNode thisNode: list){
-            //把parentCode=0的数据单独处理
-            if("0".equals(thisNode.getParent())){
-                 root = thisNode;
+            if(thisNode.getParent().equals("0")){
+                root = thisNode;
             }
-            thisMap.put(thisNode.getCode(), thisNode);
         }
-        return recursionNode(thisMap, root);
+        return new ArrayList<TreeNode>(Collections.singletonList(recursionNode(list, root)));
     }
 
     /**
      * 递归拼装节点
-     * @param thisMap
+     * @param list
      * @return
      */
-    private List<TreeNode> recursionNode(Map<String, TreeNode> thisMap, TreeNode root){
-        Set<Map.Entry<String, TreeNode>> thisEntry = thisMap.entrySet();
-        for(Map.Entry<String, TreeNode> entry: thisEntry){
-            TreeNode thisNode = entry.getValue();
-            if(root.getCode().equals(thisNode.getParent())){
+    public TreeNode recursionNode(List<TreeNode> list, TreeNode node){
 
+        for (TreeNode thisNode : list) {
+            if (node.getCode().equals(thisNode.getParent())) {
+                if (CollectionUtils.isEmpty(node.getChildren())) {
+                    List<TreeNode> children = new ArrayList<TreeNode>();
+                    children.add(thisNode);
+                    node.setChildren(children);
+                } else {
+                    node.getChildren().add(thisNode);
+                }
+                recursionNode(list, thisNode);
             }
-
         }
-        return null;
+        return node;
     }
 }

@@ -7,7 +7,8 @@ public enum RedisPrefixEnums {
     SEND_LIMIT_PER_TIME("send_limit_per_time_","同一号码2次发送的间隔"),
     SEND_LIMIT_MAX_TIME("send_limit_max_time_","最大限制次数"),
     USER_LOGIN_CACHE("user_login_cache_","用户登录缓存用户名密码"),
-    USER_NAME_COMPARE_LIST("user_name_compare_list","注册用户名比较"),
+    USER_NAME_COMPARE_LIST("user_name_compare_list_","注册用户名比较"),
+    ORG_TREE_NODE("org_tree_node", "组织机构树"),
     ;
     private String code;
     private String desc;
