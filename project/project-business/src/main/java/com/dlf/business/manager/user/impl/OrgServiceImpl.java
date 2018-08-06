@@ -15,6 +15,7 @@ import com.dlf.model.po.Organization;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import sun.reflect.generics.tree.Tree;
 
@@ -54,24 +55,46 @@ public class OrgServiceImpl implements OrgService {
             return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
         }
     }
-
+    private void insert(Organization org){
+        organizationMapper.insert(org);
+    }
     @Override
     public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO) {
-        try {
-            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
-            if(StringUtils.isBlank(reqDTO.getParentCode())){
-                reqDTO.setParentCode("0");
-            }
+        for(int i=1;i<20;i++){
             Organization org = new Organization();
-            BeanUtils.copyProperties(reqDTO, org);
-            organizationMapper.insertWithIdReturn(org);
-            //只展示自定义字段
-            OrgResDTO resDTO = new OrgResDTO();
-            BeanUtils.copyProperties(org, resDTO);
-            return new GlobalResultDTO(resDTO);
-        }catch (Exception e){
-            return GlobalResultDTO.FAIL("");
+            org.setParentCode("1");
+            org.setCode("1" + i);
+            org.setName("child" + i);
+            this.insert(org);
+            for(int j=1;j<20;j++){
+                org.setParentCode("1" + i);
+                org.setCode("1" + i + j + "");
+                org.setName("child" + i + j);
+                this.insert(org);
+                for(int k = 1;k<20;k++){
+                    org.setParentCode("1" + i + j + "");
+                    org.setCode("1" + i + j + k + "");
+                    org.setName("child" + i + j + k);
+                    this.insert(org);
+                }
+            }
         }
+        return GlobalResultDTO.SUCCESS();
+//        try {
+//            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+//            if(StringUtils.isBlank(reqDTO.getParentCode())){
+//                reqDTO.setParentCode("0");
+//            }
+//            Organization org = new Organization();
+//            BeanUtils.copyProperties(reqDTO, org);
+//            organizationMapper.insertWithIdReturn(org);
+//            //只展示自定义字段
+//            OrgResDTO resDTO = new OrgResDTO();
+//            BeanUtils.copyProperties(org, resDTO);
+//            return new GlobalResultDTO(resDTO);
+//        }catch (Exception e){
+//            return GlobalResultDTO.FAIL("");
+//        }
     }
 
     /**
