@@ -33,7 +33,7 @@ public class OrgServiceImpl implements OrgService {
     @ExecuteTimeAnno
     public GlobalResultDTO getOrgTree(OrgReqDTO reqDTO) {
         //从缓存中拿数据
-            List<TreeNode> treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+        List<TreeNode> treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
         if(!CollectionUtils.isEmpty(treeNode)){
             return new GlobalResultDTO(treeNode);
         }
@@ -60,41 +60,41 @@ public class OrgServiceImpl implements OrgService {
     }
     @Override
     public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO) {
-        for(int i=1;i<20;i++){
-            Organization org = new Organization();
-            org.setParentCode("1");
-            org.setCode("1" + i);
-            org.setName("child" + i);
-            this.insert(org);
-            for(int j=1;j<20;j++){
-                org.setParentCode("1" + i);
-                org.setCode("1" + i + j + "");
-                org.setName("child" + i + j);
-                this.insert(org);
-                for(int k = 1;k<20;k++){
-                    org.setParentCode("1" + i + j + "");
-                    org.setCode("1" + i + j + k + "");
-                    org.setName("child" + i + j + k);
-                    this.insert(org);
-                }
-            }
-        }
-        return GlobalResultDTO.SUCCESS();
-//        try {
-//            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
-//            if(StringUtils.isBlank(reqDTO.getParentCode())){
-//                reqDTO.setParentCode("0");
-//            }
+//        for(int i=1;i<20;i++){
 //            Organization org = new Organization();
-//            BeanUtils.copyProperties(reqDTO, org);
-//            organizationMapper.insertWithIdReturn(org);
-//            //只展示自定义字段
-//            OrgResDTO resDTO = new OrgResDTO();
-//            BeanUtils.copyProperties(org, resDTO);
-//            return new GlobalResultDTO(resDTO);
-//        }catch (Exception e){
-//            return GlobalResultDTO.FAIL("");
+//            org.setParentCode("1");
+//            org.setCode("1" + i);
+//            org.setName("child" + i);
+//            this.insert(org);
+//            for(int j=1;j<20;j++){
+//                org.setParentCode("1" + i);
+//                org.setCode("1" + i + j + "");
+//                org.setName("child" + i + j);
+//                this.insert(org);
+//                for(int k = 1;k<20;k++){
+//                    org.setParentCode("1" + i + j + "");
+//                    org.setCode("1" + i + j + k + "");
+//                    org.setName("child" + i + j + k);
+//                    this.insert(org);
+//                }
+//            }
 //        }
+//        return GlobalResultDTO.SUCCESS();
+        try {
+            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+            if(StringUtils.isBlank(reqDTO.getParentCode())){
+                reqDTO.setParentCode("0");
+            }
+            Organization org = new Organization();
+            BeanUtils.copyProperties(reqDTO, org);
+            organizationMapper.insertWithIdReturn(org);
+            //只展示自定义字段
+            OrgResDTO resDTO = new OrgResDTO();
+            BeanUtils.copyProperties(org, resDTO);
+            return new GlobalResultDTO(resDTO);
+        }catch (Exception e){
+            return GlobalResultDTO.FAIL("");
+        }
     }
 
     /**
