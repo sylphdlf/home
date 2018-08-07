@@ -47,6 +47,10 @@
                             {
                                 index: 'orgMgr',
                                 title: '组织管理'
+                            },
+                            {
+                                index: 'roleMgr',
+                                title: '角色管理'
                             }
                         ]
                     },

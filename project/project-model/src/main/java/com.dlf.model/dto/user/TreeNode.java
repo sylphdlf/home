@@ -23,4 +23,6 @@ public class TreeNode implements Serializable {
     private String parent;
 
     private List<TreeNode> children;
+
+//    private boolean leaf = true;
 }

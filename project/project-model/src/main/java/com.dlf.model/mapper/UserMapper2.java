@@ -28,5 +28,4 @@ public interface UserMapper2 extends UserMapper{
      */
     int updatePwdByUsername(User user);
 
-    int countByParams(UserSearchDTO searchDTO);
 }

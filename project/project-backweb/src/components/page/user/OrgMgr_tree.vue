@@ -1,12 +1,12 @@
 <template>
     <div class="container">
         <div class="block">
-            <el-tree :data="dataParse" node-key="id" default-expand-all :expand-on-click-node="false" :load="lazyNode" lazy>
+            <el-tree :data="dataParse" node-key="id" :expand-on-click-node="false" :load="lazyNode" lazy>
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span>{{ node.label }}</span>
                     <span>
                         <el-button type="text" size="mini" @click="() => append(data)">新增</el-button>
-                        <el-button type="text" size="mini" @click="() => remove(node, data)">删除</el-button>
+                        <el-button type="text" size="mini" @click="() => remove(node, data)">删除(todo)</el-button>
                     </span>
                 </span>
             </el-tree>
@@ -71,24 +71,24 @@
         },
         mounted: function () {
             //获取初始化tree节点
-            this.refreshNode();
+            // this.refreshNode();
         },
         methods: {
             refreshNode() {
-                this.$axios.get("/project-web/org/getOrgTreeRoot").then(result =>{
-                    console.info(result);
-                    if(result.data.code === "0"){
-                        console.info(result.data.data)
-                        this.dataParse = result.data.data;
-                        this.addRootBtn = false;
-                    }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
-                        this.addRootBtn = true;
-                    }else{
-                        this.addRootBtn = false;
-                        // this.messageShow.error = result.data.msg;
-                        return false;
-                    }
-                });
+                // this.$axios.get("/project-web/org/getOrgTreeRoot").then(result =>{
+                //     console.info(result);
+                //     if(result.data.code === "0"){
+                //         console.info(result.data.data)
+                //         this.dataParse = result.data.data;
+                //         this.addRootBtn = false;
+                //     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
+                //         this.addRootBtn = true;
+                //     }else{
+                //         this.addRootBtn = false;
+                //         // this.messageShow.error = result.data.msg;
+                //         return false;
+                //     }
+                // });
                 // this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
                 //     console.info(result);
                 //     if(result.data.code === "0"){
@@ -105,22 +105,24 @@
                 // });
             },
             lazyNode(node, resolve){
-                console.info(11111111);
-                // this.treeReqForm.code = node.data.parent;
-                // this.$axios.post("/project-web/org/getOrgTreeLazy", this.treeReqForm).then(result =>{
-                //     console.info(result);
-                    // if(result.data.code === "0"){
-                    //     console.info(result.data.data)
-                    //     this.dataParse = result.data.data;
-                    //     this.addRootBtn = false;
-                    // }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
-                    //     this.addRootBtn = true;
-                    // }else{
-                    //     this.addRootBtn = false;
-                    //     // this.messageShow.error = result.data.msg;
-                    //     return false;
-                    // }
-                // });
+                if(node.data.length === 0){
+                    console.info("0000");
+                    this.treeReqForm.parentCode = '0';
+                }else{
+                    this.treeReqForm.parentCode = node.data.code;
+                }
+                this.$axios.post("/project-web/org/getOrgTreeLazy", this.treeReqForm).then(result =>{
+                    if(result.data.code === "0"){
+                        resolve(result.data.data);
+                        this.addRootBtn = false;
+                    }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
+                        this.addRootBtn = true;
+                    }else{
+                        this.addRootBtn = false;
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
             },
             addRoot(data) {
                 this.orgData = {};

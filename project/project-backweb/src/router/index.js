@@ -25,6 +25,10 @@ export default new Router({
                     path: '/orgMgr',
                     component: resolve => require(['../components/page/user/OrgMgr_tree.vue'], resolve)
                 },
+                {
+                    path: '/roleMgr',
+                    component: resolve => require(['../components/page/user/RoleMgr.vue'], resolve)
+                },
 
 
 

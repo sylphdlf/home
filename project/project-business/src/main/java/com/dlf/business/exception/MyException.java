@@ -13,13 +13,13 @@ public class MyException extends Exception{
     //容纳所有异常
     private List<Throwable> exceptionList = new ArrayList<Throwable>();
 
-    private Integer errorCode;
+    private String errorCode;
 
-    public Integer getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(Integer errorCode) {
+    public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 
@@ -37,7 +37,7 @@ public class MyException extends Exception{
     public MyException(String errorMsg){
         super(errorMsg);
     }
-    public MyException(Integer errorCode, String errorMsg){
+    public MyException(String errorCode, String errorMsg){
         super(errorMsg);
         this.errorCode = errorCode;
     }

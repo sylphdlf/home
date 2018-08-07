@@ -36,7 +36,7 @@
             </div>
         </div>
         <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="25%">
-            <el-form :model="userData" label-width="70px">
+            <el-form :model="userData" label-width="80px">
                 <el-form-item label="用户名">
                     <el-input v-model="userData.username" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
@@ -86,6 +86,7 @@
             }
         },
         created(){
+            this.searchForm.pageNum = 1;
             this.getData();
         },
         computed: {
@@ -123,8 +124,10 @@
                 //     this.url = '/ms/table/list';
                 // };
                 this.$axios.post(this.url, this.searchForm).then((res) => {
-                    this.tableData = res.data.data.list;
-                    this.dataTotal = res.data.data.total;
+                    if(res.data.total !== 0){
+                        this.tableData = res.data.data.list;
+                        this.dataTotal = res.data.data.total;
+                    }
                 })
             },
             search(){

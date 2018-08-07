@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.dlf.model.mapper.PersonalCenterMapper">
+	<!-- 查询邮箱和手机号信息 -->
+	<select id="selectPhoneAndMailbox"
+		parameterType="com.dlf.model.dto.person.PersonInfoDTO"
+		resultType="com.dlf.model.dto.person.PersonInfoResultDTO">
+		SELECT phone_number phonenumber,mailbox
+		from u_user
+		where username = #{username,jdbcType=VARCHAR}
+	</select>
+	<!-- 更新手机号或者邮箱信息 -->
+	<update id="updatePhoneAndMailbox"
+		parameterType="com.dlf.model.dto.person.PersonInfoDTO">
+		update u_user
+		<set>
+			<if test="phonenumber != null">
+				phone_number = #{phonenumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mailbox != null">
+				mailbox = #{mailbox,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where username = #{username,jdbcType=VARCHAR}
+	</update>
+	<!-- 插入图片地址 -->
+	<insert id="insertPicturePath"
+		parameterType="com.dlf.model.dto.person.PicturePathDTO">
+		insert into user_id_path ( username, photoid, facepath,
+		create_time, update_time
+		)
+		values (#{username,jdbcType=VARCHAR}, #{photoid,jdbcType=VARCHAR},
+		#{facepath,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<!-- 更新图片地址 -->
+	<update id="updatePicturePath"
+		parameterType="com.dlf.model.dto.person.PicturePathDTO">
+		update user_id_path
+		set username = #{username,jdbcType=VARCHAR},
+		photoid = #{photoid,jdbcType=VARCHAR},
+		facepath = #{facepath,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_deleted = #{isDeleted,jdbcType=TINYINT}
+		where photoid = #{photoid,jdbcType=VARCHAR}
+	</update>
+	<!-- 插入身份证信息 -->
+	<insert id="insertIdNumber"
+		parameterType="com.dlf.model.dto.person.IdNumberDTO">
+		insert into user_id_message (username, fullname, idnumber,
+		create_time, update_time
+		)
+		values (#{username,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR},
+		#{idnumber,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<!-- 更新身份证信息 -->
+	<update id="updateIdNumber"
+		parameterType="com.dlf.model.dto.person.IdNumberDTO">
+		update user_id_message
+		set username = #{username,jdbcType=VARCHAR},
+		fullname = #{fullname,jdbcType=VARCHAR},
+		idnumber = #{idnumber,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_deleted = #{isDeleted,jdbcType=TINYINT}
+		where username = #{username,jdbcType=VARCHAR}
+	</update>
+	<!-- 查询身份证信息 -->
+	<select id="selectIdNumber"
+		parameterType="com.dlf.model.dto.person.PersonInfoDTO"
+		resultType="com.dlf.model.dto.person.IdNumberResultDTO">
+		SELECT username,fullname,idnumber
+		from user_id_message
+		where username = #{username,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 插入支付方式信息 -->
+	<insert id="insertPayMethod"
+		parameterType="com.dlf.model.dto.person.PayMethodDTO">
+		insert into user_pay_management
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="username != null">
+				username,
+			</if>
+			<if test="bankcard != null">
+				bankcard,
+			</if>
+			<if test="alipay != null">
+				alipay,
+			</if>
+			<if test="wechat != null">
+				wechat
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcard != null">
+				#{bankcard,jdbcType=VARCHAR},
+			</if>
+			<if test="alipay != null">
+				#{alipay,jdbcType=VARCHAR},
+			</if>
+			<if test="wechat != null">
+				#{wechat,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<!-- 更新支付方式信息 -->
+	<update id="updatePayMethod"
+		parameterType="com.dlf.model.dto.person.PayMethodDTO">
+		update user_pay_management
+		<set>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcard != null">
+				bankcard = #{bankcard,jdbcType=VARCHAR},
+			</if>
+			<if test="alipay != null">
+				alipay = #{alipay,jdbcType=VARCHAR},
+			</if>
+			<if test="wechat != null">
+				wechat = #{wechat,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDeleted != null">
+				is_deleted = #{isDeleted,jdbcType=TINYINT},
+			</if>
+		</set>
+		where username = #{username,jdbcType=VARCHAR}
+	</update>
+	<!-- 查询支付方式信息 -->
+	<select id="selectPayMethod"
+		parameterType="com.dlf.model.dto.person.PersonInfoDTO"
+		resultType="com.dlf.model.dto.person.PayMethodResultDTO">
+		SELECT username,bankcard,alipay,wechat
+		from user_pay_management
+		where username = #{username,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

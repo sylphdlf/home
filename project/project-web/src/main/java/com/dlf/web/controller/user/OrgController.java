@@ -24,8 +24,13 @@ public class OrgController {
         return orgService.getOrgTreeRoot();
     }
 
+    /**
+     * 懒加载组织机构树
+     * @param reqDTO
+     * @return
+     */
     @RequestMapping(value = "/getOrgTreeLazy", method = RequestMethod.POST)
-    public GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO){
+    public GlobalResultDTO getOrgTreeLazy(@RequestBody OrgReqDTO reqDTO){
         return orgService.getOrgTreeLazy(reqDTO);
     }
     /**

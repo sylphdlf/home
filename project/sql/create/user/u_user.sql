@@ -125,7 +125,7 @@ CREATE TABLE `u_role` (
   `update_user_id` BIGINT(20) NULL COMMENT '最后修改人',
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除;1已删除',
   PRIMARY KEY (`id`),
-  KEY `idx_code` (`code`) USING BTREE
+  UNIQUE KEY `uk_code` (`code`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 DROP TABLE IF EXISTS `u_role_function`;
