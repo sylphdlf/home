@@ -14,6 +14,7 @@ import com.dlf.model.mapper.OrganizationMapper2;
 import com.dlf.model.po.Organization;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -29,32 +30,10 @@ public class OrgServiceImpl implements OrgService {
     private OrganizationMapper2 organizationMapper;
     @Resource
     private RedisService redisService;
-    @Override
-    @ExecuteTimeAnno
-    public GlobalResultDTO getOrgTree(OrgReqDTO reqDTO) {
-        //从缓存中拿数据
-        List<TreeNode> treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
-        if(!CollectionUtils.isEmpty(treeNode)){
-            return new GlobalResultDTO(treeNode);
-        }
-        List<TreeNode> list = null;
-        if(null == reqDTO.getId()){
-            long start = System.currentTimeMillis();
-            list = organizationMapper.getAllAsTreeNode();
-            long end = System.currentTimeMillis();
-            System.out.println("查库时间：" + (end - start));
-        }
-        if(!CollectionUtils.isEmpty(list)){
-            //组装节点
-            treeNode = this.nodePackage(list);
-            //放到缓存中
-            redisService.put(RedisPrefixEnums.ORG_TREE_NODE.getCode(),treeNode);
-            return new GlobalResultDTO(treeNode);
-        }else{
-            //无节点数据
-            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
-        }
-    }
+    //递归层级
+    @Value("${org.tree.recursion.level}")
+    private int recursionLevel = 2;
+
     private void insert(Organization org){
         organizationMapper.insert(org);
     }
@@ -97,6 +76,50 @@ public class OrgServiceImpl implements OrgService {
         }
     }
 
+    @Override
+    public GlobalResultDTO getOrgTreeRoot() {
+        OrgReqDTO reqDTO = new OrgReqDTO();
+        reqDTO.setParentCode("0");
+        return getOrgTree(reqDTO);
+    }
+
+    @Override
+    public GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO) {
+        return getOrgTree(reqDTO);
+    }
+
+    @Override
+    @ExecuteTimeAnno
+    public GlobalResultDTO getOrgTree(OrgReqDTO reqDTO) {
+        //从缓存中拿数据
+        List<TreeNode> list = null;
+        List<TreeNode> treeNode = null;
+        if(StringUtils.isBlank(reqDTO.getParentCode())){
+            treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+            if(!CollectionUtils.isEmpty(treeNode)){
+                return new GlobalResultDTO(treeNode);
+            }
+            long start = System.currentTimeMillis();
+            list = organizationMapper.getAllAsTreeNode();
+            long end = System.currentTimeMillis();
+            System.out.println("查库时间：" + (end - start));
+        }else{
+            Organization organization = new Organization();
+            BeanUtils.copyProperties(reqDTO, organization);
+            list = organizationMapper.getTreeNodeByParams(organization);
+            return new GlobalResultDTO(list);
+        }
+        if(!CollectionUtils.isEmpty(list)){
+            //组装节点
+            treeNode = this.nodePackage(list);
+            //放到缓存中
+            redisService.put(RedisPrefixEnums.ORG_TREE_NODE.getCode(),treeNode);
+            return new GlobalResultDTO(treeNode);
+        }else{
+            //无节点数据
+            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
+        }
+    }
     /**
      * 节点组装
      * @param list
@@ -111,16 +134,22 @@ public class OrgServiceImpl implements OrgService {
                 root = thisNode;
             }
         }
-        return new ArrayList<TreeNode>(Collections.singletonList(recursionNode(list, root)));
+        return new ArrayList<TreeNode>(Collections.singletonList(recursionNode(list, root, recursionLevel, 1)));
     }
 
     /**
      * 递归拼装节点
-     * @param list
+     * @param list 节点集合
+     * @param node 节点
+     * @param level 递归层级，节点太深会导致页面崩溃
+     * @param count 每进一层，count++, 初始为1
      * @return
      */
-    public TreeNode recursionNode(List<TreeNode> list, TreeNode node){
-
+    public TreeNode recursionNode(List<TreeNode> list, TreeNode node, final int level, int count){
+        //递归层级=level则返回
+        if(count == level){
+            return node;
+        }
         for (TreeNode thisNode : list) {
             if (node.getCode().equals(thisNode.getParent())) {
                 if (CollectionUtils.isEmpty(node.getChildren())) {
@@ -130,7 +159,8 @@ public class OrgServiceImpl implements OrgService {
                 } else {
                     node.getChildren().add(thisNode);
                 }
-                recursionNode(list, thisNode);
+                int newCount = count + 1;
+                recursionNode(list, thisNode, level, newCount);
             }
         }
         return node;

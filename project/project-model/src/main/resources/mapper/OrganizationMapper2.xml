@@ -30,6 +30,16 @@
         FROM u_organization WHERE is_deleted = 0
     </select>
 
+    <select id="getTreeNodeByParams" resultType="com.dlf.model.dto.user.TreeNode"  parameterType="com.dlf.model.po.Organization">
+        SELECT
+        id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
+        FROM u_organization WHERE 1=1
+        <if test="parentCode != null and parentCode != ''">
+            and parent_code = #{parentCode,jdbcType=VARCHAR}
+        </if>
+        and is_deleted = 0 ORDER BY id ASC
+    </select>
+
   <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Organization">
       insert into u_organization (id, code, parent_code,
                                   name, level, remarks,

@@ -1,5 +1,6 @@
 package com.dlf.model.mapper;
 
+import com.dlf.model.dto.user.OrgReqDTO;
 import com.dlf.model.dto.user.TreeNode;
 import com.dlf.model.po.Organization;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,6 +20,13 @@ public interface OrganizationMapper2 extends OrganizationMapper{
      * @return
      */
     List<TreeNode> getAllAsTreeNode();
+
+    /**
+     * 通过传参获取指定的tree节点
+     * @param organization
+     * @return
+     */
+    List<TreeNode> getTreeNodeByParams(Organization organization);
 
     /**
      * 新增并返回id

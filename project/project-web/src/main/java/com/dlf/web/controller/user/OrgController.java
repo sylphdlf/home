@@ -18,6 +18,16 @@ public class OrgController {
 
     @Autowired
     OrgService orgService;
+
+    @RequestMapping(value = "/getOrgTreeRoot", method = RequestMethod.GET)
+    public GlobalResultDTO getOrgTreeRoot(){
+        return orgService.getOrgTreeRoot();
+    }
+
+    @RequestMapping(value = "/getOrgTreeLazy", method = RequestMethod.POST)
+    public GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO){
+        return orgService.getOrgTreeLazy(reqDTO);
+    }
     /**
      * 获取组织机构树
      * @return

@@ -17,4 +17,17 @@ public interface OrgService {
      * @return
      */
     GlobalResultDTO addOrgNode(OrgReqDTO reqDTO);
+
+    /**
+     * 获取根节点
+     * @return
+     */
+    GlobalResultDTO getOrgTreeRoot();
+
+    /**
+     * 懒加载树节点
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO);
 }
