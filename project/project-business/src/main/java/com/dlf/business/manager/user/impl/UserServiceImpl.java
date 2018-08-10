@@ -1,13 +1,11 @@
 package com.dlf.business.manager.user.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.dlf.business.exception.MyException;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.PageDTO;
-import com.dlf.model.dto.enums.GlobalResultEnum;
-import com.dlf.model.dto.enums.RedisPrefixEnums;
-import com.dlf.model.dto.enums.user.UserResultEnum;
+import com.dlf.model.enums.GlobalResultEnum;
+import com.dlf.model.enums.RedisPrefixEnums;
+import com.dlf.model.enums.user.UserResultEnum;
 import com.dlf.model.dto.user.UserDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserResDTO;
@@ -21,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -30,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

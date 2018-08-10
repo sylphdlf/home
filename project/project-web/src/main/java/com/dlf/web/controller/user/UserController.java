@@ -20,7 +20,7 @@ public class UserController {
     UserService userService;
 
     /**
-     * 查询用户列表
+     * 分页查询用户列表
      * @param searchDTO
      * @return
      */
@@ -28,4 +28,6 @@ public class UserController {
     public GlobalResultDTO queryListByParams(@RequestBody UserSearchDTO searchDTO) {
         return userService.queryListByParams(searchDTO);
     }
+
+
 }

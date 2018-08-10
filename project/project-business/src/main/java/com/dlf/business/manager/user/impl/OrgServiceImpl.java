@@ -1,12 +1,11 @@
 package com.dlf.business.manager.user.impl;
 
 import com.dlf.business.anno.ExecuteTimeAnno;
-import com.dlf.business.exception.MyException;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.OrgService;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.enums.RedisPrefixEnums;
-import com.dlf.model.dto.enums.user.OrgResultEnum;
+import com.dlf.model.enums.RedisPrefixEnums;
+import com.dlf.model.enums.user.OrgResultEnum;
 import com.dlf.model.dto.user.OrgReqDTO;
 import com.dlf.model.dto.user.OrgResDTO;
 import com.dlf.model.dto.user.TreeNode;
@@ -16,9 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import sun.reflect.generics.tree.Tree;
 
 import javax.annotation.Resource;
 import java.util.*;

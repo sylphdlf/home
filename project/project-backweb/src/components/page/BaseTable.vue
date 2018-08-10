@@ -72,7 +72,7 @@
                         }
                     }
                     if(!is_del){
-                        if(d.address.indexOf(this.select_cate) > -1 && 
+                        if(d.address.indexOf(this.select_cate) > -1 &&
                             (d.name.indexOf(this.select_word) > -1 ||
                             d.address.indexOf(this.select_word) > -1)
                         ){
@@ -95,6 +95,7 @@
                     this.url = '/ms/table/list';
                 };
                 this.$axios.post(this.url, {page:this.cur_page}).then((res) => {
+                    console.info(this.url);
                     this.tableData = res.data.list;
                 })
             },

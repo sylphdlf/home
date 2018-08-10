@@ -37,7 +37,7 @@
                     // },
                     {
                         icon: 'el-icon-tickets',
-                        index: '1',
+                        index: 'user',
                         title: '用户管理',
                         subs: [
                             {
@@ -51,6 +51,10 @@
                             {
                                 index: 'roleMgr',
                                 title: '角色管理'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '权限管理'
                             }
                         ]
                     },
@@ -97,11 +101,11 @@
                         index: 'charts',
                         title: 'schart图表'
                     },
-                    // {
-                    //     icon: 'el-icon-rank',
-                    //     index: 'drag',
-                    //     title: '拖拽列表'
-                    // },
+                    {
+                        icon: 'el-icon-rank',
+                        index: 'drag',
+                        title: '拖拽列表'
+                    },
                     // {
                     //     icon: 'el-icon-warning',
                     //     index: 'permission',

@@ -12,7 +12,7 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
             </div>
-            <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="code" label="角色编号"></el-table-column>
                 <el-table-column prop="name" label="角色名称"></el-table-column>
@@ -36,10 +36,13 @@
         <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="25%">
             <el-form :model="dialogData" label-width="80px" :rules="dialogRules" ref="dialogData">
                 <el-form-item label="角色名称" prop="name">
-                    <el-input v-model="dialogData.name" auto-complete="off" @keyup.enter.native="submitForm('dialogData')"></el-input>
+                    <el-input v-model="dialogData.name" @keyup.enter.native="submitForm('dialogData')"></el-input>
                 </el-form-item>
                 <el-form-item label="角色编号" prop="code">
-                    <el-input v-model="dialogData.code" auto-complete="off" @keyup.enter.native="submitForm('dialogData')"></el-input>
+                    <el-input v-model="dialogData.code" @keyup.enter.native="submitForm('dialogData')"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="dialogData.remarks"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

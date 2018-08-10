@@ -29,12 +29,10 @@ export default new Router({
                     path: '/roleMgr',
                     component: resolve => require(['../components/page/user/RoleMgr.vue'], resolve)
                 },
-
-
-
-
-
-
+                {
+                    path: '/funMgr',
+                    component: resolve => require(['../components/page/user/FunMgr.vue'], resolve)
+                },
 
 
                 {

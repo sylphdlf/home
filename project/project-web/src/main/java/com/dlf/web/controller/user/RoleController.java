@@ -21,7 +21,7 @@ public class RoleController {
     RoleService roleService;
 
     /**
-     * 查询用户列表
+     * 分页查询角色列表
      * @param searchDTO
      * @return
      */

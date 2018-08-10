@@ -1,7 +1,7 @@
 package com.dlf.model.dto;
 
 
-import com.dlf.model.dto.enums.GlobalResultEnum;
+import com.dlf.model.enums.GlobalResultEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;

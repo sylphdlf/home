@@ -17,7 +17,7 @@
         <el-dialog title="组织信息" :visible.sync="dialogFormVisible" width="25%">
             <el-form :model="orgData" label-width="80px" :rules="orgDataRules" ref="orgData">
                 <el-form-item label="组织名称" prop="name">
-                    <el-input v-model="orgData.name" auto-complete="off"></el-input>
+                    <el-input v-model="orgData.name"></el-input>
                 </el-form-item>
                 <el-form-item label="组织编号" prop="code">
                     <el-input placeholder="请输入内容" v-model="orgData.code">
@@ -25,10 +25,10 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item label="上级组织">
-                    <el-input v-model="orgData.parentName" auto-complete="off" disabled></el-input>
+                    <el-input v-model="orgData.parentName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" v-model="orgData.remarks" auto-complete="off"></el-input>
+                    <el-input type="textarea" v-model="orgData.remarks"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -76,9 +76,7 @@
         methods: {
             refreshNode() {
                 // this.$axios.get("/project-web/org/getOrgTreeRoot").then(result =>{
-                //     console.info(result);
                 //     if(result.data.code === "0"){
-                //         console.info(result.data.data)
                 //         this.dataParse = result.data.data;
                 //         this.addRootBtn = false;
                 //     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
@@ -90,9 +88,7 @@
                 //     }
                 // });
                 // this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
-                //     console.info(result);
                 //     if(result.data.code === "0"){
-                //         console.info(result.data.data)
                 //         this.dataParse = result.data.data;
                 //         this.addRootBtn = false;
                 //     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
@@ -106,7 +102,6 @@
             },
             lazyNode(node, resolve){
                 if(node.data.length === 0){
-                    console.info("0000");
                     this.treeReqForm.parentCode = '0';
                 }else{
                     this.treeReqForm.parentCode = node.data.code;

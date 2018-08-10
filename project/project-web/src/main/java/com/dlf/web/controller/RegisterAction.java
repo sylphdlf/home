@@ -3,7 +3,7 @@ package com.dlf.web.controller;
 import com.dlf.business.manager.message.MessagePushService;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.enums.RedisPrefixEnums;
+import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.dto.message.MsgReqDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import org.springframework.beans.factory.annotation.Autowired;

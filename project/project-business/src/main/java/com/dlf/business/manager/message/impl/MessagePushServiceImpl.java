@@ -7,7 +7,7 @@ import com.dlf.common.utils.CodeGenerateUtils;
 import com.dlf.common.utils.message.MailSendUtils;
 import com.dlf.common.utils.message.SmsSendUtils;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.enums.RedisPrefixEnums;
+import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.dto.message.MsgReqDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

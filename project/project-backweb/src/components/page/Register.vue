@@ -96,7 +96,6 @@
                             }
                         });
                     }else{
-                        console.info(result);
                         this.messageShow.error = result.data.msg;
                         return false;
                     }

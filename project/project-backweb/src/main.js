@@ -13,10 +13,27 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$axios = axios;
 Vue.prototype.$projectUrl = "/project-web";
 //日期格式化
-Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
-    return moment(dataStr).format(pattern)
-
-})
+Vue.prototype.formatDate = function(date){
+    return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
+};
+//日期过滤器
+Vue.filter("dateTimeFilter", (date)=>{
+    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+});
+//顶部通知
+Vue.prototype.msgSuccess = function(msg){
+    if(msg === "" || msg === undefined){
+        this.$message({
+            message: '成功',
+            type: 'success'
+        });
+    }else{
+        this.$message({
+            message: msg,
+            type: 'success'
+        });
+    }
+};
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     if(to.meta.permission){

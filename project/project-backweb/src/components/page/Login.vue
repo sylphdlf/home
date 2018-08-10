@@ -52,7 +52,6 @@
                     }
                 });
                 this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
-                    console.info(result);
                     if(result.data.code === "0"){
                         this.$router.push('/charts');
                     }else{

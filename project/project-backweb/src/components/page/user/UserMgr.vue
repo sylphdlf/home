@@ -38,16 +38,16 @@
         <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="25%">
             <el-form :model="userData" label-width="80px">
                 <el-form-item label="用户名">
-                    <el-input v-model="userData.username" auto-complete="off" :disabled="true"></el-input>
+                    <el-input v-model="userData.username" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名">
-                    <el-input v-model="userData.realName" auto-complete="off"></el-input>
+                    <el-input v-model="userData.realName"></el-input>
                 </el-form-item>
                 <el-form-item label="手机">
-                    <el-input v-model="userData.mobile" auto-complete="off"></el-input>
+                    <el-input v-model="userData.mobile"></el-input>
                 </el-form-item>
                 <el-form-item label="座机">
-                    <el-input v-model="userData.telephone" auto-complete="off"></el-input>
+                    <el-input v-model="userData.telephone"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -92,7 +92,6 @@
         computed: {
             data(){
                 // return this.tableData.filter((d) => {
-                    // console.info(d);
                 //     let is_del = false;
                 //     for (let i = 0; i < this.del_list.length; i++) {
                 //         if(d.name === this.del_list[i].name){

@@ -1,7 +1,7 @@
 package com.dlf.web.exception;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
-import com.dlf.model.dto.enums.user.UserResultEnum;
+import com.dlf.model.enums.user.UserResultEnum;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;

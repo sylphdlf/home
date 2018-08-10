@@ -3,7 +3,7 @@ package com.dlf.config.shiro;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.enums.RedisPrefixEnums;
+import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserResDTO;
 import org.apache.commons.lang3.StringUtils;
