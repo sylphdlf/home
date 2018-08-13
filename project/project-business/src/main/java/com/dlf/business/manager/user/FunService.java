@@ -31,4 +31,11 @@ public interface FunService {
      * @return
      */
     GlobalResultDTO queryMenuByParams(FunSearchDTO searchDTO);
+
+    /**
+     * 查询权限
+     * @param searchDTO
+     * @return
+     */
+    GlobalResultDTO queryFunByParams(FunSearchDTO searchDTO);
 }

@@ -46,7 +46,17 @@ public class FunController {
     }
 
     /**
-     *
+     * 查询子权限
+     * @param searchDTO
+     * @return
+     */
+    @RequestMapping(value = "/queryFunByParams",method = RequestMethod.POST)
+    public GlobalResultDTO queryFunByParams(@RequestBody FunSearchDTO searchDTO){
+        return functionService.queryFunByParams(searchDTO);
+    }
+
+    /**
+     * 新增权限
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)

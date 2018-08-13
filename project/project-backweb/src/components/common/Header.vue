@@ -11,7 +11,7 @@
                     {{username}}
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="loginout">退出登录</el-dropdown-item>
+                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -22,6 +22,7 @@
     export default {
         data() {
             return {
+                logOutUrl:this.$projectUrl + '/login/logoutAjax',
                 collapse: false,
                 name: 'linxin'
             }
@@ -34,9 +35,16 @@
         },
         methods:{
             handleCommand(command) {
-                if(command == 'loginout'){
+                if(command === 'logout'){
                     localStorage.removeItem('ms_username')
-                    this.$router.push('/login');
+                    this.$axios.get(this.logOutUrl).then((res) => {
+                        if(res.data.code === "0"){
+                            this.$router.push('/login');
+                        }else{
+                            this.msgFail("登出出现问题")
+                        }
+                    });
+
                 }
             },
             collapseChage(){

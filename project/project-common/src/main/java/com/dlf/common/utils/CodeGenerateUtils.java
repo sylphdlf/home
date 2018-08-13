@@ -29,4 +29,5 @@ public class CodeGenerateUtils {
     public static String userTicketGenerate(){
         return "UT" + UUID.randomUUID().toString().replace("-", "") + DateTimeUtils.getCurrentTimeStr();
     }
+
 }

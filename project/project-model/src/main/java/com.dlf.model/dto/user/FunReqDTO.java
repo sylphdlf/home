@@ -15,7 +15,7 @@ public class FunReqDTO {
     //权限类型
     private Integer type;
     //权限地址
-    private Integer path;
+    private String path;
     //备注
     private String remarks;
     //菜单层级

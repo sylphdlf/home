@@ -35,7 +35,7 @@ public class OrgServiceImpl implements OrgService {
         organizationMapper.insert(org);
     }
     @Override
-    public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO) {
+    public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO){
 //        for(int i=1;i<20;i++){
 //            Organization org = new Organization();
 //            org.setParentCode("1");
@@ -91,31 +91,36 @@ public class OrgServiceImpl implements OrgService {
         //从缓存中拿数据
         List<TreeNode> list = null;
         List<TreeNode> treeNode = null;
-        if(StringUtils.isBlank(reqDTO.getParentCode())){
-            treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
-            if(!CollectionUtils.isEmpty(treeNode)){
-                return new GlobalResultDTO(treeNode);
-            }
-            long start = System.currentTimeMillis();
-            list = organizationMapper.getAllAsTreeNode();
-            long end = System.currentTimeMillis();
-            System.out.println("查库时间：" + (end - start));
+        Organization organization = new Organization();
+        BeanUtils.copyProperties(reqDTO, organization);
+        list = organizationMapper.getTreeNodeByParams(organization);
+        if(StringUtils.isBlank(reqDTO.getParentCode()) && CollectionUtils.isEmpty(list)){
+            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
         }else{
-            Organization organization = new Organization();
-            BeanUtils.copyProperties(reqDTO, organization);
-            list = organizationMapper.getTreeNodeByParams(organization);
             return new GlobalResultDTO(list);
         }
-        if(!CollectionUtils.isEmpty(list)){
-            //组装节点
-            treeNode = this.nodePackage(list);
-            //放到缓存中
-            redisService.put(RedisPrefixEnums.ORG_TREE_NODE.getCode(),treeNode);
-            return new GlobalResultDTO(treeNode);
-        }else{
-            //无节点数据
-            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
-        }
+//        if(StringUtils.isBlank(reqDTO.getParentCode())){
+//            treeNode = (List<TreeNode>)redisService.getObj(RedisPrefixEnums.ORG_TREE_NODE.getCode());
+//            if(!CollectionUtils.isEmpty(treeNode)){
+//                return new GlobalResultDTO(treeNode);
+//            }
+//            long start = System.currentTimeMillis();
+//            list = organizationMapper.getAllAsTreeNode();
+//            long end = System.currentTimeMillis();
+//            System.out.println("查库时间：" + (end - start));
+//        }else{
+//
+//        }
+//        if(!CollectionUtils.isEmpty(list)){
+//            //组装节点
+//            treeNode = this.nodePackage(list);
+//            //放到缓存中
+//            redisService.put(RedisPrefixEnums.ORG_TREE_NODE.getCode(),treeNode);
+//            return new GlobalResultDTO(treeNode);
+//        }else{
+//            //无节点数据
+//            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
+//        }
     }
     /**
      * 节点组装

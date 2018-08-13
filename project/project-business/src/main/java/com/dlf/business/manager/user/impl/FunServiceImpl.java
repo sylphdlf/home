@@ -40,17 +40,29 @@ public class FunServiceImpl implements FunService {
 
     @Override
     public GlobalResultDTO queryMenuByParams(FunSearchDTO searchDTO) {
+        Function function = new Function();
+        BeanUtils.copyProperties(searchDTO, function);
+        function.setType(FunctionEnum.function_type_1.getCode());
         PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
-        searchDTO.setType(FunctionEnum.function_type_1.getCode());
-        List<FunDTO> list = functionMapper.queryListByParams(searchDTO);
+        List<FunDTO> list = functionMapper.queryListByParams(function);
         PageInfo<FunDTO> pageInfo = new PageInfo<FunDTO>(list);
         return new GlobalResultDTO(pageInfo);
+    }
+
+    @Override
+    public GlobalResultDTO queryFunByParams(FunSearchDTO searchDTO) {
+        Function function = new Function();
+        function.setParentCode(searchDTO.getCode());
+        List<FunDTO> list = functionMapper.queryListByParams(function);
+        return new GlobalResultDTO(list);
     }
 
     @Override
     public GlobalResultDTO add(FunReqDTO reqDTO) {
         Function fun = new Function();
         BeanUtils.copyProperties(reqDTO, fun);
+        //parentCode + code
+        fun.setCode(fun.getParentCode() + fun.getCode());
         int count = functionMapper.insert(fun);
         if(count == 1){
             return GlobalResultDTO.SUCCESS();

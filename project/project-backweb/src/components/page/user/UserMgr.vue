@@ -122,6 +122,14 @@
                 // if(process.env.NODE_ENV === 'development'){
                 //     this.url = '/ms/table/list';
                 // };
+                // this.$post(this.url, this.searchForm, function (res) {
+                //     console.info(res);
+                //     if(res.data.total !== 0){
+                //         this.tableData = res.data.data.list;
+                //         this.dataTotal = res.data.data.total;
+                //     }
+                // });
+
                 this.$axios.post(this.url, this.searchForm).then((res) => {
                     if(res.data.total !== 0){
                         this.tableData = res.data.data.list;

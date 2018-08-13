@@ -1,8 +1,11 @@
 package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.user.FunDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserSearchDTO;
+
+import java.util.List;
 
 public interface UserService {
     /**
@@ -46,4 +49,11 @@ public interface UserService {
      * @return
      */
     GlobalResultDTO queryListByParams(UserSearchDTO searchDTO);
+
+    /**
+     * 根据用户ID获取权限列表
+     * @param id
+     * @return
+     */
+    List<FunDTO> getFunListByUser(Long id);
 }

@@ -26,7 +26,7 @@
                 <el-table-column label="操作" width="200">
                     <template slot-scope="scope" v-if="scope.row.level===2">
                         <el-button type="primary" size="small" @click="addFunction(scope.$index, scope.row)">新增权限</el-button>
-                        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">查看权限</el-button>
+                        <el-button size="small" @click="functionList(scope.$index, scope.row)">查看权限</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -51,7 +51,7 @@
                 <el-form-item label="权限类型" prop="type">
                     <el-select v-model="dialogData.type" placeholder="请选择" @change="dialogDataTypeChange">
                         <el-option label="菜单" value="1"></el-option>
-                        <el-option label="按钮" value="2"></el-option>
+                        <!--<el-option label="按钮" value="2"></el-option>-->
                         <el-option label="资源" value="3"></el-option>
                     </el-select>
                 </el-form-item>
@@ -96,6 +96,21 @@
                 <el-button type="primary" @click="submitForm('sortData')">确 定</el-button>
             </div>
         </el-dialog>
+
+        <!-- Table -->
+        <el-dialog title="资源列表" :visible.sync="dialogTableVisible">
+            <el-table :data="gridData">
+                <el-table-column property="name" label="名称" width="150"></el-table-column>
+                <el-table-column property="type" label="类型" width="200"></el-table-column>
+                <el-table-column property="path" label="地址"></el-table-column>
+                <el-table-column label="操作" width="200">
+                    <template slot-scope="scope">
+                        <el-button size="small" @click="addFunction(scope.$index, scope.row)">修改</el-button>
+                        <el-button size="small" @click="functionList(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -107,6 +122,8 @@
         data() {
             return {
                 url: this.$projectUrl + '/fun/queryMenuByParams',
+                funUrl: this.$projectUrl + '/fun/queryFunByParams',
+                addUrl: this.$projectUrl + '/fun/add',
                 staticMenuUrl: this.$projectUrl + "/fun/getDefaultMenu",
                 staticSourceUrl: this.$projectUrl + "/fun/getDefaultSource",
                 tableData: [],
@@ -116,8 +133,9 @@
                 del_list: [],
                 is_search: false,
                 dataTotal:1,
-                dialogFormVisible: false,
-                dialogSortVisible: false,
+                dialogFormVisible: false,//新增权限窗口
+                dialogSortVisible: false,//排序窗口
+                dialogTableVisible: false,//权限列表窗口
                 searchForm: {
                     name: '',
                     code: '',
@@ -168,6 +186,7 @@
                 defaultSources:[],
                 defaults:[],
                 selectedOptions: [],
+                gridData: [],
             }
         },
         created(){
@@ -199,10 +218,23 @@
                 this.getData();
             },
             addFunction(index, row){
-                console.info(row);
                 this.dialogData = {};
+                this.selectedOptions = [];
                 this.dialogFormVisible = true;
                 this.dialogData.parentCode = row.code;
+            },
+            //获取子权限列表
+            functionList(index, row){
+                this.dialogTableVisible = true;
+                console.info(row.code);
+                this.$axios.post(this.funUrl,row).then((res) => {
+                    if(res.data.code === "0"){
+                        console.info(res.data.data);
+                        this.gridData = res.data.data;
+                    }else{
+                        return false;
+                    }
+                });
             },
             handleSort(){
                 this.dialogSortVisible = true;
@@ -233,7 +265,6 @@
                 this.$axios.get(this.staticSourceUrl).then((res) => {
                     this.defaultSources = JSON.parse(res.data.data);
                     this.defaults = this.defaultSources;
-                    console.info(this.defaults);
                 })
             },
             submitForm(formName) {
@@ -244,7 +275,7 @@
                         return false;
                     }
                 });
-                this.$axios.post("/fun/add", this.dialogData).then(result =>{
+                this.$axios.post(this.addUrl, this.dialogData).then(result =>{
                     if(result.data.code === "0"){
                         this.dialogFormVisible = false;
                         this.getData();
@@ -256,7 +287,6 @@
                 });
             },
             dialogDataTypeChange(value){
-                console.info(value);
                 if(value === "1"){
                     this.getDefaultMenu();
                 }else if(value === "3" && this.defaultSources.length === 0){
@@ -264,8 +294,8 @@
                 }
 
             },
-            handleChange(value) {
-                console.log(value);
+            handleChange(value){
+                this.dialogData.path = value[value.length - 1] + "";
             }
         }
     }

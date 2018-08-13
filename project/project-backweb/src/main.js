@@ -34,6 +34,19 @@ Vue.prototype.msgSuccess = function(msg){
         });
     }
 };
+Vue.prototype.msgFail = function(msg){
+    if(msg === "" || msg === undefined){
+        this.$message({
+            message: '失败',
+            type: 'error'
+        });
+    }else{
+        this.$message({
+            message: msg,
+            type: 'error'
+        });
+    }
+};
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     if(to.meta.permission){
@@ -56,3 +69,14 @@ new Vue({
     router,
     render: h => h(App)
 }).$mount('#app');
+
+//拦截返回值，判断是否登录
+axios.interceptors.response.use(response => {
+    //未登录
+    if(response.data.code === "-2"){
+        router.push('/login');
+    }
+    return response
+}, error => {
+    return Promise.resolve(error.response)
+});

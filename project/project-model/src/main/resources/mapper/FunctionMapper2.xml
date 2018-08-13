@@ -25,13 +25,16 @@
   <sql id="Base_Visible_List">
     id, code, parent_code AS parentCode, type, path, name, remarks, level, icon, sort_value AS sortValue, create_time AS createTime
   </sql>
-  <select id="queryListByParams" parameterType="com.dlf.model.dto.user.FunSearchDTO" resultType="com.dlf.model.dto.user.FunDTO">
+  <select id="queryListByParams" parameterType="com.dlf.model.po.Function" resultType="com.dlf.model.dto.user.FunDTO">
       SELECT
       <include refid="Base_Visible_List"/>
       FROM u_function
       where 1=1
       <if test="code != null and code != ''">
           and code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="parentCode != null and parentCode != ''">
+          and parent_code = #{parentCode,jdbcType=VARCHAR}
       </if>
       <if test="name != null and name != ''">
           and name = #{name,jdbcType=VARCHAR}

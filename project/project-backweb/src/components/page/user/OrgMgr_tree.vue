@@ -6,6 +6,7 @@
                     <span>{{ node.label }}</span>
                     <span>
                         <el-button type="text" size="mini" @click="() => append(data)">新增</el-button>
+                        <el-button type="text" size="mini" @click="() => bindingRole(data)">绑定/解绑角色</el-button>
                         <el-button type="text" size="mini" @click="() => remove(node, data)">删除(todo)</el-button>
                     </span>
                 </span>
@@ -36,6 +37,23 @@
                 <el-button type="primary" @click="submitForm('orgData')">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- Table -->
+        <el-dialog title="角色列表" :visible.sync="dialogTableVisible">
+            <el-table :data="tableData" @selection-change="handleSelectionChange" ref="multipleTable">
+                <el-table-column type="selection" width="35"></el-table-column>
+                <el-table-column property="name" label="名称" width="200"></el-table-column>
+                <el-table-column property="code" label="编号" width="200"></el-table-column>
+                <el-table-column property="createTime" label="创建时间" width="200" :formatter="dateFormat"></el-table-column>
+                <el-table-column property="remarks" label="备注"></el-table-column>
+            </el-table>
+            <div class="pagination">
+                <el-pagination
+                    @current-change ="handleCurrentChange"
+                    layout="prev, pager, next, total"
+                    :total="dataTotal">
+                </el-pagination>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -43,9 +61,11 @@
         data: function() {
             const data = [];
             return {
+                roleUrl: this.$projectUrl + '/role/queryListByParams',
                 addRootBtn:false,
                 dataParse: JSON.parse(JSON.stringify(data)),
                 dialogFormVisible: false,
+                dialogTableVisible: false,
                 orgData: {
                     id: '',
                     name: '',
@@ -66,12 +86,19 @@
                     id: "",
                     code: "",
                 },
-                curNodeData:{}
+                curNodeData:{},
+                searchForm:{},
+                tableData: [],//角色列表
+                dataTotal:1,
+                multipleSelection: [],//角色选择框
             }
         },
         mounted: function () {
             //获取初始化tree节点
             // this.refreshNode();
+        },
+        created() {
+            this.searchForm.pageNum = 1;
         },
         methods: {
             refreshNode() {
@@ -173,6 +200,44 @@
                 const children = parent.data.children || parent.data;
                 const index = children.findIndex(d => d.id === data.id);
                 children.splice(index, 1);
+            },
+            bindingRole(data){
+                this.dialogTableVisible = true;
+                this.getRoleData();
+            },
+            // 分页导航
+            handleCurrentChange(val){
+                this.searchForm.pageNum = val;
+                this.getRoleData();
+            },
+            // 获取 easy-mock 的模拟数据
+            getRoleData(){
+                this.$axios.post(this.roleUrl, this.searchForm).then((res) => {
+                    if(res.data.total !== 0){
+                        this.tableData = res.data.data.list;
+                        this.dataTotal = res.data.data.total;
+                        this.toggleSelection(this.tableData);
+                    }
+                })
+            },
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+            },
+            dateFormat:function(row, column) {
+                let date = row.createTime;
+                if (date === undefined) {
+                    return "";
+                }
+                return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
+            },
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(true);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
             },
         }
     };
