@@ -1,9 +1,11 @@
 package com.dlf.web.interceptor;
 
+import com.dlf.business.anno.UrlPermissionIgnoreAnno;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,13 +16,20 @@ import java.util.Iterator;
 @Configuration
 public class UrlInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        System.out.println("pre");
-        System.out.println(httpServletRequest.getServletPath());
+        //根据注解判断url是否放行
+        HandlerMethod handlerMethod = (HandlerMethod)o;
+        UrlPermissionIgnoreAnno anno = handlerMethod.getMethodAnnotation(UrlPermissionIgnoreAnno.class);
+        if(null != anno){
+            return true;
+        }
+        //获取链接，检查权限
         Subject subject = SecurityUtils.getSubject();
-        subject.checkPermission(httpServletRequest.getServletPath());
-//        subject.checkPermission(httpServletRequest.getServletPath());
-//        System.out.println(subject.getSession().getId());
-        System.out.println(httpServletRequest.getSession().getId());
+        try {
+            //管理员有全部权限
+            subject.checkRole("admin");
+        }catch (Exception e){
+            subject.checkPermission(httpServletRequest.getServletPath());
+        }
         return true;
     }
 

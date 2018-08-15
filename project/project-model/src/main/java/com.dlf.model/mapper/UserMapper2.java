@@ -1,5 +1,6 @@
 package com.dlf.model.mapper;
 
+import com.dlf.model.dto.user.FunDTO;
 import com.dlf.model.dto.user.UserSearchDTO;
 import com.dlf.model.po.User;
 import org.apache.ibatis.annotations.Mapper;

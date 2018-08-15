@@ -2,6 +2,7 @@ package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.FunDTO;
+import com.dlf.model.dto.user.RoleDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserSearchDTO;
 
@@ -56,4 +57,11 @@ public interface UserService {
      * @return
      */
     List<FunDTO> getFunListByUser(Long id);
+
+    /**
+     * 根据用户ID获取角色列表
+     * @param id
+     * @return
+     */
+    List<RoleDTO> getRoleListByUser(Long id);
 }

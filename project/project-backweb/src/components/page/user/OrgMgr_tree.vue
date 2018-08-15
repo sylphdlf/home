@@ -40,7 +40,7 @@
         <!-- Table -->
         <el-dialog title="角色列表" :visible.sync="dialogTableVisible">
             <el-table :data="tableData" @selection-change="handleSelectionChange" ref="multipleTable">
-                <el-table-column type="selection" width="35"></el-table-column>
+                <el-table-column type="selection" width="35" property="checked"></el-table-column>
                 <el-table-column property="name" label="名称" width="200"></el-table-column>
                 <el-table-column property="code" label="编号" width="200"></el-table-column>
                 <el-table-column property="createTime" label="创建时间" width="200" :formatter="dateFormat"></el-table-column>
@@ -61,7 +61,7 @@
         data: function() {
             const data = [];
             return {
-                roleUrl: this.$projectUrl + '/role/queryListByParams',
+                roleUrl: this.$projectUrl + '/org/getRolePageByOrg',
                 addRootBtn:false,
                 dataParse: JSON.parse(JSON.stringify(data)),
                 dialogFormVisible: false,
@@ -72,7 +72,7 @@
                     parentCode: '',
                     parentName: '',
                     remarks: '',
-                    code: ''
+                    code: '',
                 },
                 orgDataRules: {
                     name: [
@@ -101,32 +101,6 @@
             this.searchForm.pageNum = 1;
         },
         methods: {
-            refreshNode() {
-                // this.$axios.get("/project-web/org/getOrgTreeRoot").then(result =>{
-                //     if(result.data.code === "0"){
-                //         this.dataParse = result.data.data;
-                //         this.addRootBtn = false;
-                //     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
-                //         this.addRootBtn = true;
-                //     }else{
-                //         this.addRootBtn = false;
-                //         // this.messageShow.error = result.data.msg;
-                //         return false;
-                //     }
-                // });
-                // this.$axios.post("/project-web/org/getOrgTree", this.treeReqForm).then(result =>{
-                //     if(result.data.code === "0"){
-                //         this.dataParse = result.data.data;
-                //         this.addRootBtn = false;
-                //     }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
-                //         this.addRootBtn = true;
-                //     }else{
-                //         this.addRootBtn = false;
-                //         // this.messageShow.error = result.data.msg;
-                //         return false;
-                //     }
-                // });
-            },
             lazyNode(node, resolve){
                 if(node.data.length === 0){
                     this.treeReqForm.parentCode = '0';
@@ -202,7 +176,9 @@
                 children.splice(index, 1);
             },
             bindingRole(data){
+                console.info(data);
                 this.dialogTableVisible = true;
+                this.searchForm.id = data.id;
                 this.getRoleData();
             },
             // 分页导航
@@ -210,13 +186,13 @@
                 this.searchForm.pageNum = val;
                 this.getRoleData();
             },
-            // 获取 easy-mock 的模拟数据
             getRoleData(){
                 this.$axios.post(this.roleUrl, this.searchForm).then((res) => {
-                    if(res.data.total !== 0){
+                    if(res.data.code === "0" && res.data.total !== 0){
                         this.tableData = res.data.data.list;
                         this.dataTotal = res.data.data.total;
-                        this.toggleSelection(this.tableData);
+
+                        // this.$refs.multipleTable.toggleRowSelection(row);
                     }
                 })
             },
@@ -230,14 +206,10 @@
                 }
                 return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(true);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
+            selectRow(row) {
+                setTimeout(()=>{
+                    this.$refs.multipleTable.toggleRowSelection(row);
+                },10)
             },
         }
     };

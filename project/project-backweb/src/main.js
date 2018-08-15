@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
 import "babel-polyfill";
 
+
 Vue.use(ElementUI, { size: 'small' });
 Vue.prototype.$moment = moment;
 Vue.prototype.$axios = axios;
@@ -75,6 +76,19 @@ axios.interceptors.response.use(response => {
     //未登录
     if(response.data.code === "-2"){
         router.push('/login');
+    }else if(response.data.code === "user_001"){
+        setTimeout(() => {
+            ElementUI.Message({
+                message: '页面已经超时，稍后返回登录页面',
+                type: 'error'
+            });
+        }, 2000);
+        router.push('/login');
+    }else if(response.data.code === "user_002"){
+        ElementUI.Message({
+            message: '没有权限，请联系管理员',
+            type: 'error'
+        });
     }
     return response
 }, error => {

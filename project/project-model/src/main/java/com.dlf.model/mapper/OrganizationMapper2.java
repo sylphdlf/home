@@ -1,11 +1,14 @@
 package com.dlf.model.mapper;
 
 import com.dlf.model.dto.user.OrgReqDTO;
+import com.dlf.model.dto.user.OrgSearchDTO;
+import com.dlf.model.dto.user.RoleDTO;
 import com.dlf.model.dto.user.TreeNode;
 import com.dlf.model.po.Organization;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrganizationMapper2 extends OrganizationMapper{
@@ -34,4 +37,11 @@ public interface OrganizationMapper2 extends OrganizationMapper{
      * @return
      */
     long insertWithIdReturn(Organization organization);
+
+    /**
+     * 通过orgId获取roleId列表
+     * @param id
+     * @return
+     */
+    Map<Long, Object> getRoleIdsByOrg(Long id);
 }

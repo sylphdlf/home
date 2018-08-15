@@ -2,6 +2,7 @@ package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.OrgReqDTO;
+import com.dlf.model.dto.user.OrgSearchDTO;
 
 public interface OrgService {
     /**
@@ -30,4 +31,11 @@ public interface OrgService {
      * @return
      */
     GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO);
+
+    /**
+     * 根据组织机构获取角色分页
+     * @param searchDTO
+     * @return
+     */
+    GlobalResultDTO getRolePageByOrg(OrgSearchDTO searchDTO);
 }

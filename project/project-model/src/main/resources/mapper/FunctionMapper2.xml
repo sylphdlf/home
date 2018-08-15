@@ -18,30 +18,35 @@
     <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, code, parent_code, type, path, name, remarks, level, icon, sort_value, create_time, 
-    update_time, create_user_id, update_user_id, is_deleted
-  </sql>
-  <sql id="Base_Visible_List">
-    id, code, parent_code AS parentCode, type, path, name, remarks, level, icon, sort_value AS sortValue, create_time AS createTime
-  </sql>
-  <select id="queryListByParams" parameterType="com.dlf.model.po.Function" resultType="com.dlf.model.dto.user.FunDTO">
-      SELECT
-      <include refid="Base_Visible_List"/>
-      FROM u_function
-      where 1=1
-      <if test="code != null and code != ''">
+    <sql id="Base_Column_List">
+      id, code, parent_code, type, path, name, remarks, level, icon, sort_value, create_time,
+      update_time, create_user_id, update_user_id, is_deleted
+    </sql>
+    <sql id="Base_Visible_List">
+      id, code, parent_code AS parentCode, type, path, name, remarks, level, icon, sort_value AS sortValue, create_time AS createTime
+    </sql>
+    <select id="queryListByParams" parameterType="com.dlf.model.po.Function" resultType="com.dlf.model.dto.user.FunDTO">
+        SELECT
+        <include refid="Base_Visible_List"/>
+          FROM u_function where 1=1
+        <if test="code != null and code != ''">
           and code = #{code,jdbcType=VARCHAR}
-      </if>
-      <if test="parentCode != null and parentCode != ''">
+        </if>
+        <if test="parentCode != null and parentCode != ''">
           and parent_code = #{parentCode,jdbcType=VARCHAR}
-      </if>
-      <if test="name != null and name != ''">
+        </if>
+        <if test="name != null and name != ''">
           and name = #{name,jdbcType=VARCHAR}
-      </if>
-      <if test="type != null and type != ''">
+        </if>
+        <if test="type != null and type != ''">
           and type = #{type,jdbcType=INTEGER}
-      </if>
-      and is_deleted = 0
-  </select>
+        </if>
+        and is_deleted = 0
+    </select>
+    <select id="getSourceListByUser" parameterType="java.lang.Long" resultType="com.dlf.model.dto.user.FunDTO">
+        SELECT uf.id, uf.path
+        FROM u_user_role ur LEFT JOIN u_role_function rf ON ur.role_id = rf.role_id
+        LEFT JOIN u_function uf ON rf.function_id = uf.id
+        WHERE ur.user_id = #{id, jdbcType=BIGINT} AND uf.type = 3
+    </select>
 </mapper>

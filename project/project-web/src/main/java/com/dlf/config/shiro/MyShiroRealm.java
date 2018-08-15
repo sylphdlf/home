@@ -4,6 +4,7 @@ import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.FunDTO;
+import com.dlf.model.dto.user.RoleDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserResDTO;
 import com.dlf.model.enums.RedisPrefixEnums;
@@ -20,6 +21,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -31,30 +33,31 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private RedisService redisService;
-    @Value("${spring.redis.timeout}")
-    private String redisTimeout;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
-        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
-        SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(userInfo.getId()),SecurityUtils.getSubject().getPrincipals());
+        UserResDTO resDTO = (UserResDTO) principals.getPrimaryPrincipal();
+        SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(resDTO.getId()),SecurityUtils.getSubject().getPrincipals());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //赋予角色
-        List<FunDTO> funList = userService.getFunListByUser(userInfo.getId());
-
-//        info.addRole(roleInfo.getName());
-
-//        for (SysRole role : userInfo.getRoleList()) {
-//            authorizationInfo.addRole(role.getRole());
-//            for (SysPermission p : role.getPermissions()) {
-//                authorizationInfo.addStringPermission(p.getPermission());
-//            }
-//        }
-        return authorizationInfo;
+        //查询角色列表
+        List<RoleDTO> roleList = userService.getRoleListByUser(resDTO.getId());
+        if(!CollectionUtils.isEmpty(roleList)){
+            for(RoleDTO thisDTO : roleList){
+                info.addRole(thisDTO.getName());
+            }
+        }
+        //查询资源列表
+        List<FunDTO> funList = userService.getFunListByUser(resDTO.getId());
+        if(!CollectionUtils.isEmpty(funList)){
+            for (FunDTO thisDTO : funList) {
+                if(StringUtils.isBlank(thisDTO.getPath())){
+                    continue;
+                }
+                info.addStringPermission(thisDTO.getPath());
+            }
+        }
+        return info;
     }
 
     /*主要是用来进行身份认证的，也就是说验证用户输入的账号和密码是否正确。*/

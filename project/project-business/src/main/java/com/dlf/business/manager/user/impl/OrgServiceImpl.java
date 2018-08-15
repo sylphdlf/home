@@ -4,13 +4,14 @@ import com.dlf.business.anno.ExecuteTimeAnno;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.OrgService;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.enums.user.OrgResultEnum;
-import com.dlf.model.dto.user.OrgReqDTO;
-import com.dlf.model.dto.user.OrgResDTO;
-import com.dlf.model.dto.user.TreeNode;
 import com.dlf.model.mapper.OrganizationMapper2;
+import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.po.Organization;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,8 @@ public class OrgServiceImpl implements OrgService {
 
     @Resource
     private OrganizationMapper2 organizationMapper;
+    @Resource
+    private RoleMapper2 roleMapper;
     @Resource
     private RedisService redisService;
     //递归层级
@@ -83,6 +86,25 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public GlobalResultDTO getOrgTreeLazy(OrgReqDTO reqDTO) {
         return getOrgTree(reqDTO);
+    }
+
+    @Override
+    public GlobalResultDTO getRolePageByOrg(OrgSearchDTO searchDTO) {
+        RoleSearchDTO roleSearchDTO = new RoleSearchDTO();
+        BeanUtils.copyProperties(searchDTO, roleSearchDTO);
+        PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
+        List<RoleDTO> list = roleMapper.queryListByParams(roleSearchDTO);
+        PageInfo<RoleDTO> pageInfo = new PageInfo<RoleDTO>(list);
+        if(!CollectionUtils.isEmpty(list)){
+            //获取组织下的所有角色id
+            Map<Long,Object> roleMap = organizationMapper.getRoleIdsByOrg(searchDTO.getId());
+            System.out.println(roleMap);
+//            //循环遍历
+//            for(RoleDTO thisDTO : list){
+//
+//            }
+        }
+        return new GlobalResultDTO(pageInfo);
     }
 
     @Override

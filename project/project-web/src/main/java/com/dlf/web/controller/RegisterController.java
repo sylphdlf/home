@@ -1,5 +1,6 @@
 package com.dlf.web.controller;
 
+import com.dlf.business.anno.UrlPermissionIgnoreAnno;
 import com.dlf.business.manager.message.MessagePushService;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
@@ -22,6 +23,7 @@ public class RegisterController {
     @Autowired
     private MessagePushService messagePushService;
 
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/registerAjax",method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO registerAjax(@RequestBody UserReqDTO reqDTO){
@@ -33,6 +35,7 @@ public class RegisterController {
      * @param reqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO checkUsername(@RequestBody UserReqDTO reqDTO){
@@ -44,6 +47,7 @@ public class RegisterController {
      * @param msgReqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/messagePush", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO messagePush(@RequestBody MsgReqDTO msgReqDTO){
@@ -55,6 +59,7 @@ public class RegisterController {
      * @param msgReqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/messagePushForPwd", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO messagePushForPwd(@RequestBody MsgReqDTO msgReqDTO){
@@ -66,6 +71,7 @@ public class RegisterController {
      * @param reqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/checkCodeVerify", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO checkCodeVerify(@RequestBody UserReqDTO reqDTO){
@@ -77,6 +83,7 @@ public class RegisterController {
      * @param reqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/checkCodeVerifyForPwd", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO checkCodeVerifyForPwd(@RequestBody UserReqDTO reqDTO){
@@ -87,6 +94,7 @@ public class RegisterController {
      * @param reqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO resetPassword(@RequestBody UserReqDTO reqDTO){

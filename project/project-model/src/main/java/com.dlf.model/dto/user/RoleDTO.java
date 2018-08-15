@@ -18,4 +18,6 @@ public class RoleDTO {
     private String remarks;
 
     private Date createTime;
+
+    private boolean checked;
 }

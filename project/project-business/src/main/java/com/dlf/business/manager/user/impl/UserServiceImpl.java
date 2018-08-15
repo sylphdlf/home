@@ -3,13 +3,12 @@ package com.dlf.business.manager.user.impl;
 import com.dlf.business.exception.MyException;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.GlobalResultEnum;
 import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.enums.user.UserResultEnum;
-import com.dlf.model.dto.user.UserDTO;
-import com.dlf.model.dto.user.UserReqDTO;
-import com.dlf.model.dto.user.UserResDTO;
-import com.dlf.model.dto.user.UserSearchDTO;
+import com.dlf.model.mapper.FunctionMapper2;
+import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.mapper.UserMapper2;
 import com.dlf.model.po.User;
 import com.github.pagehelper.PageHelper;
@@ -35,6 +34,10 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper2 userMapper;
+    @Resource
+    private FunctionMapper2 functionMapper;
+    @Resource
+    private RoleMapper2 roleMapper;
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -55,6 +58,7 @@ public class UserServiceImpl implements UserService {
                 return new GlobalResultDTO<UserResDTO>(resDTO);
             }
         }catch (Exception e){
+            e.printStackTrace();
             return GlobalResultDTO.FAIL(GlobalResultEnum.FAIL.getMsg());
         }
     }
@@ -205,5 +209,15 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             return GlobalResultDTO.FAIL(e.getMessage());
         }
+    }
+
+    @Override
+    public List<FunDTO> getFunListByUser(Long id) {
+        return functionMapper.getSourceListByUser(id);
+    }
+
+    @Override
+    public List<RoleDTO> getRoleListByUser(Long id) {
+        return roleMapper.getRoleListByUser(id);
     }
 }

@@ -3,6 +3,7 @@ package com.dlf.web.controller.user;
 import com.dlf.business.manager.user.OrgService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.OrgReqDTO;
+import com.dlf.model.dto.user.OrgSearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,5 +51,15 @@ public class OrgController {
     @RequestMapping(value = "/addOrgNode", method = RequestMethod.POST)
     public GlobalResultDTO addOrgNode(@RequestBody OrgReqDTO reqDTO){
         return orgService.addOrgNode(reqDTO);
+    }
+
+    /**
+     * 根据组织机构获取角色分页
+     * @param searchDTO
+     * @return
+     */
+    @RequestMapping(value = "/getRolePageByOrg", method = RequestMethod.POST)
+    public GlobalResultDTO getRolePageByOrg(@RequestBody OrgSearchDTO searchDTO){
+        return orgService.getRolePageByOrg(searchDTO);
     }
 }

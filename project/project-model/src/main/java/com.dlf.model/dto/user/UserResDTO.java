@@ -9,12 +9,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserResDTO implements Serializable {
 
-    private static final long serialVersionUID = 115482590716699001L;
+    private static final long serialVersionUID = 3751291080758411285L;
 
     private Long id;
 
-    public String username;
+    private String username;
 
-    public String password;
+    private String password;
 
 }

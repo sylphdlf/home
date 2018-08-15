@@ -118,20 +118,8 @@
             },
             // 获取 easy-mock 的模拟数据
             getData(){
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                // if(process.env.NODE_ENV === 'development'){
-                //     this.url = '/ms/table/list';
-                // };
-                // this.$post(this.url, this.searchForm, function (res) {
-                //     console.info(res);
-                //     if(res.data.total !== 0){
-                //         this.tableData = res.data.data.list;
-                //         this.dataTotal = res.data.data.total;
-                //     }
-                // });
-
                 this.$axios.post(this.url, this.searchForm).then((res) => {
-                    if(res.data.total !== 0){
+                    if(res.data.code === "0" && res.data.total !== 0){
                         this.tableData = res.data.data.list;
                         this.dataTotal = res.data.data.total;
                     }

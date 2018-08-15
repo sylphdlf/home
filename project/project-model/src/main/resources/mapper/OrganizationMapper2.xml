@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dlf.model.mapper.OrganizationMapper2">
-  <resultMap id="BaseResultMap" type="com.dlf.model.po.Organization">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="level" jdbcType="INTEGER" property="level" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
-    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
-    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, code, parent_code, name, level, remarks, create_time, update_time, create_user_id, 
-    update_user_id, is_deleted
-  </sql>
+    <resultMap id="BaseResultMap" type="com.dlf.model.po.Organization">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="parent_code" jdbcType="VARCHAR" property="parentCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+    </resultMap>
+    <resultMap id="RoleMap" type="java.util.HashMap">
+        <result property="key" column="role_id"/>
+        <result property="value" column="true"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, code, parent_code, name, level, remarks, create_time, update_time, create_user_id,
+        update_user_id, is_deleted
+    </sql>
 
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
@@ -26,11 +30,19 @@
     </select>
     <select id="getAllAsTreeNode" resultType="com.dlf.model.dto.user.TreeNode">
         SELECT
-            id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
-        FROM u_organization WHERE is_deleted = 0
+            id,
+            name,
+            code,
+            concat(name, '(', code, ')') as label,
+            parent_code                  as parent,
+            level,
+            remarks
+        FROM u_organization
+        WHERE is_deleted = 0
     </select>
 
-    <select id="getTreeNodeByParams" resultType="com.dlf.model.dto.user.TreeNode"  parameterType="com.dlf.model.po.Organization">
+    <select id="getTreeNodeByParams" resultType="com.dlf.model.dto.user.TreeNode"
+            parameterType="com.dlf.model.po.Organization">
         SELECT
         id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
         FROM u_organization WHERE 1=1
@@ -40,17 +52,21 @@
         and is_deleted = 0 ORDER BY id ASC
     </select>
 
-  <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Organization">
-      insert into u_organization (id, code, parent_code,
-                                  name, level, remarks,
-                                  create_time, update_time, create_user_id,
-                                  update_user_id, is_deleted)
-      values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR},
-          #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR},
-          #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT},
-          #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
-      <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-          SELECT LAST_INSERT_ID()
-      </selectKey>
-  </insert>
+    <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Organization">
+        insert into u_organization (id, code, parent_code,
+        name, level, remarks,
+        create_time, update_time, create_user_id,
+        update_user_id, is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT},
+        #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="getRoleIdsByOrg" parameterType="java.lang.Long" resultMap="RoleMap">
+        SELECT role_id,TRUE
+        FROM  u_org_role WHERE org_id = #{id, jdbcType=BIGINT}
+    </select>
 </mapper>

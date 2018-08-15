@@ -202,7 +202,7 @@
             // 获取 easy-mock 的模拟数据
             getData(){
                 this.$axios.post(this.url, this.searchForm).then((res) => {
-                    if(res.data.total !== 0){
+                    if(res.data.code === "0" && res.data.total !== 0){
                         this.tableData = res.data.data.list;
                         this.dataTotal = res.data.data.total;
                     }

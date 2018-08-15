@@ -1,5 +1,6 @@
 package com.dlf.web.controller;
 
+import com.dlf.business.anno.UrlPermissionIgnoreAnno;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.enums.GlobalResultEnum;
 import com.dlf.model.dto.user.UserReqDTO;
@@ -23,6 +24,7 @@ public class LoginController {
      * @param reqDTO
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/loginAjax",method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO loginAjax(@RequestBody UserReqDTO reqDTO) {
@@ -40,6 +42,7 @@ public class LoginController {
      * 未登录
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/unAuth",method = RequestMethod.GET)
     @ResponseBody
     public GlobalResultDTO unAuth() {
@@ -50,6 +53,7 @@ public class LoginController {
      * 登出
      * @return
      */
+    @UrlPermissionIgnoreAnno
     @RequestMapping(value = "/logoutAjax",method = RequestMethod.GET)
     @ResponseBody
     public GlobalResultDTO logoutAjax(){
