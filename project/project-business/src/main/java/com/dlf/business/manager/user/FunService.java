@@ -38,4 +38,11 @@ public interface FunService {
      * @return
      */
     GlobalResultDTO queryFunByParams(FunSearchDTO searchDTO);
+
+    /**
+     * 获取权限树
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO getFunTree(FunReqDTO reqDTO);
 }

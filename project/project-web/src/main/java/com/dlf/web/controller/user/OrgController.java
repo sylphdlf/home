@@ -62,4 +62,14 @@ public class OrgController {
     public GlobalResultDTO getRolePageByOrg(@RequestBody OrgSearchDTO searchDTO){
         return orgService.getRolePageByOrg(searchDTO);
     }
+
+    /**
+     * 组织绑定角色
+     * @param reqDTO
+     * @return
+     */
+    @RequestMapping(value = "/bindingRole", method = RequestMethod.POST)
+    public GlobalResultDTO bindingRole(@RequestBody OrgReqDTO reqDTO){
+        return orgService.bindingRole(reqDTO);
+    }
 }

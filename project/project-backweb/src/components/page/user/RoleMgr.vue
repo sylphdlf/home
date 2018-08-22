@@ -18,10 +18,10 @@
                 <el-table-column prop="name" label="角色名称"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat"></el-table-column>
                 <el-table-column prop="remarks" label="备注"></el-table-column>
-                <el-table-column label="操作" width="100">
+                <el-table-column label="操作" width="175">
                     <template slot-scope="scope">
-                        <el-button size="small"
-                                @click="handleEdit(scope.$index, scope.row)">编辑(todo)</el-button>
+                        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="primary" size="small" @click="funTreeWin(scope.$index, scope.row)">绑定权限</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -50,13 +50,31 @@
                 <el-button type="primary" @click="submitForm('dialogData')">确 定</el-button>
             </div>
         </el-dialog>
+        <el-dialog title="绑定权限" :visible.sync="dialogTreeVisible" width="25%">
+            <div class="block">
+                <el-tree :data="dataParse" show-checkbox node-key="id" ref="funTree"
+                         default-expand-all>
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ node.label }}</span>
+                </span>
+                </el-tree>
+                <div class="handle-box" align="center">
+                    <el-button type="primary" @click="bindingFun">确认</el-button>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
     export default {
         data() {
+            const data = [];
             return {
                 url: this.$projectUrl + '/role/queryListByParams',
+                roleAddUrl: this.$projectUrl + '/role/add',
+                funTreeUrl: this.$projectUrl + '/fun/getFunTree',
+                bindingFunUrl: this.$projectUrl + '/role/bindingFun',
+                dataParse: [],
                 tableData: [],
                 multipleSelection: [],
                 select_word: '',
@@ -64,6 +82,7 @@
                 is_search: false,
                 dataTotal:1,
                 dialogFormVisible: false,
+                dialogTreeVisible: false,
                 searchForm: {
                     name: '',
                     code: '',
@@ -81,6 +100,12 @@
                         { required: true, message: '请输入角色编号', trigger: 'blur' }
                     ]
                 },
+                dialogTreeData:{
+                    id: '',
+                    roleId: '',
+                    targetIds: [],
+                    originalIds: [],//默认选中的key
+                }
             }
         },
         created(){
@@ -134,18 +159,37 @@
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');
             },
-            delAll(){
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                }
-                this.$message.error('删除了'+str);
-                this.multipleSelection = [];
-            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
+            },
+            funTreeWin(index, row) {
+                this.dialogTreeData = {};
+                this.dialogTreeData.id = row.id;
+                this.dialogTreeData.roleId = row.id;
+                this.dialogTreeVisible = true;
+                this.$axios.post(this.funTreeUrl,this.dialogTreeData).then(res => {
+                    if(res.data.code === "0"){
+                        this.dataParse = JSON.parse(JSON.stringify(res.data.data.list));
+                        this.dialogTreeData.originalIds = res.data.data.originalIds;
+                        this.$refs.funTree.setCheckedKeys(this.dialogTreeData.originalIds, true);
+                    }else{
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
+            },
+            //绑定权限
+            bindingFun(){
+                this.dialogTreeData.targetIds = [];
+                let checkedArray = this.$refs.funTree.getCheckedKeys();
+                let halfCheckedArray = this.$refs.funTree.getHalfCheckedKeys();
+                this.dialogTreeData.targetIds.push.apply(this.dialogTreeData.targetIds, checkedArray);
+                this.dialogTreeData.targetIds.push.apply(this.dialogTreeData.targetIds, halfCheckedArray);
+                this.$axios.post(this.bindingFunUrl, this.dialogTreeData).then(res => {
+                    if(res.data.code === "0"){
+                        this.msgSuccess();
+                    }
+                });
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -155,7 +199,7 @@
                         return false;
                     }
                 });
-                this.$axios.post("/project-web/role/add", this.dialogData).then(result =>{
+                this.$axios.post(this.roleAddUrl, this.dialogData).then(result =>{
                     if(result.data.code === "0"){
                         this.dialogFormVisible = false;
                         this.getData();
@@ -172,6 +216,7 @@
 <style scoped>
 .handle-box{
     margin-bottom: 20px;
+    margin-top: 10px
 }
 .handle-select{
     width: 120px;

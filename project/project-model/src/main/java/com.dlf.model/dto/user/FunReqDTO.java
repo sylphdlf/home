@@ -22,5 +22,6 @@ public class FunReqDTO {
     private Integer level;
     //排序
     private Integer sortValue;
-
+    //角色id
+    private Long roleId;
 }

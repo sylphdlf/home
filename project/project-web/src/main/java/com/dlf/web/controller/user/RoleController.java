@@ -39,4 +39,14 @@ public class RoleController {
     public GlobalResultDTO add(@RequestBody RoleReqDTO reqDTO){
         return roleService.add(reqDTO);
     }
+
+    /**
+     * 绑定权限
+     * @param reqDTO
+     * @return
+     */
+    @RequestMapping(value = "/bindingFun", method = RequestMethod.POST)
+    public GlobalResultDTO bindingFun(@RequestBody RoleReqDTO reqDTO){
+        return roleService.bindingFun(reqDTO);
+    }
 }

@@ -1,8 +1,10 @@
 package com.dlf.business.manager.user.impl;
 
 import com.dlf.business.anno.ExecuteTimeAnno;
+import com.dlf.business.factory.OrgRolesFactory;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.OrgService;
+import com.dlf.common.utils.CompareUtils;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.RedisPrefixEnums;
@@ -10,12 +12,14 @@ import com.dlf.model.enums.user.OrgResultEnum;
 import com.dlf.model.mapper.OrganizationMapper2;
 import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.po.Organization;
+import com.dlf.model.po.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -89,6 +93,7 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
+    @ExecuteTimeAnno
     public GlobalResultDTO getRolePageByOrg(OrgSearchDTO searchDTO) {
         RoleSearchDTO roleSearchDTO = new RoleSearchDTO();
         BeanUtils.copyProperties(searchDTO, roleSearchDTO);
@@ -97,14 +102,49 @@ public class OrgServiceImpl implements OrgService {
         PageInfo<RoleDTO> pageInfo = new PageInfo<RoleDTO>(list);
         if(!CollectionUtils.isEmpty(list)){
             //获取组织下的所有角色id
-            Map<Long,Object> roleMap = organizationMapper.getRoleIdsByOrg(searchDTO.getId());
-            System.out.println(roleMap);
-//            //循环遍历
-//            for(RoleDTO thisDTO : list){
-//
-//            }
+            Map<Long, RoleDTO> roleMap = OrgRolesFactory.getRoleMapByOrgId(searchDTO.getId());
+            if(CollectionUtils.isEmpty(OrgRolesFactory.getRoleMapByOrgId(searchDTO.getId()))){
+                //初始化组织对应角色列表
+                List<RoleDTO> roleList = organizationMapper.getRoleIdsByOrg(searchDTO.getId());
+                if(!CollectionUtils.isEmpty(roleList)){
+                    roleMap = OrgRolesFactory.initOrgRoleMapAndGet(searchDTO.getId(), roleList);
+                }
+            }
+            //遍历返回值，查看参数是否有对应角色, 有则做标记
+            if(!CollectionUtils.isEmpty(roleMap)){
+                for(RoleDTO thisDTO : list){
+                    if(null != roleMap.get(thisDTO.getId())){
+                        thisDTO.setChecked(true);
+                    }
+                }
+            }
         }
         return new GlobalResultDTO(pageInfo);
+    }
+
+    @Override
+    @Transactional
+    @ExecuteTimeAnno
+    public GlobalResultDTO bindingRole(OrgReqDTO reqDTO) {
+        List<Long> originalIds = reqDTO.getOriginalIds();
+        List<Long> changedIds = reqDTO.getChangedIds();
+        //待新增的id
+        List<Long> toAddIds = new ArrayList<Long>();
+        //待删除的id
+        List<Long> toDelIds = new ArrayList<Long>();
+        CompareUtils.getAddAndDel(originalIds, changedIds, toAddIds, toDelIds);
+        //操作数据库
+        if(!CollectionUtils.isEmpty(toAddIds)){
+            reqDTO.setToAddIds(toAddIds);
+            organizationMapper.insertOrgRoles(reqDTO);
+        }
+        if(!CollectionUtils.isEmpty(toDelIds)){
+            reqDTO.setToDelIds(toDelIds);
+            organizationMapper.delOrgRoles(reqDTO);
+        }
+        //移除factory中缓存的数据
+        OrgRolesFactory.removeOrgId(reqDTO.getId());
+        return GlobalResultDTO.SUCCESS();
     }
 
     @Override
@@ -112,7 +152,7 @@ public class OrgServiceImpl implements OrgService {
     public GlobalResultDTO getOrgTree(OrgReqDTO reqDTO) {
         //从缓存中拿数据
         List<TreeNode> list = null;
-        List<TreeNode> treeNode = null;
+//        List<TreeNode> treeNode = null;
         Organization organization = new Organization();
         BeanUtils.copyProperties(reqDTO, organization);
         list = organizationMapper.getTreeNodeByParams(organization);

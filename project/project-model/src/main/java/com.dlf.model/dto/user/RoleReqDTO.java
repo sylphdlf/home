@@ -1,15 +1,24 @@
 package com.dlf.model.dto.user;
 
+import com.dlf.model.dto.BaseReqDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class RoleReqDTO{
+public class RoleReqDTO extends BaseReqDTO {
+
+    private Long id;
     //角色编号
     private String code;
     //角色名称
     private String name;
     //备注
     private String remarks;
+
+    private List<Long> originalIds;
+
+    private List<Long> targetIds;
 }

@@ -34,10 +34,10 @@ public class UrlInterceptor implements HandlerInterceptor {
     }
 
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        System.out.println("post");
+//        System.out.println("post");
     }
 
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        System.out.println("after");
+//        System.out.println("after");
     }
 }

@@ -60,6 +60,45 @@
                     },
                     {
                         icon: 'el-icon-tickets',
+                        index: 'tms',
+                        title: '物流管理',
+                        subs: [
+                            {
+                                index: 'consignMgr',
+                                title: '托运单管理'
+                            },
+                            {
+                                index: 'orgMgr',
+                                title: '上门提货(undo)'
+                            },
+                            {
+                                index: 'roleMgr',
+                                title: '外发管理(undo)'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '车辆跟踪(undo)'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '库存管理(undo)'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '送货上门(undo)'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '自提(undo)'
+                            },
+                            {
+                                index: 'funMgr',
+                                title: '到站确认(undo)'
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-tickets',
                         index: '2',
                         title: '常用表格',
                         subs: [

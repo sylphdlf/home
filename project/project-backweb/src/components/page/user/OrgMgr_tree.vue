@@ -6,7 +6,7 @@
                     <span>{{ node.label }}</span>
                     <span>
                         <el-button type="text" size="mini" @click="() => append(data)">新增</el-button>
-                        <el-button type="text" size="mini" @click="() => bindingRole(data)">绑定/解绑角色</el-button>
+                        <el-button type="text" size="mini" @click="() => bindingRoleWin(data)">绑定/解绑角色</el-button>
                         <el-button type="text" size="mini" @click="() => remove(node, data)">删除(todo)</el-button>
                     </span>
                 </span>
@@ -53,6 +53,9 @@
                     :total="dataTotal">
                 </el-pagination>
             </div>
+            <div style="margin-top: 10px" align="center">
+                <el-button type="primary" @click="bindingRole">确认勾选</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -62,10 +65,13 @@
             const data = [];
             return {
                 roleUrl: this.$projectUrl + '/org/getRolePageByOrg',
+                addNodeUrl: this.$projectUrl + '/org/addOrgNode',
+                bindingRoleUrl: this.$projectUrl + '/org/bindingRole',
+                orgTreeLazyUrl: this.$projectUrl + '/org/getOrgTreeLazy',
                 addRootBtn:false,
                 dataParse: JSON.parse(JSON.stringify(data)),
-                dialogFormVisible: false,
-                dialogTableVisible: false,
+                dialogFormVisible: false,//新增窗口
+                dialogTableVisible: false,//角色展示窗口
                 orgData: {
                     id: '',
                     name: '',
@@ -89,25 +95,42 @@
                 curNodeData:{},
                 searchForm:{},
                 tableData: [],//角色列表
+                tableCheckedOriginalData: [],//角色列表(初始已选择)
+                tableCheckedChangedData: [],//角色列表(更改后已选择)
                 dataTotal:1,
                 multipleSelection: [],//角色选择框
             }
         },
         mounted: function () {
             //获取初始化tree节点
-            // this.refreshNode();
+            // this.refreshRoot();
         },
         created() {
             this.searchForm.pageNum = 1;
         },
         methods: {
+            refreshRoot() {
+                this.$axios.get("/project-web/org/getOrgTreeRoot").then(result =>{
+                    if(result.data.code === "0"){
+                        this.dataParse = result.data.data;
+                        this.addRootBtn = false;
+                    }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
+                        this.addRootBtn = true;
+                    }else{
+                        this.addRootBtn = false;
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
+            },
+            //懒加载树节点
             lazyNode(node, resolve){
                 if(node.data.length === 0){
                     this.treeReqForm.parentCode = '0';
                 }else{
                     this.treeReqForm.parentCode = node.data.code;
                 }
-                this.$axios.post("/project-web/org/getOrgTreeLazy", this.treeReqForm).then(result =>{
+                this.$axios.post(this.orgTreeLazyUrl, this.treeReqForm).then(result =>{
                     if(result.data.code === "0"){
                         resolve(result.data.data);
                         this.addRootBtn = false;
@@ -120,11 +143,13 @@
                     }
                 });
             },
+            //新增根节点
             addRoot(data) {
                 this.orgData = {};
                 this.dialogFormVisible = true;
                 this.curNodeData = data;
             },
+            //添加节点
             append(data) {
                 this.orgData = {};
                 //设置dialog信息
@@ -144,11 +169,11 @@
                 if(this.orgData.parentCode!=null){
                     this.orgData.code = this.orgData.parentCode + this.orgData.code;
                 }
-                this.$axios.post("/project-web/org/addOrgNode", this.orgData).then(result =>{
+                this.$axios.post(this.addNodeUrl, this.orgData).then(result =>{
                     if(result.data.code === "0"){
                         this.dialogFormVisible = false;
                         if(result.data.data.parentCode === "0"){
-                            this.refreshNode();
+                            this.refreshRoot();
                         }else{
                             //处理节点
                             const newChild = { id: result.data.data.id,
@@ -175,11 +200,28 @@
                 const index = children.findIndex(d => d.id === data.id);
                 children.splice(index, 1);
             },
-            bindingRole(data){
-                console.info(data);
+            bindingRoleWin(data){
                 this.dialogTableVisible = true;
                 this.searchForm.id = data.id;
                 this.getRoleData();
+            },
+            //绑定角色
+            bindingRole(){
+                //初始化
+                this.tableCheckedChangedData = [];
+                // this.tableCheckedData;
+                // this.this.multipleSelection;
+                this.multipleSelection.forEach(row => {
+                    this.tableCheckedChangedData.push(row.id);
+                });
+                this.$axios.post(this.bindingRoleUrl, {id:this.searchForm.id,
+                    originalIds:this.tableCheckedOriginalData,
+                    changedIds:this.tableCheckedChangedData}).then(res => {
+                    if(res.data.code === "0"){
+                        this.msgSuccess();
+                        this.getRoleData();
+                    }
+                });
             },
             // 分页导航
             handleCurrentChange(val){
@@ -187,12 +229,18 @@
                 this.getRoleData();
             },
             getRoleData(){
+                this.tableCheckedOriginalData = [];
                 this.$axios.post(this.roleUrl, this.searchForm).then((res) => {
                     if(res.data.code === "0" && res.data.total !== 0){
                         this.tableData = res.data.data.list;
                         this.dataTotal = res.data.data.total;
 
-                        // this.$refs.multipleTable.toggleRowSelection(row);
+                        this.tableData.forEach(row => {
+                            if(row.checked === true){
+                                this.tableCheckedOriginalData.push(row.id);
+                                this.selectRow(row);
+                            }
+                        });
                     }
                 })
             },

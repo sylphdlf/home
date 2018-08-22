@@ -65,8 +65,23 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
-    <select id="getRoleIdsByOrg" parameterType="java.lang.Long" resultMap="RoleMap">
-        SELECT role_id,TRUE
-        FROM  u_org_role WHERE org_id = #{id, jdbcType=BIGINT}
+    <select id="getRoleIdsByOrg" parameterType="java.lang.Long" resultType="com.dlf.model.dto.user.RoleDTO">
+        SELECT r.id, r.code, r.name
+        FROM  u_org_role ro LEFT JOIN u_role r ON ro.role_id = r.id
+        WHERE ro.org_id = #{id, jdbcType=BIGINT}
     </select>
+    <insert id="insertOrgRoles" parameterType="com.dlf.model.dto.user.OrgReqDTO">
+        INSERT INTO u_org_role (org_id, role_id) VALUES
+        <foreach collection ="toAddIds" item="thisItem" index= "index" separator =",">
+            (
+            #{id,jdbcType=BIGINT},#{thisItem,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+    <delete id="delOrgRoles" parameterType="com.dlf.model.dto.user.OrgReqDTO">
+        DELETE FROM u_org_role WHERE org_id = #{id,jdbcType=BIGINT} AND role_id IN
+        <foreach collection ="toDelIds" item="thisItem" index= "index" separator ="," open="(" close=")">
+            #{thisItem,jdbcType=BIGINT}
+        </foreach>
+    </delete>
 </mapper>

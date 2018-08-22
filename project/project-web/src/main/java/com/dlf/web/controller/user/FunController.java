@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class FunController {
 
     @Autowired
-    FunService functionService;
+    FunService funService;
     /**
      * 下拉列表级联展示菜单
      */
     @RequestMapping(value = "/getDefaultMenu", method = RequestMethod.GET)
     public GlobalResultDTO getDefaultMenu(){
-        return functionService.getDefaultMenu();
+        return funService.getDefaultMenu();
     }
 
     /**
@@ -33,7 +33,7 @@ public class FunController {
      */
     @RequestMapping(value = "/getDefaultSource", method = RequestMethod.GET)
     public GlobalResultDTO getDefaultSource(){
-        return functionService.getDefaultSource();
+        return funService.getDefaultSource();
     }
     /**
      * 查询菜单
@@ -42,7 +42,7 @@ public class FunController {
      */
     @RequestMapping(value = "/queryMenuByParams",method = RequestMethod.POST)
     public GlobalResultDTO queryMenuByParams(@RequestBody FunSearchDTO searchDTO) {
-        return functionService.queryMenuByParams(searchDTO);
+        return funService.queryMenuByParams(searchDTO);
     }
 
     /**
@@ -52,7 +52,7 @@ public class FunController {
      */
     @RequestMapping(value = "/queryFunByParams",method = RequestMethod.POST)
     public GlobalResultDTO queryFunByParams(@RequestBody FunSearchDTO searchDTO){
-        return functionService.queryFunByParams(searchDTO);
+        return funService.queryFunByParams(searchDTO);
     }
 
     /**
@@ -61,6 +61,15 @@ public class FunController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public GlobalResultDTO add(@RequestBody FunReqDTO reqDTO){
-        return functionService.add(reqDTO);
+        return funService.add(reqDTO);
+    }
+
+    /**
+     * 获取组织机构树
+     * @return
+     */
+    @RequestMapping(value = "/getFunTree",method = RequestMethod.POST)
+    public GlobalResultDTO getFunTree(@RequestBody FunReqDTO reqDTO) {
+        return funService.getFunTree(reqDTO);
     }
 }

@@ -38,4 +38,11 @@ public interface OrgService {
      * @return
      */
     GlobalResultDTO getRolePageByOrg(OrgSearchDTO searchDTO);
+
+    /**
+     * 绑定角色
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO bindingRole(OrgReqDTO reqDTO);
 }

@@ -33,6 +33,16 @@ export default new Router({
                     path: '/funMgr',
                     component: resolve => require(['../components/page/user/FunMgr.vue'], resolve)
                 },
+                //物流管理
+                {
+                    path: '/consignMgr',
+                    component: resolve => require(['../components/page/tms/ConsignMgr.vue'], resolve)
+                },
+                //物流管理-新增
+                {
+                    path: '/consignMgr_add',
+                    component: resolve => require(['../components/page/tms/ConsignMgr_add.vue'], resolve)
+                },
 
 
                 {

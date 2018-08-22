@@ -43,5 +43,17 @@ public interface OrganizationMapper2 extends OrganizationMapper{
      * @param id
      * @return
      */
-    Map<Long, Object> getRoleIdsByOrg(Long id);
+    List<RoleDTO> getRoleIdsByOrg(Long id);
+
+    /**
+     * 新增组织角色关联关系
+     * @param reqDTO
+     */
+    void insertOrgRoles(OrgReqDTO reqDTO);
+
+    /**
+     * 删除组织角色关联关系
+     * @param reqDTO
+     */
+    void delOrgRoles(OrgReqDTO reqDTO);
 }

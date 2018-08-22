@@ -49,4 +49,16 @@
         LEFT JOIN u_function uf ON rf.function_id = uf.id
         WHERE ur.user_id = #{id, jdbcType=BIGINT} AND uf.type = 3
     </select>
+    <select id="getTreeNodeByParams" resultType="com.dlf.model.dto.user.TreeNode" parameterType="com.dlf.model.dto.user.FunReqDTO">
+        SELECT
+        id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
+        FROM u_function WHERE 1=1
+        <if test="parentCode != null and parentCode != ''">
+            and parent_code = #{parentCode,jdbcType=VARCHAR}
+        </if>
+        and is_deleted = 0 ORDER BY id ASC
+    </select>
+    <select id="getCachedFunIdsByRoleId" parameterType="com.dlf.model.dto.user.FunReqDTO" resultType="java.lang.Long">
+        SELECT function_id FROM u_role_function WHERE role_id = #{roleId,jdbcType=BIGINT}
+    </select>
 </mapper>

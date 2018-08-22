@@ -19,4 +19,11 @@ public interface RoleService {
      * @return
      */
     GlobalResultDTO add(RoleReqDTO reqDTO);
+
+    /**
+     * 角色绑定权限
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO bindingFun(RoleReqDTO reqDTO);
 }
