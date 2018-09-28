@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.ConsignDetailMapper">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.ConsignDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="consign_id" jdbcType="BIGINT" property="consignId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_type" jdbcType="VARCHAR" property="productType" />
+    <result column="product_count" jdbcType="INTEGER" property="productCount" />
+    <result column="product_package" jdbcType="VARCHAR" property="productPackage" />
+    <result column="product_volume" jdbcType="INTEGER" property="productVolume" />
+    <result column="product_weight" jdbcType="INTEGER" property="productWeight" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="product_length" jdbcType="INTEGER" property="productLength" />
+    <result column="product_width" jdbcType="INTEGER" property="productWidth" />
+    <result column="product_height" jdbcType="INTEGER" property="productHeight" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, consign_id, product_name, product_type, product_count, product_package, product_volume, 
+    product_weight, product_price, product_length, product_width, product_height, remarks, 
+    create_time, update_time, create_user_id, update_user_id, is_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_consign_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_consign_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dlf.model.po.ConsignDetail">
+    insert into t_consign_detail (id, consign_id, product_name, 
+      product_type, product_count, product_package, 
+      product_volume, product_weight, product_price, 
+      product_length, product_width, product_height, 
+      remarks, create_time, update_time, 
+      create_user_id, update_user_id, is_deleted
+      )
+    values (#{id,jdbcType=BIGINT}, #{consignId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{productType,jdbcType=VARCHAR}, #{productCount,jdbcType=INTEGER}, #{productPackage,jdbcType=VARCHAR}, 
+      #{productVolume,jdbcType=INTEGER}, #{productWeight,jdbcType=INTEGER}, #{productPrice,jdbcType=DECIMAL}, 
+      #{productLength,jdbcType=INTEGER}, #{productWidth,jdbcType=INTEGER}, #{productHeight,jdbcType=INTEGER}, 
+      #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlf.model.po.ConsignDetail">
+    insert into t_consign_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="consignId != null">
+        consign_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="productCount != null">
+        product_count,
+      </if>
+      <if test="productPackage != null">
+        product_package,
+      </if>
+      <if test="productVolume != null">
+        product_volume,
+      </if>
+      <if test="productWeight != null">
+        product_weight,
+      </if>
+      <if test="productPrice != null">
+        product_price,
+      </if>
+      <if test="productLength != null">
+        product_length,
+      </if>
+      <if test="productWidth != null">
+        product_width,
+      </if>
+      <if test="productHeight != null">
+        product_height,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="consignId != null">
+        #{consignId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="productPackage != null">
+        #{productPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="productVolume != null">
+        #{productVolume,jdbcType=INTEGER},
+      </if>
+      <if test="productWeight != null">
+        #{productWeight,jdbcType=INTEGER},
+      </if>
+      <if test="productPrice != null">
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productLength != null">
+        #{productLength,jdbcType=INTEGER},
+      </if>
+      <if test="productWidth != null">
+        #{productWidth,jdbcType=INTEGER},
+      </if>
+      <if test="productHeight != null">
+        #{productHeight,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="updateUserId != null">
+        #{updateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.ConsignDetail">
+    update t_consign_detail
+    <set>
+      <if test="consignId != null">
+        consign_id = #{consignId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="productPackage != null">
+        product_package = #{productPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="productVolume != null">
+        product_volume = #{productVolume,jdbcType=INTEGER},
+      </if>
+      <if test="productWeight != null">
+        product_weight = #{productWeight,jdbcType=INTEGER},
+      </if>
+      <if test="productPrice != null">
+        product_price = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productLength != null">
+        product_length = #{productLength,jdbcType=INTEGER},
+      </if>
+      <if test="productWidth != null">
+        product_width = #{productWidth,jdbcType=INTEGER},
+      </if>
+      <if test="productHeight != null">
+        product_height = #{productHeight,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="updateUserId != null">
+        update_user_id = #{updateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.ConsignDetail">
+    update t_consign_detail
+    set consign_id = #{consignId,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=VARCHAR},
+      product_count = #{productCount,jdbcType=INTEGER},
+      product_package = #{productPackage,jdbcType=VARCHAR},
+      product_volume = #{productVolume,jdbcType=INTEGER},
+      product_weight = #{productWeight,jdbcType=INTEGER},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      product_length = #{productLength,jdbcType=INTEGER},
+      product_width = #{productWidth,jdbcType=INTEGER},
+      product_height = #{productHeight,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      update_user_id = #{updateUserId,jdbcType=BIGINT},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -33,6 +33,16 @@ export default new Router({
                     path: '/funMgr',
                     component: resolve => require(['../components/page/user/FunMgr.vue'], resolve)
                 },
+                //联系人管理
+                {
+                    path: '/contactsMgr',
+                    component: resolve => require(['../components/page/tms/ContactsMgr.vue'], resolve)
+                },
+                //车辆管理
+                {
+                    path: '/vehicleMgr',
+                    component: resolve => require(['../components/page/tms/VehicleMgr.vue'], resolve)
+                },
                 //物流管理
                 {
                     path: '/consignMgr',
@@ -42,6 +52,29 @@ export default new Router({
                 {
                     path: '/consignMgr_add',
                     component: resolve => require(['../components/page/tms/ConsignMgr_add.vue'], resolve)
+                },
+                {
+                    path: '/consignMgr_add2',
+                    component: resolve => require(['../components/page/tms/ConsignMgr_add2.vue'], resolve)
+                },
+                //上门提货
+                {
+                    path: '/pickUpMgr',
+                    component: resolve => require(['../components/page/tms/PickUpMgr.vue'], resolve)
+                },
+                {
+                    path: '/pickUpMgr_add',
+                    component: resolve => require(['../components/page/tms/PickUpMgr_add.vue'], resolve)
+                },
+                //外发管理
+                {
+                    path: '/sendoutMgr',
+                    component: resolve => require(['../components/page/tms/SendoutMgr.vue'], resolve)
+                },
+                //库存管理
+                {
+                    path: '/stockMgr',
+                    component: resolve => require(['../components/page/tms/stockMgr.vue'], resolve)
                 },
 
 

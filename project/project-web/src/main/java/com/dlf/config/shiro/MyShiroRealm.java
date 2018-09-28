@@ -1,14 +1,11 @@
 package com.dlf.config.shiro;
 
-import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.UserService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.FunDTO;
 import com.dlf.model.dto.user.RoleDTO;
 import com.dlf.model.dto.user.UserReqDTO;
 import com.dlf.model.dto.user.UserResDTO;
-import com.dlf.model.enums.RedisPrefixEnums;
-import com.dlf.model.vo.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,7 +17,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;

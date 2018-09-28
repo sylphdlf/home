@@ -1,7 +1,7 @@
 package com.dlf.web.exception;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
-import com.dlf.model.enums.user.UserResultEnum;
+import com.dlf.model.enums.user.UserResultEnums;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -26,14 +26,14 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
         FastJsonJsonView view = new FastJsonJsonView();
         Map<String, Object> attributes = new HashMap<String, Object>();
         if (ex instanceof UnauthenticatedException) {
-            attributes.put(CODE, UserResultEnum.TOKEN_ERROR.getCode());
-            attributes.put(MSG, UserResultEnum.TOKEN_ERROR.getMsg());
+            attributes.put(CODE, UserResultEnums.TOKEN_ERROR.getCode());
+            attributes.put(MSG, UserResultEnums.TOKEN_ERROR.getMsg());
         } else if (ex instanceof UnauthorizedException) {
-            attributes.put(CODE, UserResultEnum.PERMISSION_DENIED.getCode());
-            attributes.put(MSG, UserResultEnum.PERMISSION_DENIED.getMsg());
+            attributes.put(CODE, UserResultEnums.PERMISSION_DENIED.getCode());
+            attributes.put(MSG, UserResultEnums.PERMISSION_DENIED.getMsg());
         } else if (ex instanceof IncorrectCredentialsException){
-            attributes.put(CODE, UserResultEnum.USERNAME_OR_PASSWORD_ERROR.getCode());
-            attributes.put(MSG, UserResultEnum.USERNAME_OR_PASSWORD_ERROR.getMsg());
+            attributes.put(CODE, UserResultEnums.USERNAME_OR_PASSWORD_ERROR.getCode());
+            attributes.put(MSG, UserResultEnums.USERNAME_OR_PASSWORD_ERROR.getMsg());
         } else {
             ex.printStackTrace();
         }

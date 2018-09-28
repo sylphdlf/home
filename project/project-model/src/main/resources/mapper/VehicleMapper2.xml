@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.VehicleMapper2">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.Vehicle">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="vehicle_number" jdbcType="VARCHAR" property="vehicleNumber" />
+    <result column="vehicle_type" jdbcType="INTEGER" property="vehicleType" />
+    <result column="vehicle_length" jdbcType="INTEGER" property="vehicleLength" />
+    <result column="vehicle_width" jdbcType="INTEGER" property="vehicleWidth" />
+    <result column="vehicle_height" jdbcType="INTEGER" property="vehicleHeight" />
+    <result column="vehicle_vin" jdbcType="VARCHAR" property="vehicleVin" />
+    <result column="driver_name" jdbcType="VARCHAR" property="driverName" />
+    <result column="driver_mobile" jdbcType="VARCHAR" property="driverMobile" />
+    <result column="driver_telephone" jdbcType="VARCHAR" property="driverTelephone" />
+    <result column="driver_addr" jdbcType="VARCHAR" property="driverAddr" />
+    <result column="driver_licence" jdbcType="VARCHAR" property="driverLicence" />
+    <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+    <result column="owner_mobile" jdbcType="VARCHAR" property="ownerMobile" />
+    <result column="account_bank" jdbcType="VARCHAR" property="accountBank" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="account_card" jdbcType="VARCHAR" property="accountCard" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, vehicle_number, vehicle_type, vehicle_length, vehicle_width, vehicle_height, 
+    vehicle_vin, driver_name, driver_mobile, driver_telephone, driver_addr, driver_licence, 
+    owner_name, owner_mobile, account_bank, account_name, account_card, remarks, create_time, 
+    update_time, create_user_id, update_user_id, is_deleted
+  </sql>
+  <sql id="Base_Visible_List">
+    id, vehicle_number AS vehicleNumber, vehicle_type AS vehicleType, vehicle_length AS vehicleLength,
+    vehicle_width AS vehicleWidth, vehicle_height AS vehicleHeight, vehicle_vin AS vehicleVin,
+    driver_name AS driverName, driver_mobile AS driverMobile, driver_telephone AS driverTelephone,
+    driver_addr AS driverAddr, driver_licence AS driverLicence, owner_name AS ownerName, owner_mobile AS ownerMobile,
+    account_bank AS accountBank, account_name AS accountName, account_card AS accountCard, remarks, create_time AS createTime
+  </sql>
+  <select id="queryListByParams" parameterType="com.dlf.model.dto.tms.VehicleSearchDTO" resultType="com.dlf.model.dto.tms.VehicleDTO">
+    SELECT
+    <include refid="Base_Visible_List"/>
+    FROM t_vehicle WHERE 1=1
+    <if test="vehicleNumber != null and vehicleNumber != ''">
+      and vehicle_number = #{vehicleNumber,jdbcType=VARCHAR}
+    </if>
+    and is_deleted = 0
+  </select>
+  <update id="deleteSoft" parameterType="com.dlf.model.po.Vehicle">
+    UPDATE t_vehicle SET
+      is_deleted = 1,
+      update_time = #{updateTime, jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId, jdbcType=BIGINT}
+    WHERE id = #{id, jdbcType=BIGINT}
+  </update>
+</mapper>

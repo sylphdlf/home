@@ -17,7 +17,11 @@
                 <el-table-column prop="name" label="机构名称"></el-table-column>
                 <el-table-column prop="code" label="机构编码"></el-table-column>
                 <el-table-column prop="parentCode" label="父机构编码"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间">
+                    <template slot-scope="scope">
+                        {{createTime | dateTimeFilter}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button size="small"
@@ -143,13 +147,6 @@
                 }
                 this.getData();
             },
-            // dateFormat:function(row, column) {
-            //     var date = row[column.property];
-            //     if (date == undefined) {
-            //         return "";
-            //     }
-            //     return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
-            // },
             filterTag(value, row) {
                 return row.tag === value;
             },

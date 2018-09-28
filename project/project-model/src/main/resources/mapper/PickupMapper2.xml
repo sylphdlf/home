@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.PickupMapper2">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.Pickup">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pickup_code" jdbcType="VARCHAR" property="pickupCode" />
+    <result column="site" jdbcType="INTEGER" property="site" />
+    <result column="vehicle_id" jdbcType="BIGINT" property="vehicleId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="pickup_time" jdbcType="TIMESTAMP" property="pickupTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pickup_code, site, vehicle_id, price, count, pickup_time, remarks, create_time, 
+    update_time, create_user_id, update_user_id, is_deleted
+  </sql>
+    <select id="queryListByParams" parameterType="com.dlf.model.dto.tms.PickupSearchDTO" resultType="com.dlf.model.dto.tms.PickupDTO">
+        SELECT p.id, p.pickup_code AS pickupCode, p.site, p.price, p.count, p.pickup_time AS pickupTime, p.remarks,
+            v.vehicle_number AS vehicleNumber, v.driver_name AS driverName, v.driver_mobile AS driverMobile
+        FROM t_pickup p
+            LEFT JOIN t_vehicle v ON p.vehicle_id = v.id
+        WHERE 1 = 1
+        and p.is_deleted = 0
+    </select>
+  <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Pickup">
+    insert into t_pickup (id, pickup_code, site,
+                vehicle_id, price, count,
+                pickup_time, remarks, create_time,
+                update_time, create_user_id, update_user_id,
+                is_deleted)
+    values (#{id,jdbcType=BIGINT}, #{pickupCode,jdbcType=VARCHAR}, #{site,jdbcType=INTEGER},
+             #{vehicleId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{count,jdbcType=INTEGER},
+             #{pickupTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+             #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT},
+            #{isDeleted,jdbcType=INTEGER})
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+</mapper>

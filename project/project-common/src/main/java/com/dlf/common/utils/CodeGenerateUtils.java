@@ -30,4 +30,12 @@ public class CodeGenerateUtils {
         return "UT" + UUID.randomUUID().toString().replace("-", "") + DateTimeUtils.getCurrentTimeStr();
     }
 
+    /**
+     * 根据前缀生成单号
+     * @param prefix
+     * @return
+     */
+    public static String codeGenerateByPrefix(String prefix){
+        return prefix + DateTimeUtils.getCurrentTimeStr() + (int)((Math.random()*9+1)*1000);
+    }
 }

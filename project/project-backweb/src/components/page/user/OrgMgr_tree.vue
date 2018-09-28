@@ -43,7 +43,11 @@
                 <el-table-column type="selection" width="35" property="checked"></el-table-column>
                 <el-table-column property="name" label="名称" width="200"></el-table-column>
                 <el-table-column property="code" label="编号" width="200"></el-table-column>
-                <el-table-column property="createTime" label="创建时间" width="200" :formatter="dateFormat"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间">
+                    <template slot-scope="scope">
+                        {{createTime | dateTimeFilter}}
+                    </template>
+                </el-table-column>
                 <el-table-column property="remarks" label="备注"></el-table-column>
             </el-table>
             <div class="pagination">
@@ -246,13 +250,6 @@
             },
             handleSelectionChange(val){
                 this.multipleSelection = val;
-            },
-            dateFormat:function(row, column) {
-                let date = row.createTime;
-                if (date === undefined) {
-                    return "";
-                }
-                return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
             selectRow(row) {
                 setTimeout(()=>{

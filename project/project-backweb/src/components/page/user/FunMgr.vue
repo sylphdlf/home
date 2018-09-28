@@ -22,7 +22,11 @@
                 <el-table-column prop="code" label="菜单编号"></el-table-column>
                 <el-table-column prop="level" label="菜单层级"></el-table-column>
                 <el-table-column prop="remarks" label="备注"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间">
+                    <template slot-scope="scope">
+                        {{createTime | dateTimeFilter}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="200">
                     <template slot-scope="scope" v-if="scope.row.level===2">
                         <el-button type="primary" size="small" @click="addFunction(scope.$index, scope.row)">新增权限</el-button>
@@ -238,14 +242,6 @@
             },
             handleSort(){
                 this.dialogSortVisible = true;
-            },
-            //日期格式化
-            dateFormat:function(row, column) {
-                let date = row.createTime;
-                if (date === undefined) {
-                    return "";
-                }
-                return this.formatDate(date);
             },
             handleEdit(index, row) {
                 // this.$message('编辑第'+(index+1)+'行');

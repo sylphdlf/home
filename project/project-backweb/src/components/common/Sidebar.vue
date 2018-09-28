@@ -60,6 +60,21 @@
                     },
                     {
                         icon: 'el-icon-tickets',
+                        index: 'info',
+                        title: '基础信息管理',
+                        subs: [
+                            {
+                                index: 'contactsMgr',
+                                title: '联系人管理'
+                            },
+                            {
+                                index: 'vehicleMgr',
+                                title: '车辆管理'
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-tickets',
                         index: 'tms',
                         title: '物流管理',
                         subs: [
@@ -68,20 +83,20 @@
                                 title: '托运单管理'
                             },
                             {
-                                index: 'orgMgr',
-                                title: '上门提货(undo)'
+                                index: 'pickUpMgr',
+                                title: '上门提货'
                             },
                             {
-                                index: 'roleMgr',
-                                title: '外发管理(undo)'
+                                index: 'sendoutMgr',
+                                title: '外发管理'
                             },
                             {
                                 index: 'funMgr',
                                 title: '车辆跟踪(undo)'
                             },
                             {
-                                index: 'funMgr',
-                                title: '库存管理(undo)'
+                                index: 'stockMgr',
+                                title: '库存管理'
                             },
                             {
                                 index: 'funMgr',

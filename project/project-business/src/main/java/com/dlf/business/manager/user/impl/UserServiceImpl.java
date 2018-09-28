@@ -6,7 +6,7 @@ import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.GlobalResultEnum;
 import com.dlf.model.enums.RedisPrefixEnums;
-import com.dlf.model.enums.user.UserResultEnum;
+import com.dlf.model.enums.user.UserResultEnums;
 import com.dlf.model.mapper.FunctionMapper2;
 import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.mapper.UserMapper2;
@@ -45,13 +45,13 @@ public class UserServiceImpl implements UserService {
     public GlobalResultDTO queryUserByUsername(UserReqDTO reqDTO) {
         try {
             if(StringUtils.isBlank(reqDTO.getUsername())){
-                return GlobalResultDTO.FAIL(UserResultEnum.USERNAME_NULL.getMsg());
+                return GlobalResultDTO.FAIL(UserResultEnums.USERNAME_NULL.getMsg());
             }
             User user = new User();
             BeanUtils.copyProperties(reqDTO, user);
             user = userMapper.selectByUsername(user);
             if(null == user){
-                return GlobalResultDTO.FAIL(UserResultEnum.USER_NULL.getMsg());
+                return GlobalResultDTO.FAIL(UserResultEnums.USER_NULL.getMsg());
             }else{
                 UserResDTO resDTO = new UserResDTO();
                 BeanUtils.copyProperties(user, resDTO);
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             }
             return GlobalResultDTO.SUCCESS();
         }catch(DuplicateKeyException e){
-            return GlobalResultDTO.FAIL(UserResultEnum.USERNAME_EXIST.getMsg());
+            return GlobalResultDTO.FAIL(UserResultEnums.USERNAME_EXIST.getMsg());
         }catch (MyException e){
             return GlobalResultDTO.FAIL(e.getMessage());
         }
@@ -133,13 +133,13 @@ public class UserServiceImpl implements UserService {
      */
     private void registerVerify(UserReqDTO reqDTO) throws MyException  {
         if(StringUtils.isBlank(reqDTO.getUsername())){
-            throw new MyException(UserResultEnum.USERNAME_NULL.getMsg());
+            throw new MyException(UserResultEnums.USERNAME_NULL.getMsg());
         }else if(StringUtils.isBlank(reqDTO.getPassword())) {
-            throw new MyException(UserResultEnum.PASSWORD_NULL.getMsg());
+            throw new MyException(UserResultEnums.PASSWORD_NULL.getMsg());
         }else if(StringUtils.isBlank(reqDTO.getPasswordRepeat())){
-            throw new MyException(UserResultEnum.PASSWORD_REPEAT_NULL.getMsg());
+            throw new MyException(UserResultEnums.PASSWORD_REPEAT_NULL.getMsg());
         }else if(!reqDTO.getPassword().equals(reqDTO.getPasswordRepeat())){
-            throw new MyException(UserResultEnum.PASSWORD_REPEAT_NOT_MATCH.getMsg());
+            throw new MyException(UserResultEnums.PASSWORD_REPEAT_NOT_MATCH.getMsg());
         }
         //注册验证码验证
 //            GlobalResultDTO resultDTO = checkCodeVerify(reqDTO, true, RedisPrefixEnums.REGISTER_MESSAGE.getCode());

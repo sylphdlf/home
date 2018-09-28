@@ -8,11 +8,10 @@ import com.dlf.common.utils.CompareUtils;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.RedisPrefixEnums;
-import com.dlf.model.enums.user.OrgResultEnum;
+import com.dlf.model.enums.user.OrgResultEnums;
 import com.dlf.model.mapper.OrganizationMapper2;
 import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.po.Organization;
-import com.dlf.model.po.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -157,7 +156,7 @@ public class OrgServiceImpl implements OrgService {
         BeanUtils.copyProperties(reqDTO, organization);
         list = organizationMapper.getTreeNodeByParams(organization);
         if(StringUtils.isBlank(reqDTO.getParentCode()) && CollectionUtils.isEmpty(list)){
-            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
+            return GlobalResultDTO.FAIL(OrgResultEnums.ORG_TREE_EMPTY.getCode(), OrgResultEnums.ORG_TREE_EMPTY.getMsg());
         }else{
             return new GlobalResultDTO(list);
         }
@@ -181,7 +180,7 @@ public class OrgServiceImpl implements OrgService {
 //            return new GlobalResultDTO(treeNode);
 //        }else{
 //            //无节点数据
-//            return GlobalResultDTO.FAIL(OrgResultEnum.ORG_TREE_EMPTY.getCode(), OrgResultEnum.ORG_TREE_EMPTY.getMsg());
+//            return GlobalResultDTO.FAIL(OrgResultEnums.ORG_TREE_EMPTY.getCode(), OrgResultEnums.ORG_TREE_EMPTY.getMsg());
 //        }
     }
     /**

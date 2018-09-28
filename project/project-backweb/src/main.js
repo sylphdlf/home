@@ -48,6 +48,19 @@ Vue.prototype.msgFail = function(msg){
         });
     }
 };
+Vue.prototype.msgWarn = function(msg){
+    if(msg === "" || msg === undefined){
+        this.$message({
+            message: '提示',
+            type: 'warning'
+        });
+    }else{
+        this.$message({
+            message: msg,
+            type: 'warning'
+        });
+    }
+};
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     if(to.meta.permission){

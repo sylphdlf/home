@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.ContactsMapper2">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.Contacts">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="account_bank" jdbcType="VARCHAR" property="accountBank" />
+    <result column="account_card" jdbcType="VARCHAR" property="accountCard" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="invoice_type" jdbcType="INTEGER" property="invoiceType" />
+    <result column="offen_send" jdbcType="VARCHAR" property="offenSend" />
+    <result column="offen_package" jdbcType="VARCHAR" property="offenPackage" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+    <sql id="Base_Column_List">
+        id, code, name, type, telephone, mobile, address, account_bank, account_card, account_name,
+        invoice_type, often_send, often_package, pay_type, remarks, create_time, update_time,
+        create_user_id, update_user_id, is_deleted
+    </sql>
+  <sql id="Base_Visible_List">
+    id, code, name, type, telephone, mobile, address, account_bank AS accountBank, account_card AS accountCard, account_name AS accountName,
+    invoice_type AS invoiceType, often_send AS oftenSend, often_package AS oftenPackage, pay_type AS payType, remarks, create_time AS createTime
+  </sql>
+  <select id="queryListByParams" parameterType="com.dlf.model.dto.tms.ContactsSearchDTO" resultType="com.dlf.model.dto.tms.ContactsDTO">
+    SELECT
+    <include refid="Base_Visible_List"/>
+    FROM t_contacts WHERE 1=1
+    <if test="name != null and name != ''">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null and type != ''">
+      and type = #{type,jdbcType=INTEGER}
+    </if>
+    and is_deleted = 0
+  </select>
+  <update id="deleteSoft" parameterType="com.dlf.model.po.Contacts">
+    UPDATE t_contacts SET
+      is_deleted = 1,
+      update_time = #{updateTime, jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId, jdbcType=BIGINT}
+    WHERE id = #{id, jdbcType=BIGINT}
+  </update>
+</mapper>

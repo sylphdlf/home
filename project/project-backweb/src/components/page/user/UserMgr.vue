@@ -19,7 +19,11 @@
                 <el-table-column prop="realName" label="真实姓名"></el-table-column>
                 <el-table-column prop="mobile" label="手机"></el-table-column>
                 <el-table-column prop="telephone" label="座机"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间">
+                    <template slot-scope="scope">
+                        {{createTime | dateTimeFilter}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button size="small"
@@ -129,8 +133,8 @@
                 this.is_search = true;
                 //清空数据
                 if(this.select_word === ""){
-                    this.searchForm.mobile = ""
-                    this.searchForm.username = ""
+                    this.searchForm.mobile = "";
+                    this.searchForm.username = "";
                 }
                 //正则判断是否是手机
                 let rex = /^1[3456789]\d{9}$/;
@@ -143,13 +147,6 @@
                     this.searchForm.username = this.select_word;
                 }
                 this.getData();
-            },
-            dateFormat:function(row, column) {
-                let date = row.createTime;
-                if (date === undefined) {
-                    return "";
-                }
-                return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
             filterTag(value, row) {
                 return row.tag === value;

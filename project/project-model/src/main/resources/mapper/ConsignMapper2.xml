@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.ConsignMapper2">
+    <resultMap id="BaseResultMap" type="com.dlf.model.po.Consign">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="consign_code" jdbcType="VARCHAR" property="consignCode" />
+        <result column="consignor_id" jdbcType="BIGINT" property="consignorId" />
+        <result column="consignee_id" jdbcType="BIGINT" property="consigneeId" />
+        <result column="vehicle_id" jdbcType="BIGINT" property="vehicleId" />
+        <result column="loading_place" jdbcType="VARCHAR" property="loadingPlace" />
+        <result column="vehicle_leave_time" jdbcType="TIMESTAMP" property="vehicleLeaveTime" />
+        <result column="cargo_leave_time" jdbcType="TIMESTAMP" property="cargoLeaveTime" />
+        <result column="expected_arrive_time" jdbcType="TIMESTAMP" property="expectedArriveTime" />
+        <result column="cargo_package_time" jdbcType="TIMESTAMP" property="cargoPackageTime" />
+        <result column="pay_type" jdbcType="INTEGER" property="payType" />
+        <result column="transport_type" jdbcType="INTEGER" property="transportType" />
+        <result column="receipt_type" jdbcType="INTEGER" property="receiptType" />
+        <result column="delivery_type" jdbcType="INTEGER" property="deliveryType" />
+        <result column="basic_price" jdbcType="DECIMAL" property="basicPrice" />
+        <result column="vehicle_price" jdbcType="DECIMAL" property="vehiclePrice" />
+        <result column="pay_now" jdbcType="DECIMAL" property="payNow" />
+        <result column="pay_delivery" jdbcType="DECIMAL" property="payDelivery" />
+        <result column="pay_receipt" jdbcType="DECIMAL" property="payReceipt" />
+        <result column="pay_monthly" jdbcType="DECIMAL" property="payMonthly" />
+        <result column="pay_account" jdbcType="DECIMAL" property="payAccount" />
+        <result column="pay_total" jdbcType="DECIMAL" property="payTotal" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, consign_code, departure, destination, consignor_id, consignee_id, vehicle_id,
+        product_id, loading_place, vehicle_leave_time, cargo_leave_time, expected_arrive_time,
+        cargo_package_time, pay_type, transport_type, receipt_type, delivery_type, basic_price,
+        vehicle_price, pay_now, pay_delivery, pay_receipt, pay_monthly, pay_account, pay_total,
+        status, remarks, create_time, update_time, create_user_id, update_user_id, is_deleted
+    </sql>
+    <sql id="Base_Visible_List">
+        id, consign_code, departure, destination, consignor_id, consignee_id, vehicle_id,
+        product_id, loading_place, vehicle_leave_time, cargo_leave_time, expected_arrive_time,
+        cargo_package_time, pay_type, transport_type, receipt_type, delivery_type, basic_price,
+        vehicle_price, pay_now, pay_delivery, pay_receipt, pay_monthly, pay_account, pay_total,
+        status, remarks, create_time
+    </sql>
+    <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Consign">
+        insert into t_consign (id, consign_code, departure,
+        destination, consignor_id, consignee_id,
+        vehicle_id, product_id, loading_place,
+        vehicle_leave_time, cargo_leave_time, expected_arrive_time,
+        cargo_package_time, pay_type, transport_type,
+        receipt_type, delivery_type, basic_price,
+        vehicle_price, pay_now, pay_delivery,
+        pay_receipt, pay_monthly, pay_account,
+        pay_total, status, remarks,
+        create_time, update_time, create_user_id,
+        update_user_id, is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{consignCode,jdbcType=VARCHAR}, #{departure,jdbcType=VARCHAR},
+        #{destination,jdbcType=VARCHAR}, #{consignorId,jdbcType=BIGINT}, #{consigneeId,jdbcType=BIGINT},
+        #{vehicleId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{loadingPlace,jdbcType=VARCHAR},
+        #{vehicleLeaveTime,jdbcType=TIMESTAMP}, #{cargoLeaveTime,jdbcType=TIMESTAMP}, #{expectedArriveTime,jdbcType=TIMESTAMP},
+        #{cargoPackageTime,jdbcType=TIMESTAMP}, #{payType,jdbcType=INTEGER}, #{transportType,jdbcType=INTEGER},
+        #{receiptType,jdbcType=INTEGER}, #{deliveryType,jdbcType=INTEGER}, #{basicPrice,jdbcType=DECIMAL},
+        #{vehiclePrice,jdbcType=DECIMAL}, #{payNow,jdbcType=DECIMAL}, #{payDelivery,jdbcType=DECIMAL},
+        #{payReceipt,jdbcType=DECIMAL}, #{payMonthly,jdbcType=DECIMAL}, #{payAccount,jdbcType=DECIMAL},
+        #{payTotal,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT},
+        #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="selectByPrimaryKeyByUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_consign
+        where id = #{id,jdbcType=BIGINT} and createUserId = #{createUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryListByParams" parameterType="com.dlf.model.dto.tms.ConsignSearchDTO" resultType="com.dlf.model.dto.tms.ConsignDTO">
+        SELECT c.id AS consignId, c.consign_code AS consignCode, c.departure AS departure, c.destination AS destination, c.consignor_id AS consignorId, c.consignee_id AS consigneeId, c.vehicle_id AS vehicleId,
+        c.product_id AS productId, c.loading_place AS loadingPlace, c.vehicle_leave_time AS vehicleLeaveTime, c.cargo_leave_time AS cargoLeaveTime,
+        c.expected_arrive_time AS expectedArriveTime , c.cargo_package_time AS cargoPackageTime, c.pay_type AS payType, c.transport_type AS transpostType,
+        c.receipt_type AS receiptType, c.delivery_type AS deliveryType, c.basic_price AS basicPrice, c.vehicle_price AS vehiclePrice, c.pay_now AS payNow,
+        c.pay_delivery AS payDelivery, c.pay_receipt AS payReceipt, c.pay_monthly AS payMonthly, c.pay_account AS payAccount, c.pay_total AS payTotal, c.status AS status,
+        c.create_time AS createTime,
+        c1.name AS consignorName, c1.telephone AS consignorTel, c1.mobile AS consignorMobile, c1.address AS consignorAddr,
+        c2.name AS consigneeName, c2.telephone AS consigneeTel, c2.mobile AS consigneeMobile, c2.address AS consigneeAddr,
+        v.vehicle_number AS vehicleNumber, v.driver_name AS driverName, v.driver_mobile AS driverMobile,
+        p.name AS productName, p.type AS productType, p.packaging AS productPackaging, p.volume AS productVolume, p.weight AS productWeight,
+        p.price AS productPrice, p.length AS productLength, p.width AS productWidth, p.height AS productHeight, p.remarks AS productRemarks,
+        s.count AS stockCount, s.volume AS stockVolume, s.weight AS stockWeight, s.price AS stockPrice
+        FROM t_consign c
+        LEFT JOIN t_contacts c1 ON c.consignor_id = c1.id
+        LEFT JOIN t_contacts c2 ON c.consignee_id = c2.id
+        LEFT JOIN t_vehicle v ON c.vehicle_id = v.id
+        LEFT JOIN t_product p ON c.product_id = p.id
+        LEFT JOIN t_stock s ON c.product_id = s.product_id
+        where 1=1
+        <if test="status != null and status != ''">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        and c.is_deleted = 0
+    </select>
+
+    <select id="queryDetailListByParams" parameterType="com.dlf.model.dto.tms.ConsignSearchDTO" resultType="com.dlf.model.dto.tms.ConsignDTO">
+        SELECT cd.id, cd.consign_id AS consignId, cd.product_name AS  productName, cd.product_type AS productType, cd.product_count AS productCount, cd.product_package AS productPackage,
+        cd.product_volume AS productVolume, cd.product_weight AS productWeight, cd.product_price AS prodcutPrice, cd.product_length AS productLength, cd.product_width AS productWidth,
+        cd.product_height AS productHeight, cd.remarks, cd.create_time AS createTime,
+        c.consign_code AS consignCode, c.departure, c.destination, c.consignor_id AS consignorId, c.consignor_name AS consignorName, c.consignor_tel AS consignorTel,
+        c.consignor_mobile AS consignorMobile, c.consignor_addr AS consignorAddr, c.consignee_id AS consigneeId, c.consignee_name AS consigneeName,
+        c.consignee_tel AS consigneeTel, c.consignee_mobile AS consigneeMobile, c.consignee_addr AS consigneeAddr, c.vehicle_id AS vehicleId,
+        c.loading_place AS loadingPlace, c.vehicle_leave_time AS vehicleLeaveTime, c.cargo_leave_time AS cargoLeaveTime,
+        c.expected_arrive_time AS expectedArriveTime, c.cargo_package_time AS cargoPackageTime, c.pay_type AS payType,
+        c.transport_type AS transportType, c.receipt_type AS receiptType, c.delivery_type AS deliveryType, c.basic_price AS basicPrice,
+        c.vehicle_price AS vehiclePrice, c.pay_now AS payNow, c.pay_delivery AS payDelivery, c.pay_receipt AS payReceipt,
+        c.pay_monthly AS payMonthly, c.pay_account AS payAccount, c.pay_total AS payTotal, c.status
+        FROM t_consign_detail cd LEFT JOIN t_consign c ON cd.consign_id = c.id
+        where 1=1
+        <if test="status != null and status != ''">
+            and c.status = #{status,jdbcType=INTEGER}
+        </if>
+        and cd.is_deleted = 0 and c.is_deleted = 0
+    </select>
+</mapper>

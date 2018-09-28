@@ -1,5 +1,7 @@
 package com.dlf.model.mapper;
 
+import com.dlf.model.po.Consign;
+
 import java.util.List;
 
 public interface BaseMapper<T> {
@@ -16,4 +18,5 @@ public interface BaseMapper<T> {
      * @return
      */
     List queryListByParams(T t);
+
 }

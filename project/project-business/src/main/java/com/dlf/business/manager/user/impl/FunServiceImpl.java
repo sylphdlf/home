@@ -6,7 +6,7 @@ import com.dlf.business.manager.user.FunService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.RedisPrefixEnums;
-import com.dlf.model.enums.user.FunctionEnum;
+import com.dlf.model.enums.user.FunctionEnums;
 import com.dlf.model.mapper.FunctionMapper2;
 import com.dlf.model.po.Function;
 import com.github.pagehelper.PageHelper;
@@ -48,7 +48,7 @@ public class FunServiceImpl implements FunService {
     public GlobalResultDTO queryMenuByParams(FunSearchDTO searchDTO) {
         Function function = new Function();
         BeanUtils.copyProperties(searchDTO, function);
-        function.setType(FunctionEnum.function_type_1.getCode());
+        function.setType(FunctionEnums.function_type_1.getCode());
         PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
         List<FunDTO> list = functionMapper.queryListByParams(function);
         PageInfo<FunDTO> pageInfo = new PageInfo<FunDTO>(list);

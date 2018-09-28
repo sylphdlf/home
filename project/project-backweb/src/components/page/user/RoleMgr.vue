@@ -16,7 +16,11 @@
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="code" label="角色编号"></el-table-column>
                 <el-table-column prop="name" label="角色名称"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间">
+                    <template slot-scope="scope">
+                        {{createTime | dateTimeFilter}}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="remarks" label="备注"></el-table-column>
                 <el-table-column label="操作" width="175">
                     <template slot-scope="scope">
@@ -139,14 +143,6 @@
             handleAdd(){
                 this.dialogData = {};
                 this.dialogFormVisible = true;
-            },
-            //日期格式化
-            dateFormat:function(row, column) {
-                let date = row.createTime;
-                if (date === undefined) {
-                    return "";
-                }
-                return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
             filterTag(value, row) {
                 return row.tag === value;
