@@ -1,7 +1,5 @@
 package com.dlf.model.mapper;
 
-import com.dlf.model.po.Consign;
-
 import java.util.List;
 
 public interface BaseMapper<T> {

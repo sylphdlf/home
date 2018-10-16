@@ -10,10 +10,10 @@
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="用户名/手机号码" class="handle-input mr10" @keyup.enter.native="search"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" icon="search" @click="search">新增(todo)</el-button>
+                <el-button type="primary" icon="search" @click="add">新增</el-button>
                 <el-button type="primary" icon="search" @click="search">批量新增(todo)</el-button>
             </div>
-            <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border style="width: 100%">
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="username" label="用户名"></el-table-column>
                 <el-table-column prop="realName" label="真实姓名"></el-table-column>
@@ -67,10 +67,7 @@
             return {
                 url: this.$projectUrl + '/user/queryListByParams',
                 tableData: [],
-                multipleSelection: [],
                 select_word: '',
-                del_list: [],
-                is_search: false,
                 dataTotal:1,
                 dialogFormVisible: false,
                 searchForm: {
@@ -86,33 +83,11 @@
                     mobile: '',
                     telephone: ''
                 },
-                // formLabelWidth: '50px'
             }
         },
         created(){
             this.searchForm.pageNum = 1;
             this.getData();
-        },
-        computed: {
-            data(){
-                // return this.tableData.filter((d) => {
-                //     let is_del = false;
-                //     for (let i = 0; i < this.del_list.length; i++) {
-                //         if(d.name === this.del_list[i].name){
-                //             is_del = true;
-                //             break;
-                //         }
-                //     }
-                //     if(!is_del){
-                //         if(d.address.indexOf(this.select_cate) > -1 &&
-                //             (d.name.indexOf(this.select_word) > -1 ||
-                //             d.address.indexOf(this.select_word) > -1)
-                //         ){
-                //             return d;
-                //         }
-                //     }
-                // })
-            }
         },
         methods: {
             // 分页导航
@@ -130,7 +105,6 @@
                 })
             },
             search(){
-                this.is_search = true;
                 //清空数据
                 if(this.select_word === ""){
                     this.searchForm.mobile = "";
@@ -148,30 +122,14 @@
                 }
                 this.getData();
             },
-            filterTag(value, row) {
-                return row.tag === value;
+            add(){
+                this.dialogFormVisible = true;
             },
             handleEdit(index, row) {
                 // this.$message('编辑第'+(index+1)+'行');
                 this.dialogFormVisible = true;
                 this.userData = row;
             },
-            handleDelete(index, row) {
-                this.$message.error('删除第'+(index+1)+'行');
-            },
-            delAll(){
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                }
-                this.$message.error('删除了'+str);
-                this.multipleSelection = [];
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            }
         }
     }
 </script>

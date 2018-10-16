@@ -71,10 +71,23 @@ export default new Router({
                     path: '/sendoutMgr',
                     component: resolve => require(['../components/page/tms/SendoutMgr.vue'], resolve)
                 },
+                {
+                    path: '/sendoutMgr_local',
+                    component: resolve => require(['../components/page/tms/SendoutMgr_local.vue'], resolve)
+                },
+                {
+                    path: '/sendoutMgr_third',
+                    component: resolve => require(['../components/page/tms/sendoutMgr_third.vue'], resolve)
+                },
+                //车辆跟踪
+                {
+                    path: '/vehicleTrackMgr',
+                    component: resolve => require(['../components/page/tms/VehicleTrackMgr.vue'], resolve)
+                },
                 //库存管理
                 {
                     path: '/stockMgr',
-                    component: resolve => require(['../components/page/tms/stockMgr.vue'], resolve)
+                    component: resolve => require(['../components/page/tms/StockMgr.vue'], resolve)
                 },
 
 

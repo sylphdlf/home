@@ -91,8 +91,8 @@
                                 title: '外发管理'
                             },
                             {
-                                index: 'funMgr',
-                                title: '车辆跟踪(undo)'
+                                index: 'vehicleTrackMgr',
+                                title: '车辆跟踪'
                             },
                             {
                                 index: 'stockMgr',

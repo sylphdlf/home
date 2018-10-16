@@ -11,7 +11,9 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="search" @click="create">新增</el-button>
                 <el-button type="primary" icon="search" @click="sendoutLocal">本地外发</el-button>
-                <el-button type="primary" icon="search" @click="create">送出外发</el-button>
+                <el-button type="primary" icon="search" @click="sendoutThird">送出外发</el-button>
+                <el-button type="primary" icon="search" @click="signFor">签收</el-button>
+                <el-button type="primary" icon="search" @click="signFor">跟踪(TODO)</el-button>
             </div>
             <template>
             <el-table :data="tableData" border style="width: 100%">
@@ -40,20 +42,89 @@
                 <el-pagination @current-change ="handleCurrentChange" layout="prev, pager, next, total" :total="dataTotal"></el-pagination>
             </div>
         </div>
-        <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="25%">
-            <el-form :model="userData" label-width="80px">
-                <el-form-item label="用户名">
-                    <el-input v-model="userData.username" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="真实姓名">
-                    <el-input v-model="userData.realName"></el-input>
-                </el-form-item>
-                <el-form-item label="手机">
-                    <el-input v-model="userData.mobile"></el-input>
-                </el-form-item>
-                <el-form-item label="座机">
-                    <el-input v-model="userData.telephone"></el-input>
-                </el-form-item>
+        <el-dialog title="签收" :visible.sync="dialogFormVisible" width="50%">
+            <p>签收信息</p>
+            <hr style="margin-top:2px; color: #bbbbbb;"><br>
+            <el-form :model="userData" label-width="70px" :inline="true">
+                <div class="handle-box" align="center">
+                    <el-form-item label="签收日期">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="签收人">
+                        <el-input class="handle-input" v-model="userData.realName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号">
+                        <el-input class="handle-input" v-model="userData.mobile"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        <el-input class="handle-input" v-model="userData.telephone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="签收类型">
+                        <el-input class="handle-input" v-model="userData.telephone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input class="handle-input" v-model="userData.telephone"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="handle-box" align="center">
+                    <template>
+                        <el-checkbox v-model="checked1">发送短信（发货方）</el-checkbox>
+                        <el-checkbox v-model="checked2">发送短信（收货方）</el-checkbox>
+                    </template>
+                </div>
+                <p>运单信息</p>
+                <hr style="margin-top:2px; color: #bbbbbb;"><br>
+                <div class="handle-box" align="center">
+                    <el-form-item label="运单号">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="始发地">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="目的地">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="handle-box" align="center">
+                    <el-form-item label="发货方">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="收货方">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="到货日期">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="handle-box">
+                    <el-form-item label="运单日期">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                </div>
+                <p>中转信息</p>
+                <hr style="margin-top:2px; color: #bbbbbb;"><br>
+                <div class="handle-box" align="center">
+                    <el-form-item label="承运公司">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中转单号">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="本地电话">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="handle-box" align="center">
+                    <el-form-item label="提货电话">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="货物名称">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中转日期">
+                        <el-input class="handle-input" v-model="userData.username" :disabled="true"></el-input>
+                    </el-form-item>
+                </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -84,6 +155,8 @@
                     mobile: '',
                     telephone: ''
                 },
+                checked1:false,
+                checked2:false,
             }
         },
         created(){
@@ -116,11 +189,14 @@
             search(){
                 this.getData();
             },
-            create(){
-                this.$router.push('/consignMgr_add');
-            },
             sendoutLocal(){
-                this.$router.push('/sendout_local');
+                this.$router.push('/sendoutMgr_local');
+            },
+            sendoutThird(){
+                this.$router.push('/sendoutMgr_third');
+            },
+            signFor(){
+                this.dialogFormVisible = true;
             }
         }
     }
@@ -141,5 +217,13 @@
     margin-right: 0;
     margin-bottom: 0;
     width: 25%;
+}
+.handle-input{
+    width: 175px;
+    display: inline-block;
+}
+.handle-input-half{
+    width: 80px;
+    display: inline-block;
 }
 </style>
