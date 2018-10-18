@@ -6,13 +6,13 @@ import sys
 
 local = 'D:\\ftpLocal\\'  # 本地文件或目录，与远程一致，当前为windows目录格式，window目录中间需要使用双斜线
 port = 58422  # 端口
-username = 'deployer'  # 用户名
-password = 'deployer.123'  # 密码
+username = 'root'  # 用户名
+password = 'Dlf1989128'  # 密码
 # 服务器地址
 host_1 = "139.196.28.23"
-host_2 = "139.196.40.91"
+host_2 = ""
 host_list = [host_1, host_2]
-property_file_dict_local = local + "xiaoxiangfront.properties"
+# property_file_dict_local = local + "xiaoxiangfront.properties"
 
 
 def get_remote_tomcat_path(current_host, war_name, input_env):
