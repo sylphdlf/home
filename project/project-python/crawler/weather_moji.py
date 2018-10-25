@@ -20,7 +20,7 @@ from urllib import request
 # X-Powered-By-Anquanbao: MISS from pon-bj-mj-ib2
 import moji_html_parser
 
-req = request.Request('https://tianqi.moji.com/weather/china/shanghai/pudong-new-district')
+req = request.Request('https://tianqi.moji.com/weather/china/shanghai.html/pudong-new-district')
 # req = request.Request('https://tianqi.moji.com/weather/china/jiangxi/jiujiang')
 with request.urlopen(req) as f:
     # if f.status == 200:
