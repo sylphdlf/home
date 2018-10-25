@@ -1,7 +1,9 @@
 # encoding=utf-8
-from bs4 import BeautifulSoup
+import time
+
+# from bs4 import BeautifulSoup
 import random
-import requests
+# import requests
 
 
 # 获取天气预报url
@@ -73,11 +75,12 @@ def get_hours_temp(html_text):
 
 
 if __name__ == "__main__":
-    url = get_url_by_name("上海")
-    html = get_html_text(url)
-    data = get_7days_temp(html)
-    for line in data:
-        print(line)
+    # url = get_url_by_name("上海")
+    # html = get_html_text(url)
+    # data = get_7days_temp(html)
+    # for line in data:
+    #     print(line)
+    print(time.strftime("%Y-%m-%d", time.localtime()))
 
 
 

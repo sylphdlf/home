@@ -8,9 +8,11 @@ class MojiSpider(scrapy.Spider):
     allowed_domains = ["tianqi.moji.com"]
     start_urls = [
         "https://tianqi.moji.com/weather/china/shanghai/pudong-new-district",
+        "https://tianqi.moji.com/weather/china/jiangxi/jiujiang",
     ]
 
     def parse(self, response):
+        self.log('A response from %s just arrived!' % response.url)
         item = MojiItem()
         # 省市区
         addr_select = response.xpath('//div[@class="search_default"]/em/text()').extract()
@@ -40,8 +42,7 @@ class MojiSpider(scrapy.Spider):
         # 提示
         remarks_select = response.xpath('//div[@class="wea_tips clearfix"]/em/text()').extract()
         item['remarks'] = remarks_select[0]
-
-        print(item)
+        yield item
 
 
 

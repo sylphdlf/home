@@ -14,6 +14,11 @@ BOT_NAME = 'moji'
 SPIDER_MODULES = ['moji.spiders']
 NEWSPIDER_MODULE = 'moji.spiders'
 
+# MYSQL_HOST = '122.112.236.194'
+# MYSQL_PORT = '3306'
+# MYSQL_DBNAME = 'project'
+# MYSQL_USER = 'root'
+# MYSQL_PASSWD = 'root1989128'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'moji (+http://www.yourdomain.com)'
@@ -64,9 +69,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'moji.pipelines.MojiPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'moji.pipelines.MojiPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
