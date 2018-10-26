@@ -1,3 +1,4 @@
+# 此脚本需要在windows系统中双击执行
 # 1、登录服务器
 # 2、跳转到项目地址，执行git pull更新代码
 # 3、执行mvn clean install命令
