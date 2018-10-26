@@ -4,7 +4,6 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import json
 import time
 
 import pymysql as pymysql
@@ -30,11 +29,17 @@ class MojiPipeline(object):
         # 将爬取的信息保存到mysql
         try:
             data_update_time = time.strftime("%Y-%m-%d", time.localtime()) + " " + item['data_update_time'] + ":00"
+            # print(data_update_time)
+            # convert_time = time.strptime(data_update_time, "%Y-%m-%d %H:%M:%S")
+            # print(convert_time)
+            # time_stamp = time.mktime(convert_time)
+            # print(time_stamp)
             # 执行SQL语句
             self.cursor.execute("""insert into p_weather(country, province, city, weather, temperature, pm25, humidity, wind, data_update_time, remarks)
-                    value (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                                 (item['country'], item['province'], item['city'], item['weather'],
-                                 item['temperature'], item['pm25'], item['humidity'], item['wind'], time.mktime(data_update_time), item['remarks']))
+                                 item['temperature'], item['pm25'], item['humidity'], item['wind'],
+                                 data_update_time, item['remarks']))
             # 提交修改
             self.connect.commit()
         except Exception as error:
