@@ -8,9 +8,9 @@
 # 7、复制war包到webapps下,修改文件名
 # 8、启动tomcat
 import time
-
 import paramiko as paramiko
-#服务器
+import os
+# 服务器
 host = "122.112.236.194"
 # 端口
 port = 22
@@ -89,6 +89,8 @@ def kill_tomcat():
 # 5、备份当前war包
 def backup_war():
     global ssh
+    if not os.path.exists(project_tomcat_path + "/backup"):
+        os.makedirs(os.path.exists(project_tomcat_path + "/backup"))
     format_time = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     cmd_backup = "mv " + project_tomcat_path + "/webapps/" + target_war_name \
                  + " " + project_tomcat_path + "/backup/" + target_war_name + "." + format_time

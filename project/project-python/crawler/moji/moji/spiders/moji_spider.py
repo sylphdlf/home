@@ -30,7 +30,6 @@ class MojiSpider(scrapy.Spider):
         data_update_time_temp = conn.get("moji_data_update_time:" + response.url.rsplit("/", 1)[1])
         if data_update_time_temp is not None:
             data_update_time_temp = data_update_time_temp.decode()
-        print(data_update_time_temp)
         if data_update_time_temp == item['data_update_time']:
             return
         else:
