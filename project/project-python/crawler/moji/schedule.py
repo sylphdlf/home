@@ -4,7 +4,7 @@ import os
 
 def start_moji_crawl():
     os.system("scrapy crawl moji")
-    threading.Timer(5, start_moji_crawl).start()
+    threading.Timer(600, start_moji_crawl).start()
 
 
 if __name__ == '__main__':
