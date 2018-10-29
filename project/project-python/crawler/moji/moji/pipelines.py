@@ -45,7 +45,7 @@ class MojiPipeline(object):
         except Exception as error:
             # 出现错误时打印错误日志
             print(error)
-        # finally:
+        finally:
             # 关闭连接
-            # self.connect.close()
+            self.connect.close()
         return item
