@@ -11,13 +11,13 @@ import time
 import paramiko as paramiko
 import os
 # 服务器
-host = "122.112.236.194"
+host = ""
 # 端口
 port = 22
 # 用户名
 username = 'root'
 # 密码
-password = 'Dlf1989128'
+password = ''
 ssh = None
 # 项目地址
 project_root_path = "/data/office/project"
