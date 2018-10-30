@@ -28,7 +28,7 @@ class AmapPipeline(object):
         # 将爬取的信息保存到mysql
         try:
             self.cursor.execute("""insert into p_amap(search_code, origin, destination, waypoints, time_cost, distance, remarks)
-                    value (%s, %s, %s, %s, %s, %s)""",
+                    value (%s, %s, %s, %s, %s, %s, %s)""",
                                 (item['search_code'], item['origin'], item['destination'], item['waypoints'], item['time_cost'],
                                  item['distance'], item['remarks']))
             # 提交修改
@@ -36,7 +36,7 @@ class AmapPipeline(object):
         except Exception as error:
             # 出现错误时打印错误日志
             print(error)
-        finally:
+        # finally:
             # 关闭连接
-            self.connect.close()
+            # self.connect.close()
         return item
