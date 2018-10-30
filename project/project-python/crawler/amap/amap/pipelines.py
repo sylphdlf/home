@@ -27,9 +27,9 @@ class AmapPipeline(object):
     def process_item(self, item, spider):
         # 将爬取的信息保存到mysql
         try:
-            self.cursor.execute("""insert into p_amap(origin, destination, waypoints, time_cost, distance, remarks)
+            self.cursor.execute("""insert into p_amap(search_code, origin, destination, waypoints, time_cost, distance, remarks)
                     value (%s, %s, %s, %s, %s, %s)""",
-                                (item['origin'], item['destination'], item['waypoints'], item['time_cost'],
+                                (item['search_code'], item['origin'], item['destination'], item['waypoints'], item['time_cost'],
                                  item['distance'], item['remarks']))
             # 提交修改
             self.connect.commit()

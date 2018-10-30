@@ -10,6 +10,7 @@ import scrapy
 
 class AmapItem(scrapy.Item):
     # define the fields for your item here like:
+    search_code = scrapy.Field()
     time_cost = scrapy.Field()
     distance = scrapy.Field()
     origin = scrapy.Field()
