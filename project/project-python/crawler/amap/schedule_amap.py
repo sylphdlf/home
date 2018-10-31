@@ -25,7 +25,7 @@ def start_crawl():
     os.system("scrapy crawl amap")
 
 
-schedule.every().day.at("13:52").do(job_morning)
+schedule.every().day.at("13:56").do(job_morning)
 schedule.every().day.at("18:00").do(job_evening)
 
 
