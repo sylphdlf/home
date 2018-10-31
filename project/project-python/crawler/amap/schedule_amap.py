@@ -6,7 +6,7 @@ import schedule
 def job_morning():
     count = 0
     while count < 10:
-        print("schedule_amap:" + count)
+        print("schedule_amap_morning:" + str(count))
         start_crawl()
         count += 1
         time.sleep(60)
@@ -15,7 +15,7 @@ def job_morning():
 def job_evening():
     count = 0
     while count < 60:
-        print("schedule_amap:" + count)
+        print("schedule_amap_morning:" + str(count))
         start_crawl()
         count += 1
         time.sleep(60)
