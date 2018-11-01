@@ -4,7 +4,6 @@ import schedule
 
 
 def job_morning():
-
     count = 0
     while count < 120:
         try:
