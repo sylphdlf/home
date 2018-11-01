@@ -4,6 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import datetime
 import time
 
 import pymysql as pymysql
@@ -28,7 +29,11 @@ class MojiPipeline(object):
     def process_item(self, item, spider):
         # 将爬取的信息保存到mysql
         try:
-            data_update_time = time.strftime("%Y-%m-%d", time.localtime()) + " " + item['data_update_time'] + ":00"
+            data_update_time = datetime.datetime.now().strftime("%Y-%m-%d") + " " + item['data_update_time'] + ":00"
+            now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # 超过0点后更新，更新时间获取有问题, 需要天数-1
+            if data_update_time > now_time:
+                data_update_time = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d") + " " + item['data_update_time'] + ":00"
             # print(data_update_time)
             # convert_time = time.strptime(data_update_time, "%Y-%m-%d %H:%M:%S")
             # print(convert_time)
