@@ -1,12 +1,13 @@
-import threading
 import os
+import schedule
 
 
-def start_moji_crawl():
+def start_crawl():
     os.system("scrapy crawl moji")
-    threading.Timer(600, start_moji_crawl).start()
 
 
-if __name__ == '__main__':
-    print("开始执行定时任务 scrapy crawl moji")
-    start_moji_crawl()
+schedule.every(10).minutes.do(start_crawl)
+
+
+while True:
+    schedule.run_pending()
