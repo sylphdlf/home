@@ -32,7 +32,7 @@ def start_crawl():
     os.system("scrapy crawl amap")
 
 
-schedule.every().day.at("09:55").do(job_morning)
+schedule.every().day.at("07:00").do(job_morning)
 
 
 while True:
