@@ -15,6 +15,7 @@ def job_morning():
         except Exception as error:
             print(error)
 
+
 def job_evening():
     count = 0
     while count < 60:
@@ -31,7 +32,7 @@ def start_crawl():
     os.system("scrapy crawl amap")
 
 
-schedule.every().day.at("09:40").do(job_morning)
+schedule.every().day.at("09:51").do(job_morning)
 
 
 while True:
