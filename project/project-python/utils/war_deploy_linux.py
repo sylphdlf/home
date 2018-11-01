@@ -11,24 +11,24 @@ import time
 import paramiko as paramiko
 import os
 # 服务器
-host = ""
+host = "122.112.236.194"
 # 端口
 port = 22
 # 用户名
 username = 'root'
 # 密码
-password = ''
+password = 'Dlf1989128'
 ssh = None
 # 项目地址
-project_root_path = "/data/office/project"
+project_root_path = "/data/code/office/project"
 # tomcat地址
-project_tomcat_path = "/data/tomcat-8081"
+project_tomcat_path = "/data/tomcat/tomcat-9.0.12-8081"
 # war包原始名称
 source_war_name = "project-web-1.0-SNAPSHOT.war"
 # 项目war包名称
 target_war_name = "project-web.war"
 # 原包路径
-source_war_path = "/data/office/project/project-web/target/" + source_war_name
+source_war_path = "/data/code/office/project/project-web/target/" + source_war_name
 
 
 # 打印错误信息
@@ -89,8 +89,8 @@ def kill_tomcat():
 # 5、备份当前war包
 def backup_war():
     global ssh
-    if not os.path.exists(project_tomcat_path + "/backup"):
-        os.makedirs(os.path.exists(project_tomcat_path + "/backup"))
+    # if not os.path.exists(project_tomcat_path + "/backup"):
+    #     os.makedirs(os.path.exists(project_tomcat_path + "/backup"))
     format_time = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     cmd_backup = "mv " + project_tomcat_path + "/webapps/" + target_war_name \
                  + " " + project_tomcat_path + "/backup/" + target_war_name + "." + format_time
