@@ -36,4 +36,5 @@ schedule.every().day.at("07:00").do(job_morning)
 
 while True:
     schedule.run_pending()
-
+    # 不加的话CPU占用率100%
+    time.sleep(0.1)
