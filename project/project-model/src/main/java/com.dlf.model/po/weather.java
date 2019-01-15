@@ -2,7 +2,7 @@ package com.dlf.model.po;
 
 import java.util.Date;
 
-public class weather {
+public class Weather {
     private Long id;
 
     private String country;
@@ -11,25 +11,21 @@ public class weather {
 
     private String city;
 
-    private String weatherCurrent;
+    private String weather;
 
-    private String weatherWholeDay;
+    private Integer temperature;
 
-    private Integer tempCurrent;
-
-    private Integer tempMax;
-
-    private Integer tempMin;
+    private Integer pm25;
 
     private Integer humidity;
 
     private String wind;
 
-    private Date websiteUpdateTime;
+    private Date dataUpdateTime;
 
     private Date createTime;
 
-    private String remark;
+    private String remarks;
 
     private Boolean isDeleted;
 
@@ -65,44 +61,28 @@ public class weather {
         this.city = city == null ? null : city.trim();
     }
 
-    public String getWeatherCurrent() {
-        return weatherCurrent;
+    public String getWeather() {
+        return weather;
     }
 
-    public void setWeatherCurrent(String weatherCurrent) {
-        this.weatherCurrent = weatherCurrent == null ? null : weatherCurrent.trim();
+    public void setWeather(String weather) {
+        this.weather = weather == null ? null : weather.trim();
     }
 
-    public String getWeatherWholeDay() {
-        return weatherWholeDay;
+    public Integer getTemperature() {
+        return temperature;
     }
 
-    public void setWeatherWholeDay(String weatherWholeDay) {
-        this.weatherWholeDay = weatherWholeDay == null ? null : weatherWholeDay.trim();
+    public void setTemperature(Integer temperature) {
+        this.temperature = temperature;
     }
 
-    public Integer getTempCurrent() {
-        return tempCurrent;
+    public Integer getPm25() {
+        return pm25;
     }
 
-    public void setTempCurrent(Integer tempCurrent) {
-        this.tempCurrent = tempCurrent;
-    }
-
-    public Integer getTempMax() {
-        return tempMax;
-    }
-
-    public void setTempMax(Integer tempMax) {
-        this.tempMax = tempMax;
-    }
-
-    public Integer getTempMin() {
-        return tempMin;
-    }
-
-    public void setTempMin(Integer tempMin) {
-        this.tempMin = tempMin;
+    public void setPm25(Integer pm25) {
+        this.pm25 = pm25;
     }
 
     public Integer getHumidity() {
@@ -121,12 +101,12 @@ public class weather {
         this.wind = wind == null ? null : wind.trim();
     }
 
-    public Date getWebsiteUpdateTime() {
-        return websiteUpdateTime;
+    public Date getDataUpdateTime() {
+        return dataUpdateTime;
     }
 
-    public void setWebsiteUpdateTime(Date websiteUpdateTime) {
-        this.websiteUpdateTime = websiteUpdateTime;
+    public void setDataUpdateTime(Date dataUpdateTime) {
+        this.dataUpdateTime = dataUpdateTime;
     }
 
     public Date getCreateTime() {
@@ -137,12 +117,12 @@ public class weather {
         this.createTime = createTime;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
     }
 
     public Boolean getIsDeleted() {

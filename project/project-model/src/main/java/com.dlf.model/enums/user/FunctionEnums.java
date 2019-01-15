@@ -4,7 +4,9 @@ public enum FunctionEnums {
 
     function_type_1(1,"菜单"),
     function_type_2(2,"按钮"),
-    function_type_3(2,"资源"),
+    function_type_3(3,"资源"),
+    function_level_1(1,"一级菜单"),
+    function_level_2(2,"二级菜单"),
     ;
 
     private Integer code;

@@ -15,7 +15,7 @@ export default new Router({
             children:[
                 {
                     path: '/',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)
+                    component: resolve => require(['../components/page/dashboard/WeatherChart_bak.vue'], resolve)
                 },
                 {
                     path: '/userMgr',
@@ -32,6 +32,11 @@ export default new Router({
                 {
                     path: '/funMgr',
                     component: resolve => require(['../components/page/user/FunMgr.vue'], resolve)
+                },
+                //用户监控
+                {
+                    path: '/userWatchMgr',
+                    component: resolve => require(['../components/page/user/UserWatchMgr.vue'], resolve)
                 },
                 //联系人管理
                 {
@@ -77,7 +82,7 @@ export default new Router({
                 },
                 {
                     path: '/sendoutMgr_third',
-                    component: resolve => require(['../components/page/tms/sendoutMgr_third.vue'], resolve)
+                    component: resolve => require(['../components/page/tms/SendoutMgr_third.vue'], resolve)
                 },
                 //车辆跟踪
                 {
@@ -91,6 +96,10 @@ export default new Router({
                 },
 
 
+                {
+                    path: '/stockListMgr',
+                    component: resolve => require(['../components/page/stock/StockListMgr.vue'], resolve)
+                },
                 {
                     path: '/table',
                     component: resolve => require(['../components/page/BaseTable.vue'], resolve)
@@ -116,13 +125,18 @@ export default new Router({
                 },
                 {
                     // 图片上传组件
-                    path: '/upload',
-                    component: resolve => require(['../components/page/Upload.vue'], resolve)
+                    path: '/fileMgr',
+                    component: resolve => require(['../components/page/file/FileMgr.vue'], resolve)
                 },
                 {
                     // vue-schart组件
-                    path: '/charts',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)
+                    path: '/weatherChart',
+                    component: resolve => require(['../components/page/dashboard/WeatherChart.vue'], resolve)
+                },
+                {
+                    // vue-schart组件
+                    path: '/trafficChart',
+                    component: resolve => require(['../components/page/dashboard/TrafficChart.vue'], resolve)
                 },
                 {
                     // 拖拽列表组件

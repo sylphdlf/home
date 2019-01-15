@@ -84,7 +84,10 @@
                     <el-input v-model="dialogData.oftenPackage"></el-input>
                 </el-form-item>
                 <el-form-item prop="payType" label="结算方式" v-if="dialogData.type=='2'">
-                    <el-input v-model="dialogData.payType"></el-input>
+                    <el-select v-model="dialogData.payType">
+                        <el-option label="结算方式1" value="1"></el-option>
+                        <el-option label="结算方式2" value="2"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

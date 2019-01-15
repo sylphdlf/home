@@ -51,7 +51,7 @@ public class RegisterController {
     @RequestMapping(value = "/messagePush", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO messagePush(@RequestBody MsgReqDTO msgReqDTO){
-        return messagePushService.messagePush(msgReqDTO, RedisPrefixEnums.REGISTER_MESSAGE.getCode());
+        return messagePushService.messagePush(msgReqDTO, RedisPrefixEnums.REGISTER_MESSAGE_PRE.getCode());
     }
 
     /**
@@ -63,7 +63,7 @@ public class RegisterController {
     @RequestMapping(value = "/messagePushForPwd", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO messagePushForPwd(@RequestBody MsgReqDTO msgReqDTO){
-        return messagePushService.messagePush(msgReqDTO, RedisPrefixEnums.PASSWORD_MESSAGE.getCode());
+        return messagePushService.messagePush(msgReqDTO, RedisPrefixEnums.PASSWORD_MESSAGE_PRE.getCode());
     }
 
     /**
@@ -75,7 +75,7 @@ public class RegisterController {
     @RequestMapping(value = "/checkCodeVerify", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO checkCodeVerify(@RequestBody UserReqDTO reqDTO){
-        return userService.checkCodeVerify(reqDTO, false, RedisPrefixEnums.REGISTER_MESSAGE.getCode());
+        return userService.checkCodeVerify(reqDTO, false, RedisPrefixEnums.REGISTER_MESSAGE_PRE.getCode());
     }
 
     /**
@@ -87,7 +87,7 @@ public class RegisterController {
     @RequestMapping(value = "/checkCodeVerifyForPwd", method = RequestMethod.POST)
     @ResponseBody
     public GlobalResultDTO checkCodeVerifyForPwd(@RequestBody UserReqDTO reqDTO){
-        return userService.checkCodeVerify(reqDTO, false, RedisPrefixEnums.PASSWORD_MESSAGE.getCode());
+        return userService.checkCodeVerify(reqDTO, false, RedisPrefixEnums.PASSWORD_MESSAGE_PRE.getCode());
     }
     /**
      * 重置密码

@@ -15,6 +15,8 @@ public class RoleReqDTO extends BaseReqDTO {
     private String code;
     //角色名称
     private String name;
+
+    private Long orgId;
     //备注
     private String remarks;
 

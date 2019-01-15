@@ -44,12 +44,27 @@
     <select id="getTreeNodeByParams" resultType="com.dlf.model.dto.user.TreeNode"
             parameterType="com.dlf.model.po.Organization">
         SELECT
-        id, name, code, concat(name,'(',code,')') as label, parent_code as parent, level, remarks
+        id, name, code, concat(name,'(',code,')') as label, code AS value, parent_code as parent, level, remarks
         FROM u_organization WHERE 1=1
         <if test="parentCode != null and parentCode != ''">
             and parent_code = #{parentCode,jdbcType=VARCHAR}
         </if>
+        <if test="code != null and code != ''">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
         and is_deleted = 0 ORDER BY id ASC
+    </select>
+
+    <select id="countTreeNodeByParams" parameterType="com.dlf.model.po.Organization" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM u_organization WHERE 1=1
+        <if test="parentCode != null and parentCode != ''">
+            and parent_code = #{parentCode,jdbcType=VARCHAR}
+        </if>
+        <if test="code != null and code != ''">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
+        and is_deleted = 0
     </select>
 
     <insert id="insertWithIdReturn" parameterType="com.dlf.model.po.Organization">
@@ -84,4 +99,16 @@
             #{thisItem,jdbcType=BIGINT}
         </foreach>
     </delete>
+    <select id="queryListByParams" parameterType="com.dlf.model.po.Organization" resultType="com.dlf.model.po.Organization">
+        SELECT
+        id, name, code, concat(name,'(',code,')') as label, code AS value, parent_code as parent, level, remarks
+        FROM u_organization WHERE 1=1
+        <if test="parentCode != null and parentCode != ''">
+            and parent_code = #{parentCode,jdbcType=VARCHAR}
+        </if>
+        <if test="code != null and code != ''">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
+        and is_deleted = 0 ORDER BY id ASC
+    </select>
 </mapper>

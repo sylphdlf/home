@@ -58,6 +58,7 @@ public class PickupServiceImpl implements PickupService {
                         BeanUtils.copyProperties(thisDTO, detail);
                         pickupDetailMapper.insert(detail);
                     }
+                    return GlobalResultDTO.SUCCESS();
                 }else{
                     throw new MyException(GlobalResultEnum.FAIL.getCode(),GlobalResultEnum.FAIL.getMsg());
                 }

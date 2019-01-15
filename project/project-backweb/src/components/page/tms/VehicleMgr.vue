@@ -45,7 +45,7 @@
         </div>
         <el-dialog title="车辆信息" :visible.sync="dialogFormVisible" width="40%">
             <el-form :model="dialogData" :rules="dialogRules" ref="dialogData"  label-width="80px" size="mini" :inline="true">
-                <el-form-item prop="name" label="车牌号">
+                <el-form-item prop="" label="车牌号">
                     <el-input v-model="dialogData.vehicleNumber"></el-input>
                 </el-form-item>
                 <el-form-item prop="type" label="车型">
@@ -216,6 +216,7 @@
                     if(res.data.code === "0"){
                         this.msgSuccess();
                         this.dialogFormVisible = false;
+                        this.getData();
                     }
                 });
             },

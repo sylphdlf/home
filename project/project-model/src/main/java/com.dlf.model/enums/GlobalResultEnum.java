@@ -5,6 +5,7 @@ public enum GlobalResultEnum {
     SUCCESS("0","成功"),
     FAIL("-1","失败"),
     LOG_OUT("-2","未登录"),
+    CACHE("1","get data from cache")
     ;
 
     private String code;

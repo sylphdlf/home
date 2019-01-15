@@ -95,7 +95,7 @@
                 <el-input v-model="searchFormDriver.search" placeholder="姓名/电话/手机" class="handle-input mr10" @keyup.enter.native="driverSearch"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="driverSearch"></el-button>
             </div>
-            <el-table :data="driverData" highlight-current-row @current-change="selectDriver">
+            <el-table :data="driverData" highlight-current-row @current-change="selectDriver"  @row-dblclick="dbClickDriver">
                 <el-table-column property="vehicleNumber" label="车牌号"></el-table-column>
                 <el-table-column property="vehicleType" label="车型"></el-table-column>
                 <el-table-column label="长宽高">
@@ -237,6 +237,13 @@
                         return false;
                     }
                 });
+            },
+            dbClickDriver(row){
+                this.ruleForm.vehicleId = row.id;
+                this.ruleForm.driverName = row.driverName;
+                this.ruleForm.vehicleNumber = row.vehicleNumber;
+                this.ruleForm.driverMobile = row.driverMobile;
+                this.driverShow = false;
             }
         }
     }

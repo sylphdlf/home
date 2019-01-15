@@ -71,13 +71,13 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @param target
      */
     private void sendVerify(String target) throws MyException{
-        String checkCodeSendLimit = redisService.get(RedisPrefixEnums.SEND_LIMIT_PER_TIME.getCode() + target);
+        String checkCodeSendLimit = redisService.get(RedisPrefixEnums.SEND_LIMIT_PER_TIME_PRE.getCode() + target);
 //        String checkCodeMaxLimit = redisService.get(RedisPrefixEnums.SEND_LIMIT_MAX_TIME.getCode() + target);
         if(StringUtils.isNotBlank(checkCodeSendLimit)){
             throw new MyException("验证码发送间隔为" + SEND_LIMIT_BY_TIME + "秒");
         }else{
             //发送做1分钟的限制
-            redisService.put(RedisPrefixEnums.SEND_LIMIT_PER_TIME.getCode() + target, "true", SEND_LIMIT_BY_TIME);
+            redisService.put(RedisPrefixEnums.SEND_LIMIT_PER_TIME_PRE.getCode() + target, "true", SEND_LIMIT_BY_TIME);
 
         }
 //        if(StringUtils.isNotBlank(checkCodeMaxLimit) && Integer.parseInt(checkCodeMaxLimit) >5 ) {

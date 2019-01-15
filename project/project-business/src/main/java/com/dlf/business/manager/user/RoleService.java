@@ -1,6 +1,7 @@
 package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.dto.user.OrgReqDTO;
 import com.dlf.model.dto.user.RoleReqDTO;
 import com.dlf.model.dto.user.RoleSearchDTO;
 
@@ -26,4 +27,6 @@ public interface RoleService {
      * @return
      */
     GlobalResultDTO bindingFun(RoleReqDTO reqDTO);
+
+    GlobalResultDTO del(RoleReqDTO reqDTO);
 }

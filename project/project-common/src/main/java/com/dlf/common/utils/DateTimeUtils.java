@@ -59,4 +59,9 @@ public class DateTimeUtils {
     public static String getCurrentTimeStr(){
         return getCurrentTimeStr(DEFAULT_PATTERN);
     }
+
+    public static String timeFormat(Date date, String formatter){
+        SimpleDateFormat sdf = new SimpleDateFormat(formatter);
+        return sdf.format(date);
+    }
 }

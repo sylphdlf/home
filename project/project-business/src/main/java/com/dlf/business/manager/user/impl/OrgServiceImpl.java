@@ -4,6 +4,7 @@ import com.dlf.business.anno.ExecuteTimeAnno;
 import com.dlf.business.factory.OrgRolesFactory;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.OrgService;
+import com.dlf.common.utils.CodeGenerateUtils;
 import com.dlf.common.utils.CompareUtils;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
@@ -42,33 +43,17 @@ public class OrgServiceImpl implements OrgService {
     }
     @Override
     public GlobalResultDTO addOrgNode(OrgReqDTO reqDTO){
-//        for(int i=1;i<20;i++){
-//            Organization org = new Organization();
-//            org.setParentCode("1");
-//            org.setCode("1" + i);
-//            org.setName("child" + i);
-//            this.insert(org);
-//            for(int j=1;j<20;j++){
-//                org.setParentCode("1" + i);
-//                org.setCode("1" + i + j + "");
-//                org.setName("child" + i + j);
-//                this.insert(org);
-//                for(int k = 1;k<20;k++){
-//                    org.setParentCode("1" + i + j + "");
-//                    org.setCode("1" + i + j + k + "");
-//                    org.setName("child" + i + j + k);
-//                    this.insert(org);
-//                }
-//            }
-//        }
-//        return GlobalResultDTO.SUCCESS();
         try {
-            redisService.removeKey(RedisPrefixEnums.ORG_TREE_NODE.getCode());
             if(StringUtils.isBlank(reqDTO.getParentCode())){
                 reqDTO.setParentCode("0");
             }
+            //通过code查询组织
             Organization org = new Organization();
+            org.setParentCode(reqDTO.getParentCode());
+            int count = organizationMapper.countTreeNodeByParams(org);
+            //code自动生成，根据children个数并补全3位数
             BeanUtils.copyProperties(reqDTO, org);
+            org.setCode(reqDTO.getParentCode() + String.format("%02d", count + 1));
             organizationMapper.insertWithIdReturn(org);
             //只展示自定义字段
             OrgResDTO resDTO = new OrgResDTO();
@@ -96,6 +81,7 @@ public class OrgServiceImpl implements OrgService {
     public GlobalResultDTO getRolePageByOrg(OrgSearchDTO searchDTO) {
         RoleSearchDTO roleSearchDTO = new RoleSearchDTO();
         BeanUtils.copyProperties(searchDTO, roleSearchDTO);
+        roleSearchDTO.setOrgId(searchDTO.getId());
         PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
         List<RoleDTO> list = roleMapper.queryListByParams(roleSearchDTO);
         PageInfo<RoleDTO> pageInfo = new PageInfo<RoleDTO>(list);

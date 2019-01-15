@@ -16,16 +16,18 @@
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="code" label="角色编号"></el-table-column>
                 <el-table-column prop="name" label="角色名称"></el-table-column>
+                <el-table-column prop="orgName" label="所属组织"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间">
                     <template slot-scope="scope">
-                        {{createTime | dateTimeFilter}}
+                        {{scope.row.createTime | dateTimeFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="remarks" label="备注"></el-table-column>
                 <el-table-column label="操作" width="175">
                     <template slot-scope="scope">
-                        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
                         <el-button type="primary" size="small" @click="funTreeWin(scope.$index, scope.row)">绑定权限</el-button>
+                        <el-button type="warning" size="small" @click="del(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -44,6 +46,11 @@
                 </el-form-item>
                 <el-form-item label="角色编号" prop="code">
                     <el-input v-model="dialogData.code" @keyup.enter.native="submitForm('dialogData')"></el-input>
+                </el-form-item>
+                <el-form-item label="所属机构" prop="org">
+                    <el-input placeholder="请选择组织机构" v-model="dialogData.orgName" disabled>
+                        <el-button slot="append" icon="el-icon-search" @click="openOrgTreeWin"></el-button>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input type="textarea" v-model="dialogData.remarks"></el-input>
@@ -67,6 +74,23 @@
                 </div>
             </div>
         </el-dialog>
+        <el-dialog title="绑定组织" :visible.sync="dialogOrgTreeVisible" width="25%">
+            <div class="block">
+                <el-tree :data="dataOrgParse" show-checkbox node-key="id" ref="orgTree"
+                         :expand-on-click-node="false"
+                         :check-strictly="true"
+                         :highlight-current="true"
+                         :load="lazyNode" @check-change="checkChange" @node-click="nodeClick"
+                         lazy>
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ node.label }}</span>
+                </span>
+                </el-tree>
+                <div class="handle-box" align="center">
+                    <el-button type="primary" @click="bindingOrg">确认</el-button>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -78,15 +102,18 @@
                 roleAddUrl: this.$projectUrl + '/role/add',
                 funTreeUrl: this.$projectUrl + '/fun/getFunTree',
                 bindingFunUrl: this.$projectUrl + '/role/bindingFun',
-                dataParse: [],
+                orgTreeLazyUrl: this.$projectUrl + '/org/getOrgTreeLazy',
+                urlDel: this.$projectUrl + '/role/del',
+                dataParse: [],//权限树数据
+                dataOrgParse:[],//组织机构dialog中的数据
                 tableData: [],
                 multipleSelection: [],
                 select_word: '',
-                del_list: [],
                 is_search: false,
                 dataTotal:1,
                 dialogFormVisible: false,
                 dialogTreeVisible: false,
+                dialogOrgTreeVisible: false,
                 searchForm: {
                     name: '',
                     code: '',
@@ -95,6 +122,8 @@
                     id: '',
                     name: '',
                     code: '',
+                    orgId: '',
+                    orgName: ''
                 },
                 dialogRules: {
                     name: [
@@ -102,14 +131,20 @@
                     ],
                     code: [
                         { required: true, message: '请输入角色编号', trigger: 'blur' }
-                    ]
+                    ],
                 },
                 dialogTreeData:{
                     id: '',
                     roleId: '',
                     targetIds: [],
                     originalIds: [],//默认选中的key
-                }
+                },
+                orgTreeOptions:[],//组织机构树
+                treeReqForm: {
+                    id: "",
+                    code: "",
+                },
+                editCheckedId: '',
             }
         },
         created(){
@@ -143,6 +178,7 @@
             handleAdd(){
                 this.dialogData = {};
                 this.dialogFormVisible = true;
+                //加载组织机构一级树
             },
             filterTag(value, row) {
                 return row.tag === value;
@@ -173,6 +209,9 @@
                         return false;
                     }
                 });
+            },
+            openOrgTreeWin(){
+                this.dialogOrgTreeVisible = true;
             },
             //绑定权限
             bindingFun(){
@@ -205,6 +244,62 @@
                     }
                 });
             },
+            del(row){
+                this.$confirm('此操作将永久删除此角色，可能会导致某些用户无法访问某些菜单, 是否继续?', '提示', {
+                    cancelButtonText: '取消',
+                    confirmButtonText: '确定',
+                    type: 'warning'
+                }).then(() => {
+                    this.$axios.post(this.urlDel, {id:row.id}).then((res) => {
+                        if(res.data.code === "0"){
+                            this.getData();
+                            this.msgSuccess();
+                        }
+                    });
+                }).catch(() => {
+                    this.msgWarn("取消");
+                });
+            },
+            //懒加载树节点
+            lazyNode(node, resolve){
+                if(node.data.length === 0){
+                    this.treeReqForm.parentCode = '0';
+                }else{
+                    this.treeReqForm.parentCode = node.data.code;
+                }
+                this.$axios.post(this.orgTreeLazyUrl, this.treeReqForm).then(result =>{
+                    if(result.data.code === "0"){
+                        resolve(result.data.data);
+                        this.addRootBtn = false;
+                    }else if(result.data.code === "org_001"){//无节点，展示新增根节点按钮
+                        this.addRootBtn = true;
+                    }else{
+                        this.addRootBtn = false;
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
+            },
+            bindingOrg(){
+                let checkedNode = this.$refs.orgTree.getCheckedNodes();
+                this.dialogData.orgId = checkedNode[0].id;
+                this.dialogData.orgName = checkedNode[0].label;
+                this.dialogOrgTreeVisible = false;
+            },
+            checkChange(item, node, self){
+                if(node === true){
+                    this.editCheckedId = item.id;
+                    this.$refs.orgTree.setCheckedKeys([item.id])
+                }else {
+                    if(this.editCheckedId === item.id){
+                        this.$refs.orgTree.setCheckedKeys([item.id])
+                    }
+                }
+            },
+            nodeClick(item, node, self){
+                this.editCheckedId = item.id;
+                this.$refs.orgTree.setCheckedKeys([item.id]);
+            }
         }
     }
 </script>

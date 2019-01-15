@@ -32,6 +32,13 @@ public interface OrganizationMapper2 extends OrganizationMapper{
     List<TreeNode> getTreeNodeByParams(Organization organization);
 
     /**
+     * 通过传参获取节点数量
+     * @param organization
+     * @return
+     */
+    int countTreeNodeByParams(Organization organization);
+
+    /**
      * 新增并返回id
      * @param organization
      * @return

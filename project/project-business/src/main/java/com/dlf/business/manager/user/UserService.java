@@ -1,10 +1,7 @@
 package com.dlf.business.manager.user;
 
 import com.dlf.model.dto.GlobalResultDTO;
-import com.dlf.model.dto.user.FunDTO;
-import com.dlf.model.dto.user.RoleDTO;
-import com.dlf.model.dto.user.UserReqDTO;
-import com.dlf.model.dto.user.UserSearchDTO;
+import com.dlf.model.dto.user.*;
 
 import java.util.List;
 
@@ -64,4 +61,31 @@ public interface UserService {
      * @return
      */
     List<RoleDTO> getRoleListByUser(Long id);
+
+    /**
+     * 获取用户的角色
+     * @param searchDTO
+     * @return
+     */
+    GlobalResultDTO getRolePageByUser(UserSearchDTO searchDTO);
+
+    GlobalResultDTO bindingRole(UserReqDTO reqDTO);
+
+    GlobalResultDTO del(UserReqDTO reqDTO);
+
+    GlobalResultDTO bindingOrg(UserReqDTO reqDTO);
+
+    /**
+     * 查询在线用户
+     * @param searchDTO
+     * @return
+     */
+    GlobalResultDTO searchOnlineUsers(UserSearchDTO searchDTO);
+
+    /**
+     * 强制下线
+     * @param userReqDTO
+     * @return
+     */
+    GlobalResultDTO kickOffUser(UserReqDTO userReqDTO);
 }

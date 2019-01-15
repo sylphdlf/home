@@ -3,9 +3,14 @@ package com.dlf.model.dto.user;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class UserReqDTO {
+
+    private Long id;
     //用户名
     private String username;
     //密码值
@@ -26,4 +31,20 @@ public class UserReqDTO {
     private String checkCode;
     //备注
     private String remarks;
+
+    private String sessionId;
+
+    //绑定角色
+    //原始角色
+    private List<Long> originalIds;
+    //修改后的角色
+    private List<Long> changedIds;
+    //待新增的角色ID
+    private List<Long> toAddIds;
+    //待删除的角色ID
+    private List<Long> toDelIds;
+
+    private Date createTime;
+    private Long createUserId;
+    private Integer isDeleted;
 }

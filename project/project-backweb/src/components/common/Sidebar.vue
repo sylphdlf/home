@@ -35,6 +35,21 @@
                     //     index: 'readme',
                     //     title: '自述文件'
                     // },
+                    // {
+                    //     icon: 'el-icon-tickets',
+                    //     index: 'dashboard',
+                    //     title: 'dashboard',
+                    //     subs:[
+                    //         {
+                    //             index: 'weatherChart',
+                    //             title: '天气'
+                    //         },
+                    //         {
+                    //             index: 'trafficChart',
+                    //             title: '交通'
+                    //         },
+                    //     ]
+                    // },
                     {
                         icon: 'el-icon-tickets',
                         index: 'user',
@@ -55,6 +70,10 @@
                             {
                                 index: 'funMgr',
                                 title: '权限管理'
+                            },
+                            {
+                                index: 'userWatchMgr',
+                                title: '在线用户管理'
                             }
                         ]
                     },
@@ -98,73 +117,90 @@
                                 index: 'stockMgr',
                                 title: '库存管理'
                             },
-                            {
-                                index: 'funMgr',
-                                title: '送货上门(undo)'
-                            },
-                            {
-                                index: 'funMgr',
-                                title: '自提(undo)'
-                            },
-                            {
-                                index: 'funMgr',
-                                title: '到站确认(undo)'
-                            }
+                            // {
+                            //     index: 'funMgr',
+                            //     title: '送货上门(undo)'
+                            // },
+                            // {
+                            //     index: 'funMgr',
+                            //     title: '自提(undo)'
+                            // },
+                            // {
+                            //     index: 'funMgr',
+                            //     title: '到站确认(undo)'
+                            // }
                         ]
                     },
                     {
                         icon: 'el-icon-tickets',
-                        index: '2',
-                        title: '常用表格',
+                        index: 'file',
+                        title: '文件管理',
                         subs: [
                             {
-                                index: 'table',
-                                title: '基础表格'
+                                index: 'fileMgr',
+                                title: '文件列表'
                             },
-                            {
-                                index: 'datasource',
-                                title: 'datasource表格'
-                            }
                         ]
                     },
-                    {
-                        icon: 'el-icon-date',
-                        index: '3',
-                        title: '表单相关',
-                        subs: [
-                            {
-                                index: 'form',
-                                title: '基本表单'
-                            },
-                            {
-                                index: 'editor',
-                                title: '富文本编辑器'
-                            },
-                            {
-                                index: 'markdown',
-                                title: 'markdown编辑器'
-                            },
-                            {
-                                index: 'upload',
-                                title: '文件上传'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-star-on',
-                        index: 'charts',
-                        title: 'schart图表'
-                    },
-                    {
-                        icon: 'el-icon-rank',
-                        index: 'drag',
-                        title: '拖拽列表'
-                    },
+                    // {
+                    //     icon: 'el-icon-tickets',
+                    //     index: '2',
+                    //     title: '常用表格',
+                    //     subs: [
+                    //         {
+                    //             index: 'table',
+                    //             title: '基础表格'
+                    //         },
+                    //         {
+                    //             index: 'datasource',
+                    //             title: 'datasource表格'
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     icon: 'el-icon-date',
+                    //     index: '3',
+                    //     title: '表单相关',
+                    //     subs: [
+                    //         {
+                    //             index: 'form',
+                    //             title: '基本表单'
+                    //         },
+                    //         {
+                    //             index: 'editor',
+                    //             title: '富文本编辑器'
+                    //         },
+                    //         {
+                    //             index: 'markdown',
+                    //             title: 'markdown编辑器'
+                    //         },
+                    //         {
+                    //             index: 'upload',
+                    //             title: '文件上传'
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     icon: 'el-icon-rank',
+                    //     index: 'drag',
+                    //     title: '拖拽列表'
+                    // },
                     // {
                     //     icon: 'el-icon-warning',
                     //     index: 'permission',
                     //     title: '权限测试'
                     // }
+                    {
+                        icon: 'el-icon-tickets',
+                        index: 'stock',
+                        title: '监控',
+                        subs: [
+                            {
+                                index: 'stockListMgr',
+                                title: '列表'
+                            },
+                        ]
+                    }
                 ]
             }
         },

@@ -1,5 +1,11 @@
 package com.dlf.business.manager.redis;
 
+import org.apache.shiro.session.Session;
+import org.crazycake.shiro.exception.SerializationException;
+
+import java.util.List;
+import java.util.Set;
+
 public interface RedisService {
     /**
      * put
@@ -16,6 +22,7 @@ public interface RedisService {
      * @param timeoutSeconds
      */
     void put(String key, String value, Long timeoutSeconds);
+    void put(String key, Object value, Long timeoutSeconds);
 
     /**
      * StringRedisTemplate
@@ -26,4 +33,11 @@ public interface RedisService {
     Object getObj(String key);
 
     void removeKey(String key);
+
+    Session getSession(String key);
+
+    Set<String> getKeysByPrefix(String prefix);
+
+    void delKey(String key);
+
 }

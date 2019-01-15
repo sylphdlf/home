@@ -1,5 +1,6 @@
 package com.dlf.business.manager.user;
 
+import com.dlf.business.exception.MyException;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.FunReqDTO;
 import com.dlf.model.dto.user.FunSearchDTO;
@@ -17,7 +18,7 @@ public interface FunService {
      * 获取可以配置的所有菜单,用于权限菜单中的级联下拉框
      * @return
      */
-    GlobalResultDTO getDefaultMenu();
+//    GlobalResultDTO getDefaultMenu();
 
     /**
      * 获取可以配置的所有资源，用户权限菜单中的级联下拉框
@@ -45,4 +46,23 @@ public interface FunService {
      * @return
      */
     GlobalResultDTO getFunTree(FunReqDTO reqDTO);
+
+    /**
+     * 新增菜单
+     * @param reqDTO
+     * @return
+     */
+    GlobalResultDTO addMenu(FunReqDTO reqDTO);
+
+    /**
+     * 获取用户的菜单
+     * @return
+     */
+    GlobalResultDTO getMenu(FunReqDTO reqDTO);
+
+    /**
+     * 绑定菜单
+     * @return
+     */
+    GlobalResultDTO bindingMenuByUser(FunReqDTO reqDTO);
 }

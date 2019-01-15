@@ -28,12 +28,12 @@
                         <el-option key="3" label="不知道" value="3"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="orgCode">
-                    <el-select v-model="ruleForm.orgCode" placeholder="组织机构">
-                        <el-option key="1" label="银联总部" value="1"></el-option>
-                        <el-option key="2" label="银联上海" value="2"></el-option>
-                    </el-select>
-                </el-form-item>
+                <!--<el-form-item prop="orgCode">-->
+                    <!--<el-select v-model="ruleForm.orgCode" placeholder="组织机构">-->
+                        <!--<el-option key="1" label="银联总部" value="1"></el-option>-->
+                        <!--<el-option key="2" label="银联上海" value="2"></el-option>-->
+                    <!--</el-select>-->
+                <!--</el-form-item>-->
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">注册并登录</el-button>
                 </div>
@@ -90,7 +90,7 @@
                         //直接登录
                         this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
                             if(result.data.code === "0"){
-                                this.$router.push('/charts');
+                                this.$router.push('/weatherChart');
                             }else{
                                 this.$router.push('/login');
                             }

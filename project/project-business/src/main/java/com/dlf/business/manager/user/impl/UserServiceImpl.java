@@ -2,7 +2,10 @@ package com.dlf.business.manager.user.impl;
 
 import com.dlf.business.anno.ExecuteTimeAnno;
 import com.dlf.business.exception.MyException;
+import com.dlf.business.factory.OrgRolesFactory;
+import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.user.UserService;
+import com.dlf.common.utils.CompareUtils;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.user.*;
 import com.dlf.model.enums.GlobalResultEnum;
@@ -12,10 +15,15 @@ import com.dlf.model.mapper.FunctionMapper2;
 import com.dlf.model.mapper.RoleMapper2;
 import com.dlf.model.mapper.UserMapper2;
 import com.dlf.model.po.User;
+import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -23,12 +31,11 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private FunctionMapper2 functionMapper;
     @Resource
     private RoleMapper2 roleMapper;
+    @Resource
+    private RedisService redisService;
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -94,7 +103,7 @@ public class UserServiceImpl implements UserService {
     public GlobalResultDTO checkUsername(String username) {
         SetOperations<String, String> setOperations = stringRedisTemplate.opsForSet();
         //查缓存
-        Set<String> usernameSet = setOperations.members(RedisPrefixEnums.USER_NAME_COMPARE_LIST.getCode());
+        Set<String> usernameSet = setOperations.members(RedisPrefixEnums.USER_NAME_COMPARE_LIST_PRE.getCode());
         if(!CollectionUtils.isEmpty(usernameSet)){
             if(usernameSet.contains(username)){
                 return GlobalResultDTO.FAIL("用户名重复");
@@ -106,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 if(null != resultUser){
                     Set<String> thisSet = new HashSet<String>();
                     thisSet.add(resultUser.getUsername());
-                    setOperations.unionAndStore(RedisPrefixEnums.USER_NAME_COMPARE_LIST.getCode(), thisSet, RedisPrefixEnums.USER_NAME_COMPARE_LIST.getCode());
+                    setOperations.unionAndStore(RedisPrefixEnums.USER_NAME_COMPARE_LIST_PRE.getCode(), thisSet, RedisPrefixEnums.USER_NAME_COMPARE_LIST_PRE.getCode());
                 }
             }
         }else{
@@ -115,7 +124,7 @@ public class UserServiceImpl implements UserService {
             if(!CollectionUtils.isEmpty(usernames)){
                 //数据放入redis中
                 for(String thisSet:usernames){
-                    setOperations.add(RedisPrefixEnums.USER_NAME_COMPARE_LIST.getCode(), thisSet);
+                    setOperations.add(RedisPrefixEnums.USER_NAME_COMPARE_LIST_PRE.getCode(), thisSet);
                 }
                 if(usernames.contains(username)){
                     return GlobalResultDTO.FAIL("用户名重复");
@@ -179,7 +188,7 @@ public class UserServiceImpl implements UserService {
             return GlobalResultDTO.FAIL("密码不能为空");
         }
         //验证checkCode,并删除
-        GlobalResultDTO resultDTO = this.checkCodeVerify(reqDTO, true, RedisPrefixEnums.PASSWORD_MESSAGE.getCode());
+        GlobalResultDTO resultDTO = this.checkCodeVerify(reqDTO, true, RedisPrefixEnums.PASSWORD_MESSAGE_PRE.getCode());
         if(!resultDTO.isSuccess()){
             return resultDTO;
         }
@@ -220,5 +229,112 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<RoleDTO> getRoleListByUser(Long id) {
         return roleMapper.getRoleListByUser(id);
+    }
+
+    @Override
+    public GlobalResultDTO getRolePageByUser(UserSearchDTO searchDTO) {
+        RoleSearchDTO roleSearchDTO = new RoleSearchDTO();
+        BeanUtils.copyProperties(searchDTO, roleSearchDTO);
+        PageHelper.startPage(searchDTO.getPageNum(), searchDTO.getPageSize());
+        List<RoleDTO> list = roleMapper.queryListByParams(roleSearchDTO);
+        PageInfo<RoleDTO> pageInfo = new PageInfo<RoleDTO>(list);
+        if(!CollectionUtils.isEmpty(list)){
+            //获取组织下的所有角色id
+            Map<Long, RoleDTO> roleMap = OrgRolesFactory.getRoleMapByOrgId(searchDTO.getId());
+            if(CollectionUtils.isEmpty(OrgRolesFactory.getRoleMapByOrgId(searchDTO.getId()))){
+                //初始化组织对应角色列表
+                List<RoleDTO> roleList = userMapper.getRoleIdsByUserId(searchDTO.getId());
+                if(!CollectionUtils.isEmpty(roleList)){
+                    roleMap = OrgRolesFactory.initUserRoleMapAndGet(searchDTO.getId(), roleList);
+                }
+            }
+            //遍历返回值，查看参数是否有对应角色, 有则做标记
+            if(!CollectionUtils.isEmpty(roleMap)){
+                for(RoleDTO thisDTO : list){
+                    if(null != roleMap.get(thisDTO.getId())){
+                        thisDTO.setChecked(true);
+                    }
+                }
+            }
+        }
+        return new GlobalResultDTO(pageInfo);
+    }
+
+    @Override
+    @Transactional
+    @ExecuteTimeAnno
+    public GlobalResultDTO bindingRole(UserReqDTO reqDTO) {
+        try {
+            List<Long> originalIds = reqDTO.getOriginalIds();
+            List<Long> changedIds = reqDTO.getChangedIds();
+            //待新增的id
+            List<Long> toAddIds = new ArrayList<Long>();
+            //待删除的id
+            List<Long> toDelIds = new ArrayList<Long>();
+            CompareUtils.getAddAndDel(originalIds, changedIds, toAddIds, toDelIds);
+            //操作数据库
+            if(!CollectionUtils.isEmpty(toAddIds)){
+                reqDTO.setToAddIds(toAddIds);
+                userMapper.insertUserRoles(reqDTO);
+            }
+            if(!CollectionUtils.isEmpty(toDelIds)){
+                reqDTO.setToDelIds(toDelIds);
+                userMapper.delUserRoles(reqDTO);
+            }
+            //移除factory中缓存的数据
+            OrgRolesFactory.removeOrgId(reqDTO.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return GlobalResultDTO.SUCCESS();
+    }
+
+    @Override
+    @Transactional
+    public GlobalResultDTO del(UserReqDTO reqDTO) {
+        //删除用户
+        int count = userMapper.deleteByPrimaryKey(reqDTO.getId());
+        if(count == 1){
+            //删除用户对应的角色
+            roleMapper.delRoleByUserId(reqDTO.getId());
+            return GlobalResultDTO.SUCCESS();
+        }else{
+            return GlobalResultDTO.FAIL();
+        }
+    }
+
+    @Override
+    public GlobalResultDTO bindingOrg(UserReqDTO reqDTO) {
+        try {
+            User user = userMapper.selectByPrimaryKey(reqDTO.getId());
+            user.setOrgCode(reqDTO.getOrgCode());
+            userMapper.updateByPrimaryKey(user);
+            return GlobalResultDTO.SUCCESS();
+        }catch (Exception e){
+            return GlobalResultDTO.FAIL();
+        }
+    }
+
+    @Override
+    public GlobalResultDTO searchOnlineUsers(UserSearchDTO searchDTO) {
+        List<UserResDTO> result = new ArrayList<UserResDTO>();
+        Set<String> keys = redisService.getKeysByPrefix(new RedisSessionDAO().getKeyPrefix() + "*");
+        if(!CollectionUtils.isEmpty(keys)){
+            for(String key : keys){
+                Session session = redisService.getSession(key);
+                SimplePrincipalCollection spc = (SimplePrincipalCollection)session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                UserResDTO resDTO  = (UserResDTO)spc.getPrimaryPrincipal();
+                resDTO.setSessionId(key);
+                resDTO.setLastAccessTime(session.getLastAccessTime());
+                result.add(resDTO);
+            }
+        }
+        return new GlobalResultDTO(result);
+    }
+
+    @Override
+    public GlobalResultDTO kickOffUser(UserReqDTO userReqDTO) {
+        redisService.delKey(userReqDTO.getSessionId());
+        return GlobalResultDTO.SUCCESS();
     }
 }

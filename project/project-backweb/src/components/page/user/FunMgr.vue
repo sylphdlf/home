@@ -8,29 +8,37 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="select_word" placeholder="权限名称" class="handle-input mr10" @keyup.enter.native="search"></el-input>
-                <el-select v-model="select_level" placeholder="菜单层级" class="handle-select">
+                <el-input v-model="searchForm.name" placeholder="菜单名称" class="handle-input mr10" @keyup.enter.native="search"></el-input>
+                <el-select v-model="searchForm.level" placeholder="菜单层级" class="handle-select">
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="一级" value="1"></el-option>
                     <el-option label="二级" value="2"></el-option>
                 </el-select>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" icon="search" @click="handleSort()">一级菜单排序</el-button>
+                <!--<el-button type="primary" icon="search" @click="addMenuLevel1">新增一级菜单</el-button>-->
+                <!--<el-button type="primary" icon="search" @click="handleSort()">一级菜单排序</el-button>-->
             </div>
             <el-table :data="tableData" border style="width: 100%" highlight-current-row>
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="name" label="菜单名称"></el-table-column>
                 <el-table-column prop="code" label="菜单编号"></el-table-column>
-                <el-table-column prop="level" label="菜单层级"></el-table-column>
+                <el-table-column prop="level" label="菜单层级">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.level===1">一级菜单</span>
+                        <span v-if="scope.row.level===2">二级菜单</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="remarks" label="备注"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间">
                     <template slot-scope="scope">
-                        {{createTime | dateTimeFilter}}
+                        {{this.createTime | dateTimeFilter}}
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="200">
-                    <template slot-scope="scope" v-if="scope.row.level===2">
-                        <el-button type="primary" size="small" @click="addFunction(scope.$index, scope.row)">新增权限</el-button>
-                        <el-button size="small" @click="functionList(scope.$index, scope.row)">查看权限</el-button>
+                <el-table-column label="操作" width="180">
+                    <template slot-scope="scope">
+                        <!--<el-button type="primary" size="small" @click="addFunction(scope.$index, scope.row)">新增权限</el-button>-->
+                        <!--<el-button v-if="scope.row.level===1" type="primary" size="small" @click="showMenuListWin(scope.row)">绑定菜单</el-button>-->
+                        <el-button v-if="scope.row.level===2" type="primary" size="small" @click="functionList(scope.$index, scope.row)">查看权限</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -45,24 +53,18 @@
         <el-dialog title="权限信息" :visible.sync="dialogFormVisible" width="25%">
             <el-form :model="dialogData" label-width="80px" :rules="dialogRules" ref="dialogData">
                 <el-form-item label="权限名称" prop="name">
-                    <el-input v-model="dialogData.name" @keyup.enter.native="submitForm('dialogData')"></el-input>
+                    <el-input v-model="dialogData.name" @keyup.enter.native="submitForm('dialogData')" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="权限编号" prop="code">
-                    <el-input placeholder="请输入内容" v-model="dialogData.code">
+                <el-form-item label="权限编号">
+                    <el-input placeholder="" v-model="dialogData.code" disabled>
                         <template slot="prepend">{{dialogData.parentCode}}</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="权限类型" prop="type">
                     <el-select v-model="dialogData.type" placeholder="请选择" @change="dialogDataTypeChange">
-                        <el-option label="菜单" value="1"></el-option>
+                        <!--<el-option label="菜单" value="1"></el-option>-->
                         <!--<el-option label="按钮" value="2"></el-option>-->
                         <el-option label="资源" value="3"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="菜单层级" prop="level" v-if="dialogData.type=='1'">
-                    <el-select v-model="dialogData.level" placeholder="请选择">
-                        <el-option label="一级菜单" value="1"></el-option>
-                        <el-option label="二级菜单" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="访问路径" prop="path" v-if="dialogData.type=='1'||dialogData.type=='3'">
@@ -79,7 +81,20 @@
                 <el-button type="primary" @click="submitForm('dialogData')">确 定</el-button>
             </div>
         </el-dialog>
-
+        <el-dialog title="新增菜单" :visible.sync="dialogMenuVisible" width="25%">
+            <el-form :model="dialogData" label-width="80px" :rules="dialogRules" ref="dialogData">
+                <el-form-item label="菜单名称" prop="name">
+                    <el-input v-model="dialogData.name" @keyup.enter.native="addMenuSubmit('dialogData')"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="dialogData.remarks"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addMenuSubmit('dialogData')">确 定</el-button>
+            </div>
+        </el-dialog>
         <el-dialog title="排序" :visible.sync="dialogSortVisible" width="25%">
             <el-form :model="sortData" label-width="80px" :rules="dialogRules" ref="dialogData">
                 <div class="drag-box">
@@ -100,19 +115,38 @@
                 <el-button type="primary" @click="submitForm('sortData')">确 定</el-button>
             </div>
         </el-dialog>
-
+        <!-- Table -->
+        <el-dialog title="菜单列表" :visible.sync="dialogMenuListVisible">
+            <el-table :data="dialogMenuListData" @selection-change="handleSelectionChange" ref="multipleTable">
+                <el-table-column type="selection" property="checked" width="55"></el-table-column>
+                <el-table-column property="name" label="名称" width="150"></el-table-column>
+                <el-table-column property="level" label="类型" width="200">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.level===2">二级菜单</span>
+                    </template>
+                </el-table-column>
+                <el-table-column property="path" label="地址"></el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogMenuListVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogMenuSubmit">确 定</el-button>
+            </div>
+        </el-dialog>
         <!-- Table -->
         <el-dialog title="资源列表" :visible.sync="dialogTableVisible">
             <el-table :data="gridData">
                 <el-table-column property="name" label="名称" width="150"></el-table-column>
-                <el-table-column property="type" label="类型" width="200"></el-table-column>
-                <el-table-column property="path" label="地址"></el-table-column>
-                <el-table-column label="操作" width="200">
+                <el-table-column property="type" label="类型" width="200">
                     <template slot-scope="scope">
-                        <el-button size="small" @click="addFunction(scope.$index, scope.row)">修改</el-button>
-                        <el-button size="small" @click="functionList(scope.$index, scope.row)">删除</el-button>
+                        <span v-if="scope.row.type===3">资源</span>
                     </template>
                 </el-table-column>
+                <el-table-column property="path" label="地址"></el-table-column>
+                <!--<el-table-column label="操作" width="200">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-button size="small" type="warning" @click="functionList(scope.$index, scope.row)">删除</el-button>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
             </el-table>
         </el-dialog>
     </div>
@@ -128,21 +162,22 @@
                 url: this.$projectUrl + '/fun/queryMenuByParams',
                 funUrl: this.$projectUrl + '/fun/queryFunByParams',
                 addUrl: this.$projectUrl + '/fun/add',
-                staticMenuUrl: this.$projectUrl + "/fun/getDefaultMenu",
+                staticMenuUrl: this.$projectUrl + "/fun/getMenu",
                 staticSourceUrl: this.$projectUrl + "/fun/getDefaultSource",
+                addMenuUrl: this.$projectUrl + "/fun/addMenu",
+                bindingMenuUrl: this.$projectUrl + "/fun/bindingMenuByUser",
                 tableData: [],
+                dialogMenuListData: [],
                 multipleSelection: [],
-                select_word: '',
-                select_level: '',
-                del_list: [],
-                is_search: false,
                 dataTotal:1,
                 dialogFormVisible: false,//新增权限窗口
+                dialogMenuVisible: false,//新增菜单窗口
                 dialogSortVisible: false,//排序窗口
                 dialogTableVisible: false,//权限列表窗口
+                dialogMenuListVisible: false,//菜单列表
                 searchForm: {
                     name: '',
-                    code: '',
+                    level:'',
                 },
                 dialogData: {
                     id: '',
@@ -191,6 +226,12 @@
                 defaults:[],
                 selectedOptions: [],
                 gridData: [],
+                dialogMenuForm:{
+                    id: '',
+                    code: '',
+                    parentCode: '',
+                    children: [],//用户选择后的菜单
+                }
             }
         },
         created(){
@@ -290,8 +331,75 @@
                 }
 
             },
-            handleChange(value){
-                this.dialogData.path = value[value.length - 1] + "";
+            handleChange(obj){
+                this.dialogData.path = obj[ obj.length- 1] + "";
+                this.dialogData.name = "";
+                let label = "";
+                if(obj.length > 1){
+                    this.defaults.forEach(function(value,index,array){
+                        if(value.value === obj[0]){
+                            let children = value.children;
+                            children.forEach(function(childValue,index,array){
+                                if(childValue.value === obj[ obj.length- 1]){
+                                    label = childValue.label;
+                                }
+                            });
+                        }
+                    });
+                }
+                this.dialogData.name = label;
+            },
+            addMenuLevel1(){
+                this.dialogMenuVisible = true;
+            },
+            addMenuSubmit(formName){
+                this.$axios.post(this.addMenuUrl, this.dialogData).then(result =>{
+                    if(result.data.code === "0"){
+                        this.dialogMenuVisible = false;
+                        this.getData();
+                        this.msgSuccess();
+                    }else{
+                        // this.messageShow.error = result.data.msg;
+                        return false;
+                    }
+                });
+            },
+            showMenuListWin(row){
+                this.dialogMenuForm.id = row.id;
+                this.dialogMenuForm.parentCode = row.code;
+                this.dialogMenuListVisible = true;
+                this.$axios.post(this.staticMenuUrl, this.dialogMenuForm).then((result) => {
+                    if(result.data.code === "0"){
+                        this.dialogMenuListData = result.data.data;
+                        this.dialogMenuListData.forEach(row => {
+                            if(row.checked === true){
+                                this.selectMenuRow(row);
+                            }
+                        });
+                    }
+                })
+            },
+            selectMenuRow(row) {
+                setTimeout(()=>{
+                    this.$refs.multipleTable.toggleRowSelection(row);
+                },10)
+            },
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+            },
+            dialogMenuSubmit(){
+                //初始化
+                this.dialogMenuForm.children = [];
+                this.multipleSelection.forEach(row => {
+                    row.checked = true;
+                    this.dialogMenuForm.children.push(row);
+                });
+                this.$axios.post(this.bindingMenuUrl, this.dialogMenuForm).then(res => {
+                    if(res.data.code === "0"){
+                        this.msgSuccess();
+                        this.dialogMenuListVisible = false;
+                    }
+                });
             }
         }
     }

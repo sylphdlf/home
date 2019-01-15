@@ -3,6 +3,7 @@
 <mapper namespace="com.dlf.model.mapper.RoleMapper">
   <resultMap id="BaseResultMap" type="com.dlf.model.po.Role">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="org_id" jdbcType="BIGINT" property="orgId" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
@@ -13,7 +14,7 @@
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, remarks, create_time, update_time, create_user_id, update_user_id, 
+    id, org_id, code, name, remarks, create_time, update_time, create_user_id, update_user_id, 
     is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,20 +28,23 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dlf.model.po.Role">
-    insert into u_role (id, code, name, 
-      remarks, create_time, update_time, 
-      create_user_id, update_user_id, is_deleted
-      )
-    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER}
-      )
+    insert into u_role (id, org_id, code, 
+      name, remarks, create_time, 
+      update_time, create_user_id, update_user_id, 
+      is_deleted)
+    values (#{id,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.dlf.model.po.Role">
     insert into u_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="orgId != null">
+        org_id,
       </if>
       <if test="code != null">
         code,
@@ -71,6 +75,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=BIGINT},
+      </if>
       <if test="code != null">
         #{code,jdbcType=VARCHAR},
       </if>
@@ -100,6 +107,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.Role">
     update u_role
     <set>
+      <if test="orgId != null">
+        org_id = #{orgId,jdbcType=BIGINT},
+      </if>
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
       </if>
@@ -129,7 +139,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.Role">
     update u_role
-    set code = #{code,jdbcType=VARCHAR},
+    set org_id = #{orgId,jdbcType=BIGINT},
+      code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

@@ -1,6 +1,7 @@
 package com.dlf.common.utils;
 
 import org.apache.catalina.SessionIdGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
@@ -20,6 +21,14 @@ public class CodeGenerateUtils {
     public static Integer getCheckCode6(){
         return (int)((Math.random()*9+1)*100000);
 
+    }
+
+    /**
+     * 获取4位随机数
+     * @return
+     */
+    public static Integer getCode4(){
+        return (int)((Math.random()*9+1)*1000);
     }
 
     /**

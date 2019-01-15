@@ -24,8 +24,8 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: '13761053109',
-                    password: '13761053109'
+                    username: 'admin',
+                    password: 'admin'
                 },
                 messageShow:{
                     error:"",
@@ -53,7 +53,7 @@
                 });
                 this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
                     if(result.data.code === "0"){
-                        this.$router.push('/charts');
+                        this.$router.push('/weatherChart');
                     }else{
                         this.messageShow.error = result.data.msg;
                         return false;

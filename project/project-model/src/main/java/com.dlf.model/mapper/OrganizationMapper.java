@@ -2,7 +2,7 @@ package com.dlf.model.mapper;
 
 import com.dlf.model.po.Organization;
 
-public interface OrganizationMapper {
+public interface OrganizationMapper extends BaseMapper{
     int deleteByPrimaryKey(Long id);
 
     int insert(Organization record);

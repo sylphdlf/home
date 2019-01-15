@@ -17,4 +17,17 @@ public interface BaseMapper<T> {
      */
     List queryListByParams(T t);
 
+    /**
+     * 根据用户id查询列表
+     * @param t
+     * @return
+     */
+    List queryListByUser(T t);
+
+    /**
+     * 查询最后一个id
+     * @return
+     */
+    Long selectLastId();
+
 }

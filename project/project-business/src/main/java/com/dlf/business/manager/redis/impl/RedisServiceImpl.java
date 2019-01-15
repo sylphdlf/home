@@ -1,7 +1,13 @@
 package com.dlf.business.manager.redis.impl;
 
 import com.dlf.business.manager.redis.RedisService;
+import org.apache.shiro.session.Session;
+import org.crazycake.shiro.exception.SerializationException;
+import org.crazycake.shiro.serializer.ObjectSerializer;
+import org.crazycake.shiro.serializer.RedisSerializer;
+import org.crazycake.shiro.serializer.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisKeyValueTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -10,6 +16,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 @Service
 public class RedisServiceImpl implements RedisService {
@@ -18,6 +26,7 @@ public class RedisServiceImpl implements RedisService {
     StringRedisTemplate stringRedisTemplate;
     @Autowired
     RedisTemplate redisTemplate;
+
     //max retry time
     private static final int MAX_RETRY_TIME = 3;
 
@@ -75,6 +84,22 @@ public class RedisServiceImpl implements RedisService {
         }while (!flag && time < MAX_RETRY_TIME);
     }
 
+    public void put(String key, Object value, Long timeoutSeconds) {
+        int time = 0;
+        boolean flag;
+        do{
+            try {
+                redisTemplate.setKeySerializer(new StringRedisSerializer());
+                redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+                ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+                valueOperations.set(key, value, timeoutSeconds, TimeUnit.SECONDS);
+                flag = true;
+            }catch (Throwable e){
+                flag = false;
+            }
+        }while (!flag && time < MAX_RETRY_TIME);
+    }
+
     public String get(String key) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
         return valueOperations.get(key);
@@ -88,5 +113,28 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public void removeKey(String key) {
         redisTemplate.delete(key);
+    }
+
+    @Override
+    public Session getSession(String key){
+        try {
+            redisTemplate.setKeySerializer(new StringRedisSerializer());
+            ValueOperations<String, Session> valueOperations = redisTemplate.opsForValue();
+            Session session = valueOperations.get(key);
+            return session;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Set<String> getKeysByPrefix(String prefix) {
+        return stringRedisTemplate.keys(prefix);
+    }
+
+    @Override
+    public void delKey(String key) {
+        stringRedisTemplate.delete(key);
     }
 }

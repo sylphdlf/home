@@ -26,6 +26,8 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
         FastJsonJsonView view = new FastJsonJsonView();
         Map<String, Object> attributes = new HashMap<String, Object>();
         if (ex instanceof UnauthenticatedException) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             attributes.put(CODE, UserResultEnums.TOKEN_ERROR.getCode());
             attributes.put(MSG, UserResultEnums.TOKEN_ERROR.getMsg());
         } else if (ex instanceof UnauthorizedException) {
@@ -34,7 +36,8 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
         } else if (ex instanceof IncorrectCredentialsException){
             attributes.put(CODE, UserResultEnums.USERNAME_OR_PASSWORD_ERROR.getCode());
             attributes.put(MSG, UserResultEnums.USERNAME_OR_PASSWORD_ERROR.getMsg());
-        } else {
+        }else {
+            System.out.println("MyExceptionHandler-----------------------------------------------");
             ex.printStackTrace();
         }
         view.setAttributesMap(attributes);

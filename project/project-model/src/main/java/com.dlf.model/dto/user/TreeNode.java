@@ -20,6 +20,8 @@ public class TreeNode implements Serializable {
 
     private String label;
 
+    private String value;
+
     private String parent;
 
     private List<TreeNode> children;

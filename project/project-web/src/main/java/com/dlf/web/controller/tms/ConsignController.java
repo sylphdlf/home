@@ -1,5 +1,7 @@
 package com.dlf.web.controller.tms;
 
+import com.dlf.business.anno.FunDescriptionAnno;
+import com.dlf.business.anno.MenuDescriptionAnno;
 import com.dlf.business.manager.tms.ConsignService;
 import com.dlf.business.manager.tms.ContactsService;
 import com.dlf.model.dto.GlobalResultDTO;
@@ -14,20 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 用户
+ * 托运单管理
  */
 @RestController
 @RequestMapping("/consign")
+@MenuDescriptionAnno(name = "发货单管理", parent = "物流管理")
 public class ConsignController {
 
     @Autowired
     ConsignService consignService;
 
-    /**
-     * 分页查询
-     * @param searchDTO
-     * @return
-     */
+    @FunDescriptionAnno(name = "查询")
     @RequestMapping(value = "/queryPageByParams",method = RequestMethod.POST)
     public GlobalResultDTO queryPageByParams(@RequestBody ConsignSearchDTO searchDTO) {
         return consignService.queryPageByParams(searchDTO);
@@ -47,6 +46,7 @@ public class ConsignController {
      * @param reqDTO
      * @return
      */
+    @FunDescriptionAnno(name = "新增")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public GlobalResultDTO add(@RequestBody ConsignReqDTO reqDTO){
         return consignService.add(reqDTO);
@@ -77,6 +77,7 @@ public class ConsignController {
      * @param reqDTO
      * @return
      */
+    @FunDescriptionAnno(name = "获取记录")
     @RequestMapping(value = "/getConsignRecord",method = RequestMethod.POST)
     public GlobalResultDTO getConsignRecord(@RequestBody ConsignReqDTO reqDTO){
         return consignService.getConsignRecord(reqDTO);

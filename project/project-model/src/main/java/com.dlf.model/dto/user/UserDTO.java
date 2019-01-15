@@ -23,5 +23,7 @@ public class UserDTO{
 
     private String telephone;
 
+    private String orgCode;
+
     private Date createTime;
 }

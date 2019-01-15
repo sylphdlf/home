@@ -8,9 +8,20 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <p>发货人信息</p>
-            <hr style="margin-top:2px; color: #bbbbbb;"><br>
+
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" :inline="true">
+                <div class="handle-box" align="center">
+                    <el-form-item prop="consignorName">
+                        <el-input placeholder="始发地" v-model="ruleForm.departure">
+                            <template slot="prepend"><el-button icon="el-icon-search" @click="openConsignorWin"></el-button></template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item prop="consignorTel">
+                        <el-input placeholder="目的地" class="handle-input" v-model="ruleForm.destination"></el-input>
+                    </el-form-item>
+                </div>
+                <p>发货人信息</p>
+                <hr style="margin-top:2px; color: #bbbbbb;"><br>
                 <div class="handle-box" align="center">
                     <el-form-item prop="consignorName">
                         <el-input placeholder="发货人" v-model="ruleForm.consignorName">
@@ -202,7 +213,7 @@
                 <el-input v-model="searchFormContacts.search" placeholder="姓名/电话/手机" class="handle-input mr10" @keyup.enter.native="consignorSearch"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="consignorSearch"></el-button>
             </div>
-            <el-table :data="consignorData" highlight-current-row @current-change="selectConsignor">
+            <el-table :data="consignorData" highlight-current-row @current-change="selectConsignor" @row-dblclick="dbClickConsignor">
                 <el-table-column property="name" label="发货人" width="150"></el-table-column>
                 <el-table-column property="telephone" label="座机" width="200"></el-table-column>
                 <el-table-column property="mobile" label="手机"></el-table-column>
@@ -225,7 +236,7 @@
                 <el-input v-model="searchFormContacts.search" placeholder="姓名/电话/手机" class="handle-input mr10" @keyup.enter.native="consigneeSearch"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="consigneeSearch"></el-button>
             </div>
-            <el-table :data="consigneeData" highlight-current-row @current-change="selectConsignee">
+            <el-table :data="consigneeData" highlight-current-row @current-change="selectConsignee" @row-dblclick="dbClickConsignee">
                 <el-table-column property="name" label="收货人" width="150"></el-table-column>
                 <el-table-column property="telephone" label="座机" width="200"></el-table-column>
                 <el-table-column property="mobile" label="手机"></el-table-column>
@@ -248,7 +259,7 @@
                 <el-input v-model="searchFormDriver.search" placeholder="姓名/电话/手机" class="handle-input mr10" @keyup.enter.native="driverSearch"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="driverSearch"></el-button>
             </div>
-            <el-table :data="driverData" highlight-current-row @current-change="selectDriver">
+            <el-table :data="driverData" highlight-current-row @current-change="selectDriver" @row-dblclick="dbClickDriver">
                 <el-table-column property="vehicleNumber" label="车牌号"></el-table-column>
                 <el-table-column property="vehicleType" label="车型"></el-table-column>
                 <el-table-column label="长宽高">
@@ -302,6 +313,8 @@
                 consigneeTotal:1,
                 driverTotal:1,
                 ruleForm: {
+                    departure: '',
+                    destination: '',
                     consignorId: '',
                     consignorName: '',
                     consignorTel: '',
@@ -368,16 +381,6 @@
             }
         },
         created(){
-            // //上一个页面传过来的id
-            // this.ruleForm.id = this.$route.query.id;
-            // console.info(this.ruleForm.id);
-            // if(this.ruleForm.id !== '' && this.ruleForm.id !== undefined){
-            //     this.$axios.post(this.urlRecord, this.ruleForm).then((res) => {
-            //         if(res.data.code === '0'){
-            //             this.ruleForm = res.data.data;
-            //         }
-            //     })
-            // }
         },
         computed:{
             sumPrice: function () {
@@ -415,7 +418,6 @@
             },
             selectConsignor(val){
                 this.selectedConsignor = val;
-                console.info(this.selectedConsignor);
             },
             selectConsignorConfirm: function(){
                 if(this.selectedConsignor.id===undefined){
@@ -512,6 +514,29 @@
                         return false;
                     }
                 });
+            },
+            dbClickConsignor(row){
+                this.ruleForm.consignorId = row.id;
+                this.ruleForm.consignorName = row.name;
+                this.ruleForm.consignorTel = row.telephone;
+                this.ruleForm.consignorMobile = row.mobile;
+                this.ruleForm.consignorAddr = row.address;
+                this.consignorShow = false;
+            },
+            dbClickConsignee(row){
+                this.ruleForm.consigneeId = row.id;
+                this.ruleForm.consigneeName = row.name;
+                this.ruleForm.consigneeTel = row.telephone;
+                this.ruleForm.consigneeMobile = row.mobile;
+                this.ruleForm.consigneeAddr = row.address;
+                this.consigneeShow = false;
+            },
+            dbClickDriver(row){
+                this.ruleForm.vehicleId = row.id;
+                this.ruleForm.driverName = row.driverName;
+                this.ruleForm.vehicleNumber = row.vehicleNumber;
+                this.ruleForm.driverMobile = row.driverMobile;
+                this.driverShow = false;
             }
         }
     }

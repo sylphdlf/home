@@ -1,5 +1,7 @@
 package com.dlf.web.controller.tms;
 
+import com.dlf.business.anno.FunDescriptionAnno;
+import com.dlf.business.anno.MenuDescriptionAnno;
 import com.dlf.business.manager.tms.ConsignService;
 import com.dlf.business.manager.tms.StockService;
 import com.dlf.model.dto.GlobalResultDTO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/stock")
+@MenuDescriptionAnno(name = "库存管理", parent = "物流管理")
 public class StockController {
 
     @Autowired
@@ -27,6 +30,7 @@ public class StockController {
      * @param searchDTO
      * @return
      */
+    @FunDescriptionAnno(name="查询")
     @RequestMapping(value = "/queryPageByParams",method = RequestMethod.POST)
     public GlobalResultDTO queryPageByParams(@RequestBody StockSearchDTO searchDTO) {
         return stockService.queryPageByParams(searchDTO);

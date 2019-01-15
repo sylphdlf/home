@@ -16,6 +16,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -27,12 +29,14 @@ import java.util.List;
  */
 public class MyShiroRealm extends AuthorizingRealm {
 
+    private Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
+
     @Autowired
     private UserService userService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
+        logger.info("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
         UserResDTO resDTO = (UserResDTO) principals.getPrimaryPrincipal();
         SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(resDTO.getId()),SecurityUtils.getSubject().getPrincipals());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();

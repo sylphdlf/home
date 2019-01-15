@@ -22,7 +22,8 @@ ssh = None
 # 项目地址
 project_root_path = "/data/code/office/project"
 # tomcat地址
-project_tomcat_path = "/data/tomcat/tomcat-9.0.12-8081"
+project_tomcat_path = ["/data/tomcat/tomcat-9.0.12-8081"]
+# project_tomcat_path = ["/data/tomcat/tomcat-9.0.12-8081", "/data/tomcat/tomcat-9.0.12-8082"]
 # war包原始名称
 source_war_name = "project-web-1.0-SNAPSHOT.war"
 # 项目war包名称
@@ -56,6 +57,7 @@ def login():
 def git_pull():
     global ssh
     cmd_pull = "cd " + project_root_path + ";git pull"
+    print("git pull: " + cmd_pull)
     stdin, stdout, stderr = ssh.exec_command(cmd_pull)
     print_error_info(stderr.readlines())
     print_success_info(stdout.readlines())
@@ -65,6 +67,7 @@ def git_pull():
 def mvn_package():
     global ssh
     cmd_clean_install = "cd " + project_root_path + ";source /etc/profile;mvn clean install"
+    print("maven clean install...：" + cmd_clean_install)
     stdin, stdout, stderr = ssh.exec_command(cmd_clean_install)
     print_error_info(stderr.readlines())
     print_success_info(stdout.readlines())
@@ -83,6 +86,7 @@ def kill_tomcat():
             if process_name == "Bootstrap":
                 process_pid = this_list.strip().split(None, 1)[0]
                 cmd_kill = "kill -9 " + process_pid
+                print("杀tomcat进程：" + cmd_kill)
                 ssh.exec_command(cmd_kill)
 
 
@@ -92,35 +96,43 @@ def backup_war():
     # if not os.path.exists(project_tomcat_path + "/backup"):
     #     os.makedirs(os.path.exists(project_tomcat_path + "/backup"))
     format_time = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-    cmd_backup = "mv " + project_tomcat_path + "/webapps/" + target_war_name \
-                 + " " + project_tomcat_path + "/backup/" + target_war_name + "." + format_time
-    stdin, stdout, stderr = ssh.exec_command(cmd_backup)
-    print_error_info(stderr.readlines())
+    for tomcat_path in project_tomcat_path:
+        cmd_backup = "mv " + tomcat_path + "/webapps/" + target_war_name \
+                     + " " + tomcat_path + "/backup/" + target_war_name + "." + format_time
+        print("备份war包：" + cmd_backup)
+        stdin, stdout, stderr = ssh.exec_command(cmd_backup)
+        print_error_info(stderr.readlines())
 
 
 # 6、清空webapps文件夹
 def clean_webapps():
     global ssh
-    cmd_clean = "cd " + project_tomcat_path + "/webapps; rm -rf *"
-    ssh.exec_command(cmd_clean)
+    for tomcat_path in project_tomcat_path:
+        cmd_clean = "cd " + tomcat_path + "/webapps; rm -rf *"
+        print("清空webapps文件夹：" + cmd_clean)
+        ssh.exec_command(cmd_clean)
 
 
 # 7、复制war包到webapps下
 def copy_war():
     global ssh
-    cmd_copy = "cp " + source_war_path + " " + project_tomcat_path + "/webapps"
-    ssh.exec_command(cmd_copy)
-    cmd_mv = "cd " + project_tomcat_path + "/webapps;mv " + source_war_name + " " + target_war_name
-    ssh.exec_command(cmd_mv)
+    for tomcat_path in project_tomcat_path:
+        cmd_copy = "cp " + source_war_path + " " + tomcat_path + "/webapps"
+        ssh.exec_command(cmd_copy)
+        cmd_mv = "cd " + tomcat_path + "/webapps;mv " + source_war_name + " " + target_war_name
+        print("复制war包并改名：" + cmd_mv)
+        ssh.exec_command(cmd_mv)
 
 
 # 8、启动tomcat
 def start_tomcat():
     global ssh
-    cmd_start = "cd " + project_tomcat_path + "/bin;source /etc/profile;sh startup.sh"
-    stdin, stdout, stderr = ssh.exec_command(cmd_start)
-    print_error_info(stderr.readlines())
-    print_success_info(stdout.readlines())
+    for tomcat_path in project_tomcat_path:
+        cmd_start = "cd " + tomcat_path + "/bin;source /etc/profile;sh startup.sh"
+        print("启动tomcat：" + cmd_start)
+        stdin, stdout, stderr = ssh.exec_command(cmd_start)
+        print_error_info(stderr.readlines())
+        print_success_info(stdout.readlines())
 
 
 if __name__ == '__main__':

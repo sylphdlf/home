@@ -9,6 +9,9 @@
 
 	<properties>
 		<project.version>1.0-SNAPSHOT</project.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
 
 	<dependencyManagement>
@@ -97,7 +100,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
-			<version>1.5.2.RELEASE</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
 		<dependency>
@@ -139,6 +141,12 @@
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>2.2.2.RELEASE</version>
+		</dependency>
 	</dependencies>
 	<modules>
 		<module>project-web</module>
@@ -146,4 +154,49 @@
 		<module>project-model</module>
 		<module>project-common</module>
 	</modules>
+    <!--maven打包配置-->
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>dev</id>-->
+            <!--<properties>-->
+                <!--<profileActive>src/resources</profileActive>-->
+            <!--</properties>-->
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
+        <!--</profile>-->
+        <!--<profile>-->
+            <!--<id>test</id>-->
+            <!--<properties>-->
+                <!--<profileActive>test</profileActive>-->
+            <!--</properties>-->
+            <!--<activation>-->
+                <!--<activeByDefault>false</activeByDefault>-->
+            <!--</activation>-->
+        <!--</profile>-->
+        <!--<profile>-->
+            <!--<id>prod</id>-->
+            <!--<properties>-->
+                <!--<profileActive>prod</profileActive>-->
+            <!--</properties>-->
+            <!--<activation>-->
+                <!--<activeByDefault>false</activeByDefault>-->
+            <!--</activation>-->
+        <!--</profile>-->
+    <!--</profiles>-->
+    <!--<build>-->
+        <!--<finalName>project</finalName>-->
+        <!--<resources>-->
+            <!--&lt;!&ndash;需要动态添加的资源&ndash;&gt;-->
+            <!--<resource>-->
+                <!--<directory>${profileActive}</directory>-->
+                <!--<filtering>true</filtering>-->
+                <!--<includes>-->
+                    <!--<include>application.properties</include>-->
+                    <!--<include>log4j.properties</include>-->
+                    <!--<include>logback.xml</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
+    <!--</build>-->
 </project>

@@ -21,7 +21,7 @@
                     <el-input v-model="orgData.name"></el-input>
                 </el-form-item>
                 <el-form-item label="组织编号" prop="code">
-                    <el-input placeholder="请输入内容" v-model="orgData.code">
+                    <el-input placeholder="请输入内容" v-model="orgData.code" disabled>
                         <template slot="prepend">{{orgData.parentCode}}</template>
                     </el-input>
                 </el-form-item>
@@ -45,7 +45,7 @@
                 <el-table-column property="code" label="编号" width="200"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间">
                     <template slot-scope="scope">
-                        {{createTime | dateTimeFilter}}
+                        {{this.createTime | dateTimeFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column property="remarks" label="备注"></el-table-column>
@@ -88,9 +88,9 @@
                     name: [
                         { required: true, message: '请输入组织名称', trigger: 'blur' }
                     ],
-                    code: [
-                        { required: true, message: '请输入组织编号', trigger: 'blur' }
-                    ]
+                    // code: [
+                    //     { required: true, message: '请输入组织编号', trigger: 'blur' }
+                    // ]
                 },
                 treeReqForm: {
                     id: "",
@@ -170,9 +170,10 @@
                         return false;
                     }
                 });
-                if(this.orgData.parentCode!=null){
-                    this.orgData.code = this.orgData.parentCode + this.orgData.code;
-                }
+                //计算code
+                // if(this.orgData.parentCode!=null){
+                //     this.orgData.code = this.orgData.parentCode + this.orgData.code;
+                // }
                 this.$axios.post(this.addNodeUrl, this.orgData).then(result =>{
                     if(result.data.code === "0"){
                         this.dialogFormVisible = false;

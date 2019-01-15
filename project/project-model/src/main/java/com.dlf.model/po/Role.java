@@ -5,6 +5,8 @@ import java.util.Date;
 public class Role {
     private Long id;
 
+    private Long orgId;
+
     private String code;
 
     private String name;
@@ -27,6 +29,14 @@ public class Role {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 
     public String getCode() {

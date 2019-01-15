@@ -11,4 +11,6 @@ public class RoleSearchDTO extends PageDTO {
     private String code;
     //角色名称
     private String name;
+    //组织id
+    private Long orgId;
 }

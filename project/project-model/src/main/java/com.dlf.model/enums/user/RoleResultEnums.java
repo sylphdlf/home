@@ -4,6 +4,7 @@ public enum RoleResultEnums {
 
     ROLE_REQ_NAME_NULL("role_001", "角色名称不能为空"),
     ROLE_REQ_CODE_NULL("role_002", "角色编号不能为空"),
+    ROLE_REQ_ORG_NULL("role_003", "组织ID不能为空"),
     ;
 
     private String code;

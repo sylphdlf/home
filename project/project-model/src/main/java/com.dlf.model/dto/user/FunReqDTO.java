@@ -3,9 +3,13 @@ package com.dlf.model.dto.user;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class FunReqDTO {
+
+    private Long id;
     //权限名称
     private String name;
     //权限编号
@@ -24,4 +28,8 @@ public class FunReqDTO {
     private Integer sortValue;
     //角色id
     private Long roleId;
+
+    private List<FunReqDTO> children;
+    //是否选中
+    private boolean checked;
 }

@@ -150,7 +150,9 @@ public class GlobalResultDTO<T> implements Serializable{
         resultDto.setMsg(message);
         return resultDto;
     }
-
+    public static GlobalResultDTO FAIL() {
+        return new GlobalResultDTO(GlobalResultEnum.FAIL.getMsg(), false);
+    }
     public static GlobalResultDTO FAIL(String message) {
         return new GlobalResultDTO(message, false);
     }

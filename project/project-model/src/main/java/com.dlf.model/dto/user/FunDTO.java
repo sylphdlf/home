@@ -4,11 +4,15 @@ import com.dlf.model.dto.PageDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class FunDTO {
+public class FunDTO implements Serializable {
+
+    private static final long serialVersionUID = 6868203583267512188L;
 
     private Long id;
     //权限名称
@@ -29,5 +33,10 @@ public class FunDTO {
     private Integer sortValue;
     //创建时间
     private Date createTime;
+    //是否选中
+    private boolean checked;
 
+    private List<FunDTO> children;
+
+    private Integer isDeleted;
 }

@@ -5,9 +5,12 @@ import com.dlf.business.factory.OrgRolesFactory;
 import com.dlf.business.manager.user.RoleService;
 import com.dlf.common.utils.CompareUtils;
 import com.dlf.model.dto.GlobalResultDTO;
+import com.dlf.model.enums.user.OrgResultEnums;
 import com.dlf.model.enums.user.RoleResultEnums;
 import com.dlf.model.dto.user.*;
+import com.dlf.model.mapper.OrganizationMapper2;
 import com.dlf.model.mapper.RoleMapper2;
+import com.dlf.model.po.Organization;
 import com.dlf.model.po.Role;
 import com.dlf.model.po.Role2;
 import com.github.pagehelper.PageHelper;
@@ -26,6 +29,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Resource
     private RoleMapper2 roleMapper;
+    @Resource
+    private OrganizationMapper2 organizationMapper;
 
     @Override
     public GlobalResultDTO queryListByParams(RoleSearchDTO searchDTO) {
@@ -47,6 +52,9 @@ public class RoleServiceImpl implements RoleService {
             }
             if(StringUtils.isBlank(reqDTO.getCode())){
                 throw new MyException(RoleResultEnums.ROLE_REQ_CODE_NULL.getCode(), RoleResultEnums.ROLE_REQ_CODE_NULL.getMsg());
+            }
+            if(null == reqDTO.getOrgId()){
+                throw new MyException(RoleResultEnums.ROLE_REQ_ORG_NULL.getCode(), RoleResultEnums.ROLE_REQ_ORG_NULL.getMsg());
             }
             Role role = new Role();
             BeanUtils.copyProperties(reqDTO, role);
@@ -86,5 +94,10 @@ public class RoleServiceImpl implements RoleService {
         //移除factory中缓存的数据
         OrgRolesFactory.removeOrgId(reqDTO.getId());
         return GlobalResultDTO.SUCCESS();
+    }
+
+    @Override
+    public GlobalResultDTO del(RoleReqDTO reqDTO) {
+        return null;
     }
 }

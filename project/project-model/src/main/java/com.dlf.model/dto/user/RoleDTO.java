@@ -11,6 +11,10 @@ public class RoleDTO {
 
     private Long id;
 
+    private Long orgId;
+
+    private String orgName;
+
     private String code;
 
     private String name;

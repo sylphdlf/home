@@ -23,9 +23,9 @@ public class DBAspect {
     @Pointcut("execution(* com.dlf.model.mapper.*.insert*(..))")
     private void beforeInsert(){};
     @Pointcut("execution(* com.dlf.model.mapper.*.delete*(..)) || execution(* com.dlf.model.mapper.*.update*(..))")
-    private void beforeDelete(){};
+    private void beforeDeleteOrUpdate(){};
     //查询加入用户id
-    @Pointcut("execution(* com.dlf.model.mapper.*.*byUser(..))")
+    @Pointcut("execution(* com.dlf.model.mapper.*.*ByUser(..))")
     private void beforeSelect(){};
 
     /**
@@ -43,12 +43,14 @@ public class DBAspect {
             }
             try {
                 PropertyUtils.setProperty(bean, "createTime", new Date());
-                PropertyUtils.setProperty(bean, "isDeleted", 0);
+                if(PropertyUtils.getProperty(bean, "isDeleted") == null){
+                    PropertyUtils.setProperty(bean, "isDeleted", 0);
+                }
                 try {
                     UserResDTO resDTO = (UserResDTO) SecurityUtils.getSubject().getPrincipal();
                     PropertyUtils.setProperty(bean, "createUserId", resDTO.getId());
                 }catch (Exception e){
-                    logger.error(e.getMessage());
+                    PropertyUtils.setProperty(bean, "createUserId", 0L);
                 }
             }catch (Exception e){
                 logger.error(e.getMessage());
@@ -59,7 +61,7 @@ public class DBAspect {
      * 对于删除语句自动添加update_time, update_user_id
      * @param jp
      */
-    @Before("beforeDelete()")
+    @Before("beforeDeleteOrUpdate()")
     public void delete(JoinPoint jp){
         if (jp.getArgs() == null) {
             return;
