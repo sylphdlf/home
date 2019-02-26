@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.DashboardMapper">
+    <select id="getLastWeather" parameterType="com.dlf.model.dto.spider.WeatherSearchDTO" resultType="com.dlf.model.dto.spider.WeatherDTO">
+        SELECT city, DATE_FORMAT(data_update_time, '%d日%H时%i分') AS dataUpdateTime, temperature, pm25, humidity, weather
+        FROM p_weather WHERE 1=1
+        <if test="city != null and city != ''">
+            and city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and create_time >= #{startTime,jdbcType=VARCHAR}
+        </if>
+        ORDER BY id DESC LIMIT 1
+    </select>
+  <select id="queryWeatherByParams" parameterType="com.dlf.model.dto.spider.WeatherSearchDTO" resultType="com.dlf.model.dto.spider.WeatherDTO">
+    SELECT city AS city, DATE_FORMAT(data_update_time, '%d日/%H') AS dataUpdateTime, FORMAT(AVG(temperature), 0) AS temperature, FORMAT(AVG(pm25), 0) AS pm25
+    FROM p_weather WHERE 1=1
+    <if test="city != null and city != ''">
+      and city = #{city,jdbcType=VARCHAR}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      and create_time >= #{startTime,jdbcType=VARCHAR}
+    </if>
+    GROUP BY RIGHT(LEFT(data_update_time,13),5) ORDER BY id ASC
+  </select>
+
+  <select id="queryPm25ByParams" parameterType="com.dlf.model.dto.spider.WeatherSearchDTO" resultType="com.dlf.model.dto.spider.WeatherDTO">
+    SELECT DATE_FORMAT(data_update_time, '%h') AS name, FORMAT(AVG(pm25), 1) AS value
+    FROM p_weather WHERE 1=1
+    <if test="city != null and city != ''">
+      and city = #{city,jdbcType=VARCHAR}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      and create_time >= #{startTime,jdbcType=VARCHAR}
+    </if>
+    GROUP BY RIGHT(LEFT(data_update_time,13),5) ORDER BY id ASC
+  </select>
+
+  <select id="getTraffic" parameterType="com.dlf.model.dto.spider.AmapSearchDTO" resultType="com.dlf.model.dto.spider.AmapDTO">
+      SELECT DATE_FORMAT(create_time, '%d/%H:%i') AS createTime, FORMAT(time_cost/60, 0) AS timeCost, search_code AS searchCode
+      FROM p_amap WHERE 1=1
+      <if test="searchCode != null and searchCode != ''">
+          and search_code = #{searchCode,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null and startTime != ''">
+          and create_time >= #{startTime,jdbcType=VARCHAR}
+      </if>
+      <if test="endTime != null and endTime != ''">
+          and create_time &lt;= #{endTime,jdbcType=VARCHAR}
+      </if>
+  </select>
+</mapper>

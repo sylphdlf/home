@@ -22,28 +22,20 @@ public class DateTimeUtils {
 
     public static final String HOURS_AND_MINUTES = "hh:mm";
 
-    public static final String DEFAULT_PATTERN = "yyyyMMddHHmmSS";
+    public static final String DEFAULT_PATTERN = "yyyyMMddHHmmss";
     /**
      * 时间转换
      * @param timeStr
      * @return
      */
-    public static Date transferStrToDate(String timeStr){
-        Calendar cal = Calendar.getInstance();
+    public static Date transferStrToDate(String timeStr, String formatter){
         try {
-            DateFormat df = new SimpleDateFormat(HOURS_AND_MINUTES);
-            Date date = df.parse(timeStr);
-            int year = cal.get(GregorianCalendar.YEAR);
-            int month = cal.get(GregorianCalendar.MONTH);
-            int day = cal.get(GregorianCalendar.DAY_OF_MONTH);
-            cal.setTime(date);
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.DAY_OF_MONTH, day);
+            DateFormat df = new SimpleDateFormat(formatter);
+            return df.parse(timeStr);
         }catch (ParseException e) {
             logger.error("时间转换出错");
         }
-        return cal.getTime();
+        return null;
     }
 
     /**

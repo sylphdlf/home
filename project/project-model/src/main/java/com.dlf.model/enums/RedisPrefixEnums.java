@@ -12,6 +12,7 @@ public enum RedisPrefixEnums {
     ORG_TREE_NODE_PARENT_PRE("org_tree_node_parent_", "组织机构树父节点"),
     FUN_TREE_NODE("fun_tree_node", "权限树"),
     FUN_LIST("fun_list", "资源列表"),
+    MARKET_NEWEST("market_newest_", "最新数据"),
     ;
     private String code;
     private String desc;

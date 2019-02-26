@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.MarketInfoMapper2">
+  <resultMap id="BaseResultMap" type="com.dlf.model.dto.stock.MarketInfoDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="market" jdbcType="VARCHAR" property="market" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="price_close" jdbcType="DECIMAL" property="priceClose" />
+    <result column="price_open" jdbcType="DECIMAL" property="priceOpen" />
+    <result column="deal_count" jdbcType="INTEGER" property="dealCount" />
+    <result column="deal_price" jdbcType="DECIMAL" property="dealPrice" />
+    <result column="outer_count" jdbcType="INTEGER" property="outerCount" />
+    <result column="inner_count" jdbcType="INTEGER" property="innerCount" />
+    <result column="buying_one" jdbcType="DECIMAL" property="buyingOne" />
+    <result column="buying_one_count" jdbcType="INTEGER" property="buyingOneCount" />
+    <result column="buying_two" jdbcType="DECIMAL" property="buyingTwo" />
+    <result column="buying_two_count" jdbcType="INTEGER" property="buyingTwoCount" />
+    <result column="buying_three" jdbcType="DECIMAL" property="buyingThree" />
+    <result column="buying_three_count" jdbcType="INTEGER" property="buyingThreeCount" />
+    <result column="buying_four" jdbcType="DECIMAL" property="buyingFour" />
+    <result column="buying_four_count" jdbcType="INTEGER" property="buyingFourCount" />
+    <result column="buying_five" jdbcType="DECIMAL" property="buyingFive" />
+    <result column="buying_five_count" jdbcType="INTEGER" property="buyingFiveCount" />
+    <result column="selling_one" jdbcType="DECIMAL" property="sellingOne" />
+    <result column="selling_one_count" jdbcType="INTEGER" property="sellingOneCount" />
+    <result column="selling_two" jdbcType="DECIMAL" property="sellingTwo" />
+    <result column="selling_two_count" jdbcType="INTEGER" property="sellingTwoCount" />
+    <result column="selling_three" jdbcType="DECIMAL" property="sellingThree" />
+    <result column="selling_three_count" jdbcType="INTEGER" property="sellingThreeCount" />
+    <result column="selling_four" jdbcType="DECIMAL" property="sellingFour" />
+    <result column="selling_four_count" jdbcType="INTEGER" property="sellingFourCount" />
+    <result column="selling_five" jdbcType="DECIMAL" property="sellingFive" />
+    <result column="selling_five_count" jdbcType="INTEGER" property="sellingFiveCount" />
+    <result column="recently_deal_info" jdbcType="VARCHAR" property="recentlyDealInfo" />
+    <result column="refresh_time" jdbcType="TIMESTAMP" property="refreshTime" />
+    <result column="rise_fall" jdbcType="DECIMAL" property="riseFall" />
+    <result column="rise_fall_ratio" jdbcType="DECIMAL" property="riseFallRatio" />
+    <result column="price_highest" jdbcType="DECIMAL" property="priceHighest" />
+    <result column="price_lowest" jdbcType="DECIMAL" property="priceLowest" />
+    <result column="price_deal_info" jdbcType="VARCHAR" property="priceDealInfo" />
+    <result column="exchange_ratio" jdbcType="DECIMAL" property="exchangeRatio" />
+    <result column="earnings_ratio" jdbcType="DECIMAL" property="earningsRatio" />
+    <result column="stock_amplitude" jdbcType="DECIMAL" property="stockAmplitude" />
+    <result column="live_value" jdbcType="DECIMAL" property="liveValue" />
+    <result column="total_value" jdbcType="DECIMAL" property="totalValue" />
+    <result column="price_boot_ratio" jdbcType="DECIMAL" property="priceBootRatio" />
+    <result column="limit_up" jdbcType="DECIMAL" property="limitUp" />
+    <result column="limit_down" jdbcType="DECIMAL" property="limitDown" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, market, price, price_close, price_open, deal_count, deal_price, outer_count, 
+    inner_count, buying_one, buying_one_count, buying_two, buying_two_count, buying_three, 
+    buying_three_count, buying_four, buying_four_count, buying_five, buying_five_count, 
+    selling_one, selling_one_count, selling_two, selling_two_count, selling_three, selling_three_count, 
+    selling_four, selling_four_count, selling_five, selling_five_count, recently_deal_info, 
+    refresh_time, rise_fall, rise_fall_ratio, price_highest, price_lowest, price_deal_info, 
+    exchange_ratio, earnings_ratio, stock_amplitude, live_value, total_value, price_boot_ratio, 
+    limit_up, limit_down, remarks, create_time, update_time, create_user_id, update_user_id, 
+    is_deleted
+  </sql>
+
+  <select id="getNewestByParams" parameterType="com.dlf.model.dto.stock.MarketInfoSearchDTO" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM s_market_info
+      where 1=1
+      <if test="code != null and code != ''">
+          and code = #{code,jdbcType=VARCHAR}
+      </if>
+      ORDER BY id desc limit 1
+  </select>
+
+  <select id="queryListByParams" parameterType="com.dlf.model.dto.stock.MarketInfoSearchDTO" resultMap="BaseResultMap">
+    SELECT price, refresh_time
+    FROM s_market_info
+    WHERE 1=1
+    <if test="code != null and code != ''">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+    <if test="refreshTimeStart != null">
+      and refresh_time &gt;= #{refreshTimeStart,jdbcType=TIMESTAMP}
+    </if>
+    <if test="refreshTimeEnd != null">
+      and refresh_time &lt;= #{refreshTimeEnd,jdbcType=TIMESTAMP}
+    </if>
+    and is_deleted = 0
+    ORDER BY id ASC
+  </select>
+</mapper>

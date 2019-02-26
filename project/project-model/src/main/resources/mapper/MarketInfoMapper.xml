@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlf.model.mapper.MarketInfoMapper">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.MarketInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="market" jdbcType="VARCHAR" property="market" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="price_close" jdbcType="DECIMAL" property="priceClose" />
+    <result column="price_open" jdbcType="DECIMAL" property="priceOpen" />
+    <result column="deal_count" jdbcType="INTEGER" property="dealCount" />
+    <result column="deal_price" jdbcType="DECIMAL" property="dealPrice" />
+    <result column="outer_count" jdbcType="INTEGER" property="outerCount" />
+    <result column="inner_count" jdbcType="INTEGER" property="innerCount" />
+    <result column="buying_one" jdbcType="DECIMAL" property="buyingOne" />
+    <result column="buying_one_count" jdbcType="INTEGER" property="buyingOneCount" />
+    <result column="buying_two" jdbcType="DECIMAL" property="buyingTwo" />
+    <result column="buying_two_count" jdbcType="INTEGER" property="buyingTwoCount" />
+    <result column="buying_three" jdbcType="DECIMAL" property="buyingThree" />
+    <result column="buying_three_count" jdbcType="INTEGER" property="buyingThreeCount" />
+    <result column="buying_four" jdbcType="DECIMAL" property="buyingFour" />
+    <result column="buying_four_count" jdbcType="INTEGER" property="buyingFourCount" />
+    <result column="buying_five" jdbcType="DECIMAL" property="buyingFive" />
+    <result column="buying_five_count" jdbcType="INTEGER" property="buyingFiveCount" />
+    <result column="selling_one" jdbcType="DECIMAL" property="sellingOne" />
+    <result column="selling_one_count" jdbcType="INTEGER" property="sellingOneCount" />
+    <result column="selling_two" jdbcType="DECIMAL" property="sellingTwo" />
+    <result column="selling_two_count" jdbcType="INTEGER" property="sellingTwoCount" />
+    <result column="selling_three" jdbcType="DECIMAL" property="sellingThree" />
+    <result column="selling_three_count" jdbcType="INTEGER" property="sellingThreeCount" />
+    <result column="selling_four" jdbcType="DECIMAL" property="sellingFour" />
+    <result column="selling_four_count" jdbcType="INTEGER" property="sellingFourCount" />
+    <result column="selling_five" jdbcType="DECIMAL" property="sellingFive" />
+    <result column="selling_five_count" jdbcType="INTEGER" property="sellingFiveCount" />
+    <result column="recently_deal_info" jdbcType="VARCHAR" property="recentlyDealInfo" />
+    <result column="refresh_time" jdbcType="TIMESTAMP" property="refreshTime" />
+    <result column="rise_fall" jdbcType="DECIMAL" property="riseFall" />
+    <result column="rise_fall_ratio" jdbcType="DECIMAL" property="riseFallRatio" />
+    <result column="price_highest" jdbcType="DECIMAL" property="priceHighest" />
+    <result column="price_lowest" jdbcType="DECIMAL" property="priceLowest" />
+    <result column="price_deal_info" jdbcType="VARCHAR" property="priceDealInfo" />
+    <result column="exchange_ratio" jdbcType="DECIMAL" property="exchangeRatio" />
+    <result column="earnings_ratio" jdbcType="DECIMAL" property="earningsRatio" />
+    <result column="stock_amplitude" jdbcType="DECIMAL" property="stockAmplitude" />
+    <result column="live_value" jdbcType="DECIMAL" property="liveValue" />
+    <result column="total_value" jdbcType="DECIMAL" property="totalValue" />
+    <result column="price_boot_ratio" jdbcType="DECIMAL" property="priceBootRatio" />
+    <result column="limit_up" jdbcType="DECIMAL" property="limitUp" />
+    <result column="limit_down" jdbcType="DECIMAL" property="limitDown" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, market, price, price_close, price_open, deal_count, deal_price, outer_count, 
+    inner_count, buying_one, buying_one_count, buying_two, buying_two_count, buying_three, 
+    buying_three_count, buying_four, buying_four_count, buying_five, buying_five_count, 
+    selling_one, selling_one_count, selling_two, selling_two_count, selling_three, selling_three_count, 
+    selling_four, selling_four_count, selling_five, selling_five_count, recently_deal_info, 
+    refresh_time, rise_fall, rise_fall_ratio, price_highest, price_lowest, price_deal_info, 
+    exchange_ratio, earnings_ratio, stock_amplitude, live_value, total_value, price_boot_ratio, 
+    limit_up, limit_down, remarks, create_time, update_time, create_user_id, update_user_id, 
+    is_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from s_market_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from s_market_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dlf.model.po.MarketInfo">
+    insert into s_market_info (id, code, name, 
+      market, price, price_close, 
+      price_open, deal_count, deal_price, 
+      outer_count, inner_count, buying_one, 
+      buying_one_count, buying_two, buying_two_count, 
+      buying_three, buying_three_count, buying_four, 
+      buying_four_count, buying_five, buying_five_count, 
+      selling_one, selling_one_count, selling_two, 
+      selling_two_count, selling_three, selling_three_count, 
+      selling_four, selling_four_count, selling_five, 
+      selling_five_count, recently_deal_info, refresh_time, 
+      rise_fall, rise_fall_ratio, price_highest, 
+      price_lowest, price_deal_info, exchange_ratio, 
+      earnings_ratio, stock_amplitude, live_value, 
+      total_value, price_boot_ratio, limit_up, 
+      limit_down, remarks, create_time, 
+      update_time, create_user_id, update_user_id, 
+      is_deleted)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{market,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{priceClose,jdbcType=DECIMAL}, 
+      #{priceOpen,jdbcType=DECIMAL}, #{dealCount,jdbcType=INTEGER}, #{dealPrice,jdbcType=DECIMAL}, 
+      #{outerCount,jdbcType=INTEGER}, #{innerCount,jdbcType=INTEGER}, #{buyingOne,jdbcType=DECIMAL}, 
+      #{buyingOneCount,jdbcType=INTEGER}, #{buyingTwo,jdbcType=DECIMAL}, #{buyingTwoCount,jdbcType=INTEGER}, 
+      #{buyingThree,jdbcType=DECIMAL}, #{buyingThreeCount,jdbcType=INTEGER}, #{buyingFour,jdbcType=DECIMAL}, 
+      #{buyingFourCount,jdbcType=INTEGER}, #{buyingFive,jdbcType=DECIMAL}, #{buyingFiveCount,jdbcType=INTEGER}, 
+      #{sellingOne,jdbcType=DECIMAL}, #{sellingOneCount,jdbcType=INTEGER}, #{sellingTwo,jdbcType=DECIMAL}, 
+      #{sellingTwoCount,jdbcType=INTEGER}, #{sellingThree,jdbcType=DECIMAL}, #{sellingThreeCount,jdbcType=INTEGER}, 
+      #{sellingFour,jdbcType=DECIMAL}, #{sellingFourCount,jdbcType=INTEGER}, #{sellingFive,jdbcType=DECIMAL}, 
+      #{sellingFiveCount,jdbcType=INTEGER}, #{recentlyDealInfo,jdbcType=VARCHAR}, #{refreshTime,jdbcType=TIMESTAMP}, 
+      #{riseFall,jdbcType=DECIMAL}, #{riseFallRatio,jdbcType=DECIMAL}, #{priceHighest,jdbcType=DECIMAL}, 
+      #{priceLowest,jdbcType=DECIMAL}, #{priceDealInfo,jdbcType=VARCHAR}, #{exchangeRatio,jdbcType=DECIMAL}, 
+      #{earningsRatio,jdbcType=DECIMAL}, #{stockAmplitude,jdbcType=DECIMAL}, #{liveValue,jdbcType=DECIMAL}, 
+      #{totalValue,jdbcType=DECIMAL}, #{priceBootRatio,jdbcType=DECIMAL}, #{limitUp,jdbcType=DECIMAL}, 
+      #{limitDown,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT}, 
+      #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlf.model.po.MarketInfo">
+    insert into s_market_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="market != null">
+        market,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="priceClose != null">
+        price_close,
+      </if>
+      <if test="priceOpen != null">
+        price_open,
+      </if>
+      <if test="dealCount != null">
+        deal_count,
+      </if>
+      <if test="dealPrice != null">
+        deal_price,
+      </if>
+      <if test="outerCount != null">
+        outer_count,
+      </if>
+      <if test="innerCount != null">
+        inner_count,
+      </if>
+      <if test="buyingOne != null">
+        buying_one,
+      </if>
+      <if test="buyingOneCount != null">
+        buying_one_count,
+      </if>
+      <if test="buyingTwo != null">
+        buying_two,
+      </if>
+      <if test="buyingTwoCount != null">
+        buying_two_count,
+      </if>
+      <if test="buyingThree != null">
+        buying_three,
+      </if>
+      <if test="buyingThreeCount != null">
+        buying_three_count,
+      </if>
+      <if test="buyingFour != null">
+        buying_four,
+      </if>
+      <if test="buyingFourCount != null">
+        buying_four_count,
+      </if>
+      <if test="buyingFive != null">
+        buying_five,
+      </if>
+      <if test="buyingFiveCount != null">
+        buying_five_count,
+      </if>
+      <if test="sellingOne != null">
+        selling_one,
+      </if>
+      <if test="sellingOneCount != null">
+        selling_one_count,
+      </if>
+      <if test="sellingTwo != null">
+        selling_two,
+      </if>
+      <if test="sellingTwoCount != null">
+        selling_two_count,
+      </if>
+      <if test="sellingThree != null">
+        selling_three,
+      </if>
+      <if test="sellingThreeCount != null">
+        selling_three_count,
+      </if>
+      <if test="sellingFour != null">
+        selling_four,
+      </if>
+      <if test="sellingFourCount != null">
+        selling_four_count,
+      </if>
+      <if test="sellingFive != null">
+        selling_five,
+      </if>
+      <if test="sellingFiveCount != null">
+        selling_five_count,
+      </if>
+      <if test="recentlyDealInfo != null">
+        recently_deal_info,
+      </if>
+      <if test="refreshTime != null">
+        refresh_time,
+      </if>
+      <if test="riseFall != null">
+        rise_fall,
+      </if>
+      <if test="riseFallRatio != null">
+        rise_fall_ratio,
+      </if>
+      <if test="priceHighest != null">
+        price_highest,
+      </if>
+      <if test="priceLowest != null">
+        price_lowest,
+      </if>
+      <if test="priceDealInfo != null">
+        price_deal_info,
+      </if>
+      <if test="exchangeRatio != null">
+        exchange_ratio,
+      </if>
+      <if test="earningsRatio != null">
+        earnings_ratio,
+      </if>
+      <if test="stockAmplitude != null">
+        stock_amplitude,
+      </if>
+      <if test="liveValue != null">
+        live_value,
+      </if>
+      <if test="totalValue != null">
+        total_value,
+      </if>
+      <if test="priceBootRatio != null">
+        price_boot_ratio,
+      </if>
+      <if test="limitUp != null">
+        limit_up,
+      </if>
+      <if test="limitDown != null">
+        limit_down,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="priceClose != null">
+        #{priceClose,jdbcType=DECIMAL},
+      </if>
+      <if test="priceOpen != null">
+        #{priceOpen,jdbcType=DECIMAL},
+      </if>
+      <if test="dealCount != null">
+        #{dealCount,jdbcType=INTEGER},
+      </if>
+      <if test="dealPrice != null">
+        #{dealPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="outerCount != null">
+        #{outerCount,jdbcType=INTEGER},
+      </if>
+      <if test="innerCount != null">
+        #{innerCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingOne != null">
+        #{buyingOne,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingOneCount != null">
+        #{buyingOneCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingTwo != null">
+        #{buyingTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingTwoCount != null">
+        #{buyingTwoCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingThree != null">
+        #{buyingThree,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingThreeCount != null">
+        #{buyingThreeCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingFour != null">
+        #{buyingFour,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingFourCount != null">
+        #{buyingFourCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingFive != null">
+        #{buyingFive,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingFiveCount != null">
+        #{buyingFiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingOne != null">
+        #{sellingOne,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingOneCount != null">
+        #{sellingOneCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingTwo != null">
+        #{sellingTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingTwoCount != null">
+        #{sellingTwoCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingThree != null">
+        #{sellingThree,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingThreeCount != null">
+        #{sellingThreeCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingFour != null">
+        #{sellingFour,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingFourCount != null">
+        #{sellingFourCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingFive != null">
+        #{sellingFive,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingFiveCount != null">
+        #{sellingFiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="recentlyDealInfo != null">
+        #{recentlyDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshTime != null">
+        #{refreshTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riseFall != null">
+        #{riseFall,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallRatio != null">
+        #{riseFallRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="priceHighest != null">
+        #{priceHighest,jdbcType=DECIMAL},
+      </if>
+      <if test="priceLowest != null">
+        #{priceLowest,jdbcType=DECIMAL},
+      </if>
+      <if test="priceDealInfo != null">
+        #{priceDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeRatio != null">
+        #{exchangeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsRatio != null">
+        #{earningsRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="stockAmplitude != null">
+        #{stockAmplitude,jdbcType=DECIMAL},
+      </if>
+      <if test="liveValue != null">
+        #{liveValue,jdbcType=DECIMAL},
+      </if>
+      <if test="totalValue != null">
+        #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="priceBootRatio != null">
+        #{priceBootRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="limitUp != null">
+        #{limitUp,jdbcType=DECIMAL},
+      </if>
+      <if test="limitDown != null">
+        #{limitDown,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="updateUserId != null">
+        #{updateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.MarketInfo">
+    update s_market_info
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        market = #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="priceClose != null">
+        price_close = #{priceClose,jdbcType=DECIMAL},
+      </if>
+      <if test="priceOpen != null">
+        price_open = #{priceOpen,jdbcType=DECIMAL},
+      </if>
+      <if test="dealCount != null">
+        deal_count = #{dealCount,jdbcType=INTEGER},
+      </if>
+      <if test="dealPrice != null">
+        deal_price = #{dealPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="outerCount != null">
+        outer_count = #{outerCount,jdbcType=INTEGER},
+      </if>
+      <if test="innerCount != null">
+        inner_count = #{innerCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingOne != null">
+        buying_one = #{buyingOne,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingOneCount != null">
+        buying_one_count = #{buyingOneCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingTwo != null">
+        buying_two = #{buyingTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingTwoCount != null">
+        buying_two_count = #{buyingTwoCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingThree != null">
+        buying_three = #{buyingThree,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingThreeCount != null">
+        buying_three_count = #{buyingThreeCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingFour != null">
+        buying_four = #{buyingFour,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingFourCount != null">
+        buying_four_count = #{buyingFourCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyingFive != null">
+        buying_five = #{buyingFive,jdbcType=DECIMAL},
+      </if>
+      <if test="buyingFiveCount != null">
+        buying_five_count = #{buyingFiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingOne != null">
+        selling_one = #{sellingOne,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingOneCount != null">
+        selling_one_count = #{sellingOneCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingTwo != null">
+        selling_two = #{sellingTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingTwoCount != null">
+        selling_two_count = #{sellingTwoCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingThree != null">
+        selling_three = #{sellingThree,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingThreeCount != null">
+        selling_three_count = #{sellingThreeCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingFour != null">
+        selling_four = #{sellingFour,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingFourCount != null">
+        selling_four_count = #{sellingFourCount,jdbcType=INTEGER},
+      </if>
+      <if test="sellingFive != null">
+        selling_five = #{sellingFive,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingFiveCount != null">
+        selling_five_count = #{sellingFiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="recentlyDealInfo != null">
+        recently_deal_info = #{recentlyDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshTime != null">
+        refresh_time = #{refreshTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riseFall != null">
+        rise_fall = #{riseFall,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallRatio != null">
+        rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="priceHighest != null">
+        price_highest = #{priceHighest,jdbcType=DECIMAL},
+      </if>
+      <if test="priceLowest != null">
+        price_lowest = #{priceLowest,jdbcType=DECIMAL},
+      </if>
+      <if test="priceDealInfo != null">
+        price_deal_info = #{priceDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeRatio != null">
+        exchange_ratio = #{exchangeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsRatio != null">
+        earnings_ratio = #{earningsRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="stockAmplitude != null">
+        stock_amplitude = #{stockAmplitude,jdbcType=DECIMAL},
+      </if>
+      <if test="liveValue != null">
+        live_value = #{liveValue,jdbcType=DECIMAL},
+      </if>
+      <if test="totalValue != null">
+        total_value = #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="priceBootRatio != null">
+        price_boot_ratio = #{priceBootRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="limitUp != null">
+        limit_up = #{limitUp,jdbcType=DECIMAL},
+      </if>
+      <if test="limitDown != null">
+        limit_down = #{limitDown,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="updateUserId != null">
+        update_user_id = #{updateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.MarketInfo">
+    update s_market_info
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      market = #{market,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      price_close = #{priceClose,jdbcType=DECIMAL},
+      price_open = #{priceOpen,jdbcType=DECIMAL},
+      deal_count = #{dealCount,jdbcType=INTEGER},
+      deal_price = #{dealPrice,jdbcType=DECIMAL},
+      outer_count = #{outerCount,jdbcType=INTEGER},
+      inner_count = #{innerCount,jdbcType=INTEGER},
+      buying_one = #{buyingOne,jdbcType=DECIMAL},
+      buying_one_count = #{buyingOneCount,jdbcType=INTEGER},
+      buying_two = #{buyingTwo,jdbcType=DECIMAL},
+      buying_two_count = #{buyingTwoCount,jdbcType=INTEGER},
+      buying_three = #{buyingThree,jdbcType=DECIMAL},
+      buying_three_count = #{buyingThreeCount,jdbcType=INTEGER},
+      buying_four = #{buyingFour,jdbcType=DECIMAL},
+      buying_four_count = #{buyingFourCount,jdbcType=INTEGER},
+      buying_five = #{buyingFive,jdbcType=DECIMAL},
+      buying_five_count = #{buyingFiveCount,jdbcType=INTEGER},
+      selling_one = #{sellingOne,jdbcType=DECIMAL},
+      selling_one_count = #{sellingOneCount,jdbcType=INTEGER},
+      selling_two = #{sellingTwo,jdbcType=DECIMAL},
+      selling_two_count = #{sellingTwoCount,jdbcType=INTEGER},
+      selling_three = #{sellingThree,jdbcType=DECIMAL},
+      selling_three_count = #{sellingThreeCount,jdbcType=INTEGER},
+      selling_four = #{sellingFour,jdbcType=DECIMAL},
+      selling_four_count = #{sellingFourCount,jdbcType=INTEGER},
+      selling_five = #{sellingFive,jdbcType=DECIMAL},
+      selling_five_count = #{sellingFiveCount,jdbcType=INTEGER},
+      recently_deal_info = #{recentlyDealInfo,jdbcType=VARCHAR},
+      refresh_time = #{refreshTime,jdbcType=TIMESTAMP},
+      rise_fall = #{riseFall,jdbcType=DECIMAL},
+      rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
+      price_highest = #{priceHighest,jdbcType=DECIMAL},
+      price_lowest = #{priceLowest,jdbcType=DECIMAL},
+      price_deal_info = #{priceDealInfo,jdbcType=VARCHAR},
+      exchange_ratio = #{exchangeRatio,jdbcType=DECIMAL},
+      earnings_ratio = #{earningsRatio,jdbcType=DECIMAL},
+      stock_amplitude = #{stockAmplitude,jdbcType=DECIMAL},
+      live_value = #{liveValue,jdbcType=DECIMAL},
+      total_value = #{totalValue,jdbcType=DECIMAL},
+      price_boot_ratio = #{priceBootRatio,jdbcType=DECIMAL},
+      limit_up = #{limitUp,jdbcType=DECIMAL},
+      limit_down = #{limitDown,jdbcType=DECIMAL},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      update_user_id = #{updateUserId,jdbcType=BIGINT},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

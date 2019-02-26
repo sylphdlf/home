@@ -31,7 +31,7 @@ import java.util.Properties;
  * Created by Administrator on 2017/4/28.
  */
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
     protected static Logger logger = LoggerFactory.getLogger(Application.class);

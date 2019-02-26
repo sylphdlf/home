@@ -1,0 +1,30 @@
+env：nodejs、nginx、tomcat8、jdk1.8、redis
+
+1、修改application.properties中的mysql地址和redis地址
+2、指定外部资源地址，地址中包含application.properties、log4j.properties，并修改pom中不同打包命令（例如mvn -P dev)下对应的打包地址
+3、从sql文件夹中拿到建表sql进行表的创建和数据初始化操作
+   建表：
+   user: /user/user_create.sql
+   tms: /tms/tms_create.sql
+   数据初始化：
+   init: /init/init_data.sql
+4、mvn package
+5、进入到project-backweb文件夹下进行npm install，然后npm run build。build完成后获得到dist的绝对地址，然后配置为nginx的html地址
+        location / {
+            root   /data/code/office/project/project-backweb/dist;#替换
+            index  index.html;
+        }
+6、修改tomcat端口号，启动tomcat，并且把服务地址配到nginx中
+        例如
+        #支持多台，可以扩展
+        upstream tomcat_server{
+            server 127.0.0.1:8081 weight=5;
+            server 127.0.0.1:8082 weight=5;
+        }
+        location ^~ /project-web{
+            proxy_pass http://tomcat_server;
+            proxy_set_header   Host    $host;
+            proxy_set_header   X-Real-IP   $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            break;
+        }
