@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dlf.model.mapper.WeatherMapper">
-  <resultMap id="BaseResultMap" type="com.dlf.model.po.weather">
+  <resultMap id="BaseResultMap" type="com.dlf.model.po.Weather">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="country" jdbcType="VARCHAR" property="country" />
     <result column="province" jdbcType="VARCHAR" property="province" />
@@ -32,8 +32,8 @@
     delete from weather
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.dlf.model.po.weather">
-    insert into weather (id, country, province, 
+  <insert id="insert" parameterType="com.dlf.model.po.Weather">
+    insert into Weather (id, country, province,
       city, weather_current, weather_whole_day, 
       temp_current, temp_max, temp_min, 
       humidity, wind, website_update_time, 
@@ -46,8 +46,8 @@
       #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{isDeleted,jdbcType=BIT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.dlf.model.po.weather">
-    insert into weather
+  <insert id="insertSelective" parameterType="com.dlf.model.po.Weather">
+    insert into Weather
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -143,8 +143,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.weather">
-    update weather
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlf.model.po.Weather">
+    update Weather
     <set>
       <if test="country != null">
         country = #{country,jdbcType=VARCHAR},
@@ -191,8 +191,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.weather">
-    update weather
+  <update id="updateByPrimaryKey" parameterType="com.dlf.model.po.Weather">
+    update Weather
     set country = #{country,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
