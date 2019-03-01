@@ -118,8 +118,8 @@ public class StockMarketServiceImpl implements StockMarketService {
     @Override
     public GlobalResultDTO showNewest(MarketInfoSearchDTO searchDTO) {
 //        List<MarketInfoDTO> result = marketInfoMapper.getNewestByParams(searchDTO);
-        MarketInfoDTO marketInfoDTO = (MarketInfoDTO)redisService.getObj(RedisPrefixEnums.MARKET_NEWEST.getCode() + searchDTO.getCode());
-        return new GlobalResultDTO(marketInfoDTO);
+        MarketInfo marketInfo = (MarketInfo)redisService.getObj(RedisPrefixEnums.MARKET_NEWEST.getCode() + searchDTO.getCode());
+        return new GlobalResultDTO(marketInfo);
     }
 
     @Override
