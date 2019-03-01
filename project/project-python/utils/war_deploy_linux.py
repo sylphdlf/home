@@ -20,7 +20,7 @@ username = 'root'
 password = 'Dlf1989128'
 ssh = None
 # 项目地址
-project_root_path = "/data/code/office/project"
+project_root_path = "/data/code/home/project"
 # tomcat地址
 project_tomcat_path = ["/data/tomcat/tomcat-9.0.12-8081"]
 # project_tomcat_path = ["/data/tomcat/tomcat-9.0.12-8081", "/data/tomcat/tomcat-9.0.12-8082"]
@@ -29,7 +29,7 @@ source_war_name = "project-web-1.0-SNAPSHOT.war"
 # 项目war包名称
 target_war_name = "project-web.war"
 # 原包路径
-source_war_path = "/data/code/office/project/project-web/target/" + source_war_name
+source_war_path = project_root_path + "/project-web/target/" + source_war_name
 
 
 # 打印错误信息

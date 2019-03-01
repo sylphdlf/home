@@ -103,7 +103,8 @@ public class StockMarketServiceImpl implements StockMarketService {
                 MarketInfo marketInfo = new MarketInfo();
                 marketInfo.setMarket(thisDTO.getMarket());
                 GtimgEnums.setParams(marketInfo, strList);
-                marketInfoMapper.insert(marketInfo);
+                //直接扔redis里面
+//                marketInfoMapper.insert(marketInfo);
                 redisService.put(RedisPrefixEnums.MARKET_NEWEST.getCode() + marketInfo.getCode(), marketInfo);
             }
         }
@@ -116,8 +117,9 @@ public class StockMarketServiceImpl implements StockMarketService {
     }
     @Override
     public GlobalResultDTO showNewest(MarketInfoSearchDTO searchDTO) {
-        List<MarketInfoDTO> result = marketInfoMapper.getNewestByParams(searchDTO);
-        return new GlobalResultDTO(result.get(0));
+//        List<MarketInfoDTO> result = marketInfoMapper.getNewestByParams(searchDTO);
+        MarketInfoDTO marketInfoDTO = (MarketInfoDTO)redisService.getObj(RedisPrefixEnums.MARKET_NEWEST.getCode() + searchDTO.getCode());
+        return new GlobalResultDTO(marketInfoDTO);
     }
 
     @Override
