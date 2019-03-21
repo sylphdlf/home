@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Administrator on 2017/4/28.
  */
 @SpringBootApplication
-//@EnableScheduling
+@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
     protected static Logger logger = LoggerFactory.getLogger(Application.class);
