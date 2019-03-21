@@ -104,7 +104,7 @@ public class StockMarketServiceImpl implements StockMarketService {
                 marketInfo.setMarket(thisDTO.getMarket());
                 GtimgEnums.setParams(marketInfo, strList);
                 //直接扔redis里面
-//                marketInfoMapper.insert(marketInfo);
+                marketInfoMapper.insert(marketInfo);
                 redisService.put(RedisPrefixEnums.MARKET_NEWEST.getCode() + marketInfo.getCode(), marketInfo);
             }
         }
