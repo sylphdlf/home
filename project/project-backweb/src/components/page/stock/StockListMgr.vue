@@ -246,7 +246,7 @@
             }
         },
         created(){
-            this.getData();
+            this.getRefreshData();
         },
         methods: {
             // 分页导航
@@ -254,15 +254,19 @@
                 this.searchForm.pageNum = val;
                 this.getData();
             },
-            getData(){
+            getRefreshData(){
+                this.getData();
                 this.timer = setInterval(() => {
-                    this.$axios.post(this.url, this.searchForm).then((res) => {
-                        if(res.data.code === "0" && res.data.total !== 0){
-                            this.tableData = res.data.data.list;
-                            this.dataTotal = res.data.data.total;
-                        }
-                    });
+                    this.getData();
                 }, 5000)
+            },
+            getData(){
+                this.$axios.post(this.url, this.searchForm).then((res) => {
+                    if(res.data.code === "0" && res.data.total !== 0){
+                        this.tableData = res.data.data.list;
+                        this.dataTotal = res.data.data.total;
+                    }
+                });
             },
 
             search(){
