@@ -33,9 +33,9 @@ public class MarketSchedule {
         end.set(Calendar.SECOND, 0);
         Date timeEnd = end.getTime();
 //
-        if(!(now.after(timeBegin) && now.before(timeEnd))){
-            stockMarketService.watching();
-        }
+//        if(!(now.after(timeBegin) && now.before(timeEnd))){
+//            stockMarketService.watching();
+//        }
     }
     @Scheduled(cron = "1 1 1 * * ?")
     public void historyDel(){

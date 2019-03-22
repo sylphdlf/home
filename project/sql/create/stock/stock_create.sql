@@ -75,3 +75,4 @@ CREATE TABLE IF NOT EXISTS `s_market_info` (
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除,1已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='market_info';
+

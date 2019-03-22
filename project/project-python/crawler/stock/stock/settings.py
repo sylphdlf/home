@@ -14,7 +14,7 @@ BOT_NAME = 'stock'
 SPIDER_MODULES = ['stock.spiders']
 NEWSPIDER_MODULE = 'stock.spiders'
 
-
+HTTPERROR_ALLOWED_CODES = [304]
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'stock (+http://www.yourdomain.com)'
 
@@ -39,15 +39,10 @@ ROBOTSTXT_OBEY = False
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-DEFAULT_REQUEST_HEADERS = {
-  'Accept': 'application/json, text/plain, */*',
-  'Accept-Encoding': 'gzip, deflate',
-  'Accept-Language': 'zh-CN,zh;q=0.9',
-  'Connection': 'keep-alive',
-  # 'Content-Length': '39',
-  'Content-Type': 'application/json;charset=UTF-8',
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
-}
+#DEFAULT_REQUEST_HEADERS = {
+#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+#   'Accept-Language': 'en',
+#}
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
@@ -69,9 +64,9 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'stock.pipelines.StockPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'stock.pipelines.StockPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
