@@ -14,11 +14,13 @@ public class StockMarketDTO {
     private String code;
     private String name;
     private String market;
-    private BigDecimal buyingPrice;
-    private Integer buyingCount;
-    private BigDecimal buyingTotal;
+    private Integer type;
+    private BigDecimal price;
+    private BigDecimal riseFall;
+    private BigDecimal riseFallRatio;
+    private String riseFallHistory;
+    private Integer days;
     private Integer watchingStatus;
     private Date createTime;
-    //detail
-    private BigDecimal price;
+    private Integer isDeleted;
 }

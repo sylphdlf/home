@@ -13,6 +13,7 @@ public enum RedisPrefixEnums {
     FUN_TREE_NODE("fun_tree_node", "权限树"),
     FUN_LIST("fun_list", "资源列表"),
     MARKET_NEWEST("market_newest_", "最新数据"),
+    SCAN_MARKET("scan_market_status", "扫描市场方法执行状态"),
     ;
     private String code;
     private String desc;

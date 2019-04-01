@@ -3,12 +3,15 @@ package com.dlf.business.manager.stock.impl;
 import com.dlf.business.anno.RedisCacheAnno;
 import com.dlf.business.manager.redis.RedisService;
 import com.dlf.business.manager.stock.StockMarketService;
+import com.dlf.common.utils.BeanUtils;
 import com.dlf.common.utils.HttpUtils;
+import com.dlf.common.utils.market.MarketUtils;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.stock.*;
 import com.dlf.model.enums.IRedisPrefixEnums;
 import com.dlf.model.enums.RedisPrefixEnums;
 import com.dlf.model.enums.stock.GtimgEnums;
+import com.dlf.model.enums.stock.MarketEnums;
 import com.dlf.model.mapper.MarketInfoMapper;
 import com.dlf.model.mapper.MarketInfoMapper2;
 import com.dlf.model.mapper.MarketMapper2;
@@ -22,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -90,9 +94,7 @@ public class StockMarketServiceImpl implements StockMarketService {
         List<StockMarketDTO> result = this.preWatching();
         if(!CollectionUtils.isEmpty(result)){
             for(StockMarketDTO thisDTO: result){
-                String returnStr = HttpUtils.httpGet(market_url + thisDTO.getMarket() + thisDTO.getCode());
-                String thisStr = returnStr.split("=")[1];
-                String[] strList = thisStr.split("~");
+                String[] strList = MarketUtils.queryMarketInfo(market_url + thisDTO.getMarket() + thisDTO.getCode());
                 //去重, 根据数据更新时间
                 String redisKey = strList[GtimgEnums.INDEX_2.getIndex()] + strList[GtimgEnums.INDEX_30.getIndex()];
                 if(null != redisService.get(redisKey)){
@@ -150,10 +152,73 @@ public class StockMarketServiceImpl implements StockMarketService {
         
     }
 
-    public static void main(String[] args) {
-        String returnStr = HttpUtils.httpGet("http://qt.gtimg.cn/q=sz002230");
-        String thisStr = returnStr.split("=")[1];
-        String[] strList = thisStr.split("~");
+    @Override
+    @Transactional
+    public GlobalResultDTO scanMarket(StockMarketSearchDTO searchDTO) {
+        String count = redisService.get(RedisPrefixEnums.SCAN_MARKET.getCode());
+        if(null != count && !count.equals("0")){
+            return GlobalResultDTO.FAIL("任务正在执行，请稍后再试，目前进度 " + count);
+        }
+        searchDTO.setWatchingStatus(MarketEnums.WATCHING_STATUS_1.getCode());
+        //查出所有的数据
+        List<StockMarketDTO> dtoList = marketMapper.queryListByParams(searchDTO);
+        if(!CollectionUtils.isEmpty(dtoList)){
+            new Thread(() -> {
 
+                    StockMarketDTO thisDTO;
+                    MarketInfo marketInfo = new MarketInfo();
+                    for(int i=0;i<dtoList.size();i++){
+                        try {
+                            thisDTO = dtoList.get(i);
+                            String[] strings = MarketUtils.queryMarketInfo(GtimgEnums.MARKET_URL.getName() + thisDTO.getMarket() + thisDTO.getCode());
+                            GtimgEnums.setParams(marketInfo, strings);
+                            //价格
+                            thisDTO.setPrice(marketInfo.getPrice());
+                            //涨跌
+                            thisDTO.setRiseFall(marketInfo.getRiseFall());
+                            //涨跌幅
+                            thisDTO.setRiseFallRatio(marketInfo.getRiseFallRatio());
+
+                            //目前是涨跌
+                            int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
+                            //上次涨跌
+                            if(null != thisDTO.getType()){
+                                int historyType = thisDTO.getType();
+                                //设置连涨，连跌天数
+                                if(historyType == currentType){
+                                    thisDTO.setDays(thisDTO.getDays() + 1);
+                                    //涨跌幅历史记录
+                                    thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
+                                }else{
+                                    thisDTO.setDays(1);
+                                    //涨跌幅历史记录
+                                    thisDTO.setRiseFallHistory(marketInfo.getRiseFallRatio() + "");
+                                }
+                            }else{
+                                thisDTO.setDays(1);
+                            }
+                            thisDTO.setType(currentType);
+                            Market market = new Market();
+                            BeanUtils.copyProperties(thisDTO, market);
+                            marketMapper.updateByPrimaryKey(market);
+                            //放入缓存
+                            if(i == dtoList.size()-1){
+                                redisService.put(RedisPrefixEnums.SCAN_MARKET.getCode(), "0");
+                            }else{
+                                redisService.put(RedisPrefixEnums.SCAN_MARKET.getCode(), i + "/" + dtoList.size());
+                            }
+                            try {
+                                Thread.sleep(1500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+            }).start();
+        }
+        return GlobalResultDTO.SUCCESS("执行成功，再次点击查询进度");
     }
+
 }

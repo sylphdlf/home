@@ -8,9 +8,10 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input  placeholder="代码" class="handle-input mr10"></el-input>
+                <el-input  placeholder="代码" v-model="searchForm.code" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="search" @click="add">新增</el-button>
+                <el-button type="warning" icon="search" @click="scan">全盘扫描</el-button>
             </div>
             <el-table :data="tableData" border style="width: 100%">
                 <el-table-column type="selection" width="55"/>
@@ -18,12 +19,11 @@
                 <el-table-column prop="code" label="代码"/>
                 <el-table-column prop="market" label="市场"/>
                 <el-table-column prop="price" label="当前价格"/>
-                <el-table-column prop="buyingPrice" label="买入价"/>
-                <el-table-column prop="buyingCount" label="数量（手）"/>
-                <el-table-column prop="buyingTotal" label="总价"/>
+                <el-table-column prop="riseFall" label="涨跌"/>
+                <el-table-column prop="riseFallRatio" label="涨跌幅"/>
+                <el-table-column prop="days" label="持续天数"/>
                 <el-table-column label="操作" width="220">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">买入</el-button>
                         <el-button type="info" size="small" @click="openInfo(scope.row)">详细</el-button>
                         <el-button v-if="scope.row.watchingStatus === 0" type="warning" size="small" @click="startWatching(scope.row)">监控</el-button>
                         <el-button v-if="scope.row.watchingStatus === 1" type="danger" size="small" @click="stopWatching(scope.row)">停止</el-button>
@@ -213,6 +213,7 @@
             return {
                 url: this.$projectUrl + '/stockMarket/queryPageByParams',
                 urlAdd: this.$projectUrl + '/stockMarket/add',
+                urlScan: this.$projectUrl + '/stockMarket/scan',
                 urlStartWatch: this.$projectUrl + '/stockMarket/startWatching',
                 urlStopWatch: this.$projectUrl + '/stockMarket/stopWatching',
                 urlShowNewest: this.$projectUrl + '/stockMarket/showNewest',
@@ -223,10 +224,7 @@
                 dataTotal: 1,
                 timer: {},
                 searchForm: {
-                    id:'',
-                    username: '',
-                    mobile: '',
-                    realName: '',
+                    code: '',
                     pageNum: 1
                 },
                 dialogForm: {
@@ -256,9 +254,9 @@
             },
             getRefreshData(){
                 this.getData();
-                this.timer = setInterval(() => {
-                    this.getData();
-                }, 5000)
+                // this.timer = setInterval(() => {
+                //     this.getData();
+                // }, 5000)
             },
             getData(){
                 this.$axios.post(this.url, this.searchForm).then((res) => {
@@ -268,13 +266,20 @@
                     }
                 });
             },
-
             search(){
                 this.getData();
             },
             add(){
                 this.dialogForm = {};
                 this.dialogFormVisible = true;
+            },
+            scan(){
+                this.$axios.get(this.urlScan).then((res) => {
+                    if(res.data.code === "0"){
+                        this.msgSuccess(res.data.msg)
+                    }
+                    this.msgFail(res.data.msg)
+                });
             },
             addSubmit(){
                 this.$axios.post(this.urlAdd, this.dialogForm).then((res) => {

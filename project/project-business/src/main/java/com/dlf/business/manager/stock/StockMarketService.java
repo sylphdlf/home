@@ -20,4 +20,6 @@ public interface StockMarketService {
     GlobalResultDTO queryChartData(MarketInfoSearchDTO searchDTO);
 
     void historyDel();
+
+    GlobalResultDTO scanMarket(StockMarketSearchDTO searchDTO);
 }

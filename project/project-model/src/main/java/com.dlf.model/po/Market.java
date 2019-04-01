@@ -12,11 +12,17 @@ public class Market {
 
     private String market;
 
-    private BigDecimal buyingPrice;
+    private Integer type;
 
-    private Integer buyingCount;
+    private BigDecimal price;
 
-    private BigDecimal buyingTotal;
+    private BigDecimal riseFall;
+
+    private BigDecimal riseFallRatio;
+
+    private String riseFallHistory;
+
+    private Integer days;
 
     private Integer watchingStatus;
 
@@ -64,28 +70,52 @@ public class Market {
         this.market = market == null ? null : market.trim();
     }
 
-    public BigDecimal getBuyingPrice() {
-        return buyingPrice;
+    public Integer getType() {
+        return type;
     }
 
-    public void setBuyingPrice(BigDecimal buyingPrice) {
-        this.buyingPrice = buyingPrice;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public Integer getBuyingCount() {
-        return buyingCount;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setBuyingCount(Integer buyingCount) {
-        this.buyingCount = buyingCount;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public BigDecimal getBuyingTotal() {
-        return buyingTotal;
+    public BigDecimal getRiseFall() {
+        return riseFall;
     }
 
-    public void setBuyingTotal(BigDecimal buyingTotal) {
-        this.buyingTotal = buyingTotal;
+    public void setRiseFall(BigDecimal riseFall) {
+        this.riseFall = riseFall;
+    }
+
+    public BigDecimal getRiseFallRatio() {
+        return riseFallRatio;
+    }
+
+    public void setRiseFallRatio(BigDecimal riseFallRatio) {
+        this.riseFallRatio = riseFallRatio;
+    }
+
+    public String getRiseFallHistory() {
+        return riseFallHistory;
+    }
+
+    public void setRiseFallHistory(String riseFallHistory) {
+        this.riseFallHistory = riseFallHistory;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
     }
 
     public Integer getWatchingStatus() {

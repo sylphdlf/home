@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum GtimgEnums {
+    MARKET_URL(1, "http://qt.gtimg.cn/q=")
+    ,
     INDEX_1(1, "股票名称"),INDEX_2(2, "股票代码"),INDEX_3(3, "当前价格"),INDEX_4(4, "昨收"),INDEX_5(5, "今开"),INDEX_6(6, "成交量（手）"),INDEX_7(7, "外盘"),
     INDEX_8(8, "内盘"),INDEX_9(9, "买一"), INDEX_10(10, "买一量（手）"),INDEX_11(11, "买二"),INDEX_12(12, "买二量（手）"),INDEX_13(13, "买三"),INDEX_14(14, "买三量（手）"),
     INDEX_15(15, "买四"),INDEX_16(16, "买四量（手）"),INDEX_17(17, "买五"),INDEX_18(18, "买五量（手）"),INDEX_19(19, "卖一"),INDEX_20(20, "卖一量（手）"),INDEX_21(21, "卖二"),
@@ -71,15 +73,15 @@ public enum GtimgEnums {
         marketInfo.setPriceHighest(new BigDecimal(strList[INDEX_33.index]));
         marketInfo.setPriceLowest(new BigDecimal(strList[INDEX_34.index]));
         marketInfo.setPriceDealInfo(strList[INDEX_35.index]);
-        marketInfo.setDealPrice(new BigDecimal(strList[INDEX_37.index]));
-        marketInfo.setExchangeRatio(new BigDecimal(strList[INDEX_38.index]));
-        marketInfo.setEarningsRatio(new BigDecimal(strList[INDEX_39.index]));
-        marketInfo.setStockAmplitude(new BigDecimal(strList[INDEX_43.index]));
-        marketInfo.setLiveValue(new BigDecimal(strList[INDEX_44.index]));
-        marketInfo.setTotalValue(new BigDecimal(strList[INDEX_45.index]));
-        marketInfo.setPriceBootRatio(new BigDecimal(strList[INDEX_46.index]));
-        marketInfo.setLimitUp(new BigDecimal(strList[INDEX_47.index]));
-        marketInfo.setLimitDown(new BigDecimal(strList[INDEX_48.index]));
+        marketInfo.setDealPrice(exchangeNull(strList[INDEX_37.index]));
+        marketInfo.setExchangeRatio(exchangeNull(strList[INDEX_38.index]));
+        marketInfo.setEarningsRatio(exchangeNull(strList[INDEX_39.index]));
+        marketInfo.setStockAmplitude(exchangeNull(strList[INDEX_43.index]));
+        marketInfo.setLiveValue(exchangeNull(strList[INDEX_44.index]));
+        marketInfo.setTotalValue(exchangeNull(strList[INDEX_45.index]));
+        marketInfo.setPriceBootRatio(exchangeNull(strList[INDEX_46.index]));
+        marketInfo.setLimitUp(exchangeNull(strList[INDEX_47.index]));
+        marketInfo.setLimitDown(exchangeNull(strList[INDEX_48.index]));
     }
 
     public synchronized void setIndexNameMap(){
@@ -90,5 +92,7 @@ public enum GtimgEnums {
             }
         }
     }
-
+    private static BigDecimal exchangeNull(String inputStr){
+        return new BigDecimal(inputStr.equals("")?"0":inputStr);
+    }
 }

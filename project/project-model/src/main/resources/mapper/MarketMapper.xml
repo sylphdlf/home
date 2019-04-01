@@ -6,9 +6,12 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="market" jdbcType="VARCHAR" property="market" />
-    <result column="buying_price" jdbcType="DECIMAL" property="buyingPrice" />
-    <result column="buying_count" jdbcType="INTEGER" property="buyingCount" />
-    <result column="buying_total" jdbcType="DECIMAL" property="buyingTotal" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="rise_fall" jdbcType="DECIMAL" property="riseFall" />
+    <result column="rise_fall_ratio" jdbcType="DECIMAL" property="riseFallRatio" />
+    <result column="rise_fall_history" jdbcType="DECIMAL" property="riseFallHistory" />
+    <result column="days" jdbcType="INTEGER" property="days" />
     <result column="watching_status" jdbcType="INTEGER" property="watchingStatus" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -18,8 +21,9 @@
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, market, buying_price, buying_count, buying_total, watching_status, 
-    remarks, create_time, update_time, create_user_id, update_user_id, is_deleted
+    id, code, name, market, type, price, rise_fall, rise_fall_ratio, rise_fall_history, 
+    days, watching_status, remarks, create_time, update_time, create_user_id, update_user_id, 
+    is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -33,13 +37,15 @@
   </delete>
   <insert id="insert" parameterType="com.dlf.model.po.Market">
     insert into s_market (id, code, name, 
-      market, buying_price, buying_count, 
-      buying_total, watching_status, remarks, 
+      market, type, price, 
+      rise_fall, rise_fall_ratio, rise_fall_history, 
+      days, watching_status, remarks, 
       create_time, update_time, create_user_id, 
       update_user_id, is_deleted)
     values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{market,jdbcType=VARCHAR}, #{buyingPrice,jdbcType=DECIMAL}, #{buyingCount,jdbcType=INTEGER}, 
-      #{buyingTotal,jdbcType=DECIMAL}, #{watchingStatus,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{market,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{riseFall,jdbcType=DECIMAL}, #{riseFallRatio,jdbcType=DECIMAL}, #{riseFallHistory,jdbcType=DECIMAL}, 
+      #{days,jdbcType=INTEGER}, #{watchingStatus,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, 
       #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -58,14 +64,23 @@
       <if test="market != null">
         market,
       </if>
-      <if test="buyingPrice != null">
-        buying_price,
+      <if test="type != null">
+        type,
       </if>
-      <if test="buyingCount != null">
-        buying_count,
+      <if test="price != null">
+        price,
       </if>
-      <if test="buyingTotal != null">
-        buying_total,
+      <if test="riseFall != null">
+        rise_fall,
+      </if>
+      <if test="riseFallRatio != null">
+        rise_fall_ratio,
+      </if>
+      <if test="riseFallHistory != null">
+        rise_fall_history,
+      </if>
+      <if test="days != null">
+        days,
       </if>
       <if test="watchingStatus != null">
         watching_status,
@@ -102,14 +117,23 @@
       <if test="market != null">
         #{market,jdbcType=VARCHAR},
       </if>
-      <if test="buyingPrice != null">
-        #{buyingPrice,jdbcType=DECIMAL},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="buyingCount != null">
-        #{buyingCount,jdbcType=INTEGER},
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
       </if>
-      <if test="buyingTotal != null">
-        #{buyingTotal,jdbcType=DECIMAL},
+      <if test="riseFall != null">
+        #{riseFall,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallRatio != null">
+        #{riseFallRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallHistory != null">
+        #{riseFallHistory,jdbcType=DECIMAL},
+      </if>
+      <if test="days != null">
+        #{days,jdbcType=INTEGER},
       </if>
       <if test="watchingStatus != null">
         #{watchingStatus,jdbcType=INTEGER},
@@ -146,14 +170,23 @@
       <if test="market != null">
         market = #{market,jdbcType=VARCHAR},
       </if>
-      <if test="buyingPrice != null">
-        buying_price = #{buyingPrice,jdbcType=DECIMAL},
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="buyingCount != null">
-        buying_count = #{buyingCount,jdbcType=INTEGER},
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="buyingTotal != null">
-        buying_total = #{buyingTotal,jdbcType=DECIMAL},
+      <if test="riseFall != null">
+        rise_fall = #{riseFall,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallRatio != null">
+        rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="riseFallHistory != null">
+        rise_fall_history = #{riseFallHistory,jdbcType=DECIMAL},
+      </if>
+      <if test="days != null">
+        days = #{days,jdbcType=INTEGER},
       </if>
       <if test="watchingStatus != null">
         watching_status = #{watchingStatus,jdbcType=INTEGER},
@@ -184,9 +217,12 @@
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       market = #{market,jdbcType=VARCHAR},
-      buying_price = #{buyingPrice,jdbcType=DECIMAL},
-      buying_count = #{buyingCount,jdbcType=INTEGER},
-      buying_total = #{buyingTotal,jdbcType=DECIMAL},
+      type = #{type,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      rise_fall = #{riseFall,jdbcType=DECIMAL},
+      rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
+      rise_fall_history = #{riseFallHistory,jdbcType=DECIMAL},
+      days = #{days,jdbcType=INTEGER},
       watching_status = #{watchingStatus,jdbcType=INTEGER},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

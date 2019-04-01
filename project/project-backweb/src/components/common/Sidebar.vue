@@ -77,60 +77,60 @@
                             }
                         ]
                     },
-                    {
-                        icon: 'el-icon-tickets',
-                        index: 'info',
-                        title: '基础信息管理',
-                        subs: [
-                            {
-                                index: 'contactsMgr',
-                                title: '联系人管理'
-                            },
-                            {
-                                index: 'vehicleMgr',
-                                title: '车辆管理'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-tickets',
-                        index: 'tms',
-                        title: '物流管理',
-                        subs: [
-                            {
-                                index: 'consignMgr',
-                                title: '托运单管理'
-                            },
-                            {
-                                index: 'pickUpMgr',
-                                title: '上门提货'
-                            },
-                            {
-                                index: 'sendoutMgr',
-                                title: '外发管理'
-                            },
-                            {
-                                index: 'vehicleTrackMgr',
-                                title: '车辆跟踪'
-                            },
-                            {
-                                index: 'stockMgr',
-                                title: '库存管理'
-                            },
-                            // {
-                            //     index: 'funMgr',
-                            //     title: '送货上门(undo)'
-                            // },
-                            // {
-                            //     index: 'funMgr',
-                            //     title: '自提(undo)'
-                            // },
-                            // {
-                            //     index: 'funMgr',
-                            //     title: '到站确认(undo)'
-                            // }
-                        ]
-                    },
+                    // {
+                    //     icon: 'el-icon-tickets',
+                    //     index: 'info',
+                    //     title: '基础信息管理',
+                    //     subs: [
+                    //         {
+                    //             index: 'contactsMgr',
+                    //             title: '联系人管理'
+                    //         },
+                    //         {
+                    //             index: 'vehicleMgr',
+                    //             title: '车辆管理'
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     icon: 'el-icon-tickets',
+                    //     index: 'tms',
+                    //     title: '物流管理',
+                    //     subs: [
+                    //         {
+                    //             index: 'consignMgr',
+                    //             title: '托运单管理'
+                    //         },
+                    //         {
+                    //             index: 'pickUpMgr',
+                    //             title: '上门提货'
+                    //         },
+                    //         {
+                    //             index: 'sendoutMgr',
+                    //             title: '外发管理'
+                    //         },
+                    //         {
+                    //             index: 'vehicleTrackMgr',
+                    //             title: '车辆跟踪'
+                    //         },
+                    //         {
+                    //             index: 'stockMgr',
+                    //             title: '库存管理'
+                    //         },
+                    //         // {
+                    //         //     index: 'funMgr',
+                    //         //     title: '送货上门(undo)'
+                    //         // },
+                    //         // {
+                    //         //     index: 'funMgr',
+                    //         //     title: '自提(undo)'
+                    //         // },
+                    //         // {
+                    //         //     index: 'funMgr',
+                    //         //     title: '到站确认(undo)'
+                    //         // }
+                    //     ]
+                    // },
                     {
                         icon: 'el-icon-tickets',
                         index: 'file',

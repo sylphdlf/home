@@ -2,6 +2,7 @@ package com.dlf.web.controller.stock;
 
 import com.dlf.business.anno.FunDescriptionAnno;
 import com.dlf.business.anno.MenuDescriptionAnno;
+import com.dlf.business.anno.UrlPermissionIgnoreAnno;
 import com.dlf.business.manager.stock.StockMarketService;
 import com.dlf.model.dto.GlobalResultDTO;
 import com.dlf.model.dto.stock.MarketInfoSearchDTO;
@@ -58,5 +59,12 @@ public class StockMarketController {
     @RequestMapping(value = "/queryChartData", method = RequestMethod.POST)
     public GlobalResultDTO queryChartData(@RequestBody MarketInfoSearchDTO searchDTO){
         return stockMarketService.queryChartData(searchDTO);
+    }
+
+    @FunDescriptionAnno(name="扫描整个市场")
+    @RequestMapping(value = "/scan", method = RequestMethod.GET)
+    @UrlPermissionIgnoreAnno
+    public GlobalResultDTO scanMarket(){
+        return stockMarketService.scanMarket(new StockMarketSearchDTO());
     }
 }

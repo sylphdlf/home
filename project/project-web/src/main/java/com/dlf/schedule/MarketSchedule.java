@@ -2,6 +2,7 @@ package com.dlf.schedule;
 
 import com.dlf.business.manager.stock.StockMarketService;
 import com.dlf.common.utils.DateTimeUtils;
+import com.dlf.model.dto.stock.StockMarketSearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,8 +38,14 @@ public class MarketSchedule {
 //            stockMarketService.watching();
 //        }
     }
+
     @Scheduled(cron = "1 1 1 * * ?")
     public void historyDel(){
         stockMarketService.historyDel();
     }
+    //扫描全盘
+//    @Scheduled(cron = "0 0 16 * * ?")
+//    public void scanMarket(){
+//        stockMarketService.scanMarket(new StockMarketSearchDTO());
+//    }
 }

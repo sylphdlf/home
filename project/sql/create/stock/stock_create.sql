@@ -5,9 +5,12 @@ CREATE TABLE IF NOT EXISTS `s_market` (
   `code` VARCHAR(20) NOT NULL COMMENT '编号',
   `name` VARCHAR(20) NOT NULL COMMENT '名称',
   `market` VARCHAR(10) NOT NULL COMMENT '市场，sh，sz等',
-  `buying_price` DECIMAL(10,2) NULL COMMENT '买入价',
-  `buying_count` INT(11) NULL COMMENT '买入数量（手）',
-  `buying_total` DECIMAL(10,2) NULL COMMENT '总价',
+  `type` INT(2) NULL COMMENT '1、涨，2、跌',
+  `price` DECIMAL(10,2) NULL COMMENT '当前价格',
+  `rise_fall` DECIMAL(10,2) NULL COMMENT '涨跌',
+  `rise_fall_ratio` DECIMAL(5,2) NULL COMMENT '涨跌%',
+  `rise_fall_history` DECIMAL(10,2) NULL COMMENT '历史涨跌幅',
+  `days` INT(11) NULL COMMENT '持续天数',
   `watching_status` INT(2) DEFAULT 0 COMMENT '监控，0停止，1开启',
   `remarks` VARCHAR(255) DEFAULT NULL COMMENT '备注',
   `create_time` TIMESTAMP DEFAULT current_timestamp COMMENT '创建时间',
@@ -15,8 +18,9 @@ CREATE TABLE IF NOT EXISTS `s_market` (
   `create_user_id` BIGINT(20) NULL COMMENT '创建人',
   `update_user_id` BIGINT(20) NULL COMMENT '最后修改人',
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除,1已删除',
-  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='market';
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX unique_code(code)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='市场';
 
 DROP TABLE IF EXISTS `s_market_info`;
 
@@ -75,4 +79,5 @@ CREATE TABLE IF NOT EXISTS `s_market_info` (
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除,1已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='market_info';
+
 
