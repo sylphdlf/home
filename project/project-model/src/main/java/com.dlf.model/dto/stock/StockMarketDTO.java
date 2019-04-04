@@ -22,5 +22,6 @@ public class StockMarketDTO {
     private Integer days;
     private Integer watchingStatus;
     private Date createTime;
+    private Date updateTime;
     private Integer isDeleted;
 }

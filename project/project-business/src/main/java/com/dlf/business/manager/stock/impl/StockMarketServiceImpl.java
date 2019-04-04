@@ -181,11 +181,28 @@ public class StockMarketServiceImpl implements StockMarketService {
 
                             //目前是涨跌
                             int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
+                            //当天数据是否更新过
+                            boolean isToday = false;
                             //上次涨跌
                             if(null != thisDTO.getType()){
                                 int historyType = thisDTO.getType();
                                 //设置连涨，连跌天数
-                                if(historyType == currentType){
+                                if(null != thisDTO.getUpdateTime()){
+                                    Calendar target = Calendar.getInstance();
+                                    target.setTime(thisDTO.getUpdateTime());
+                                    int targetYear = target.get(Calendar.YEAR);
+                                    int targetMonth = target.get(Calendar.MONTH);
+                                    int targetDay = target.get(Calendar.DAY_OF_MONTH);
+                                    Calendar current = Calendar.getInstance();
+                                    current.setTime(new Date());
+                                    int currentYear = current.get(Calendar.YEAR);
+                                    int currentMonth = current.get(Calendar.MONTH);
+                                    int currentDay = current.get(Calendar.DAY_OF_MONTH);
+                                    if(targetYear == currentYear && targetMonth == currentMonth && targetDay == currentDay){
+                                        isToday = true;
+                                    }
+                                }
+                                if(historyType == currentType && !isToday){
                                     thisDTO.setDays(thisDTO.getDays() + 1);
                                     //涨跌幅历史记录
                                     thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
