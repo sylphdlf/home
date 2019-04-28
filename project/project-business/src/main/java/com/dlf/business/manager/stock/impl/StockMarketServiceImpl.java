@@ -154,10 +154,13 @@ public class StockMarketServiceImpl implements StockMarketService {
 
     @Override
     @Transactional
+    @SuppressWarnings("unchecked")
     public GlobalResultDTO scanMarket(StockMarketSearchDTO searchDTO) {
         String count = redisService.get(RedisPrefixEnums.SCAN_MARKET.getCode());
         if(null != count && !count.equals("0")){
             return GlobalResultDTO.FAIL("任务正在执行，请稍后再试，目前进度 " + count);
+        }else{
+            redisService.put(RedisPrefixEnums.SCAN_MARKET.getCode(), "0");
         }
         searchDTO.setWatchingStatus(MarketEnums.WATCHING_STATUS_1.getCode());
         //查出所有的数据
@@ -225,7 +228,7 @@ public class StockMarketServiceImpl implements StockMarketService {
                                 redisService.put(RedisPrefixEnums.SCAN_MARKET.getCode(), i + "/" + dtoList.size());
                             }
                             try {
-                                Thread.sleep(1500);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -234,6 +237,8 @@ public class StockMarketServiceImpl implements StockMarketService {
                         }
                     }
             }).start();
+        }else{
+            redisService.put(RedisPrefixEnums.SCAN_MARKET.getCode(), "0");
         }
         return GlobalResultDTO.SUCCESS("执行成功，再次点击查询进度");
     }
