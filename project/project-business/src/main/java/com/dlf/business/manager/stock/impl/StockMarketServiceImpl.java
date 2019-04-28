@@ -205,7 +205,7 @@ public class StockMarketServiceImpl implements StockMarketService {
                                         isToday = true;
                                     }
                                 }
-                                if(historyType == currentType && !isToday){
+                                if((historyType == currentType) && !isToday){
                                     thisDTO.setDays(thisDTO.getDays() + 1);
                                     //涨跌幅历史记录
                                     thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
