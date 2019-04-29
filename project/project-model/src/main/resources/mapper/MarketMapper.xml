@@ -10,8 +10,13 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="rise_fall" jdbcType="DECIMAL" property="riseFall" />
     <result column="rise_fall_ratio" jdbcType="DECIMAL" property="riseFallRatio" />
-    <result column="rise_fall_history" jdbcType="DECIMAL" property="riseFallHistory" />
+    <result column="rise_fall_history" jdbcType="VARCHAR" property="riseFallHistory" />
     <result column="days" jdbcType="INTEGER" property="days" />
+    <result column="high_low" jdbcType="VARCHAR" property="highLow" />
+    <result column="earnings_ratio" jdbcType="DECIMAL" property="earningsRatio" />
+    <result column="earnings_ratio_history" jdbcType="VARCHAR" property="earningsRatioHistory" />
+    <result column="exchange_ratio" jdbcType="DECIMAL" property="exchangeRatio" />
+    <result column="exchange_ratio_history" jdbcType="VARCHAR" property="exchangeRatioHistory" />
     <result column="watching_status" jdbcType="INTEGER" property="watchingStatus" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -22,7 +27,8 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, market, type, price, rise_fall, rise_fall_ratio, rise_fall_history, 
-    days, watching_status, remarks, create_time, update_time, create_user_id, update_user_id, 
+    days, high_low, earnings_ratio, earnings_ratio_history, exchange_ratio, exchange_ratio_history, 
+    watching_status, remarks, create_time, update_time, create_user_id, update_user_id, 
     is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -39,15 +45,19 @@
     insert into s_market (id, code, name, 
       market, type, price, 
       rise_fall, rise_fall_ratio, rise_fall_history, 
-      days, watching_status, remarks, 
-      create_time, update_time, create_user_id, 
-      update_user_id, is_deleted)
+      days, high_low, earnings_ratio, 
+      earnings_ratio_history, exchange_ratio, exchange_ratio_history, 
+      watching_status, remarks, create_time, 
+      update_time, create_user_id, update_user_id, 
+      is_deleted)
     values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{market,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{riseFall,jdbcType=DECIMAL}, #{riseFallRatio,jdbcType=DECIMAL}, #{riseFallHistory,jdbcType=DECIMAL}, 
-      #{days,jdbcType=INTEGER}, #{watchingStatus,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, 
-      #{updateUserId,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
+      #{riseFall,jdbcType=DECIMAL}, #{riseFallRatio,jdbcType=DECIMAL}, #{riseFallHistory,jdbcType=VARCHAR}, 
+      #{days,jdbcType=INTEGER}, #{highLow,jdbcType=VARCHAR}, #{earningsRatio,jdbcType=DECIMAL}, 
+      #{earningsRatioHistory,jdbcType=VARCHAR}, #{exchangeRatio,jdbcType=DECIMAL}, #{exchangeRatioHistory,jdbcType=VARCHAR}, 
+      #{watchingStatus,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}, #{updateUserId,jdbcType=BIGINT}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.dlf.model.po.Market">
     insert into s_market
@@ -81,6 +91,21 @@
       </if>
       <if test="days != null">
         days,
+      </if>
+      <if test="highLow != null">
+        high_low,
+      </if>
+      <if test="earningsRatio != null">
+        earnings_ratio,
+      </if>
+      <if test="earningsRatioHistory != null">
+        earnings_ratio_history,
+      </if>
+      <if test="exchangeRatio != null">
+        exchange_ratio,
+      </if>
+      <if test="exchangeRatioHistory != null">
+        exchange_ratio_history,
       </if>
       <if test="watchingStatus != null">
         watching_status,
@@ -130,10 +155,25 @@
         #{riseFallRatio,jdbcType=DECIMAL},
       </if>
       <if test="riseFallHistory != null">
-        #{riseFallHistory,jdbcType=DECIMAL},
+        #{riseFallHistory,jdbcType=VARCHAR},
       </if>
       <if test="days != null">
         #{days,jdbcType=INTEGER},
+      </if>
+      <if test="highLow != null">
+        #{highLow,jdbcType=VARCHAR},
+      </if>
+      <if test="earningsRatio != null">
+        #{earningsRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsRatioHistory != null">
+        #{earningsRatioHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeRatio != null">
+        #{exchangeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangeRatioHistory != null">
+        #{exchangeRatioHistory,jdbcType=VARCHAR},
       </if>
       <if test="watchingStatus != null">
         #{watchingStatus,jdbcType=INTEGER},
@@ -183,10 +223,25 @@
         rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
       </if>
       <if test="riseFallHistory != null">
-        rise_fall_history = #{riseFallHistory,jdbcType=DECIMAL},
+        rise_fall_history = #{riseFallHistory,jdbcType=VARCHAR},
       </if>
       <if test="days != null">
         days = #{days,jdbcType=INTEGER},
+      </if>
+      <if test="highLow != null">
+        high_low = #{highLow,jdbcType=VARCHAR},
+      </if>
+      <if test="earningsRatio != null">
+        earnings_ratio = #{earningsRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsRatioHistory != null">
+        earnings_ratio_history = #{earningsRatioHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeRatio != null">
+        exchange_ratio = #{exchangeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangeRatioHistory != null">
+        exchange_ratio_history = #{exchangeRatioHistory,jdbcType=VARCHAR},
       </if>
       <if test="watchingStatus != null">
         watching_status = #{watchingStatus,jdbcType=INTEGER},
@@ -221,8 +276,13 @@
       price = #{price,jdbcType=DECIMAL},
       rise_fall = #{riseFall,jdbcType=DECIMAL},
       rise_fall_ratio = #{riseFallRatio,jdbcType=DECIMAL},
-      rise_fall_history = #{riseFallHistory,jdbcType=DECIMAL},
+      rise_fall_history = #{riseFallHistory,jdbcType=VARCHAR},
       days = #{days,jdbcType=INTEGER},
+      high_low = #{highLow,jdbcType=VARCHAR},
+      earnings_ratio = #{earningsRatio,jdbcType=DECIMAL},
+      earnings_ratio_history = #{earningsRatioHistory,jdbcType=VARCHAR},
+      exchange_ratio = #{exchangeRatio,jdbcType=DECIMAL},
+      exchange_ratio_history = #{exchangeRatioHistory,jdbcType=VARCHAR},
       watching_status = #{watchingStatus,jdbcType=INTEGER},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

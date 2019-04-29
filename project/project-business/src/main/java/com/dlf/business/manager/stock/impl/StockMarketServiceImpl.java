@@ -182,6 +182,14 @@ public class StockMarketServiceImpl implements StockMarketService {
                             //涨跌幅
                             thisDTO.setRiseFallRatio(marketInfo.getRiseFallRatio());
 
+                            thisDTO.setHighLow(marketInfo.getPriceHighest() + "/" + marketInfo.getPriceLowest());
+                            thisDTO.setEarningsRatio(marketInfo.getEarningsRatio());
+                            thisDTO.setExchangeRatio(marketInfo.getExchangeRatio());
+                            thisDTO.setEarningsRatioHistory(thisDTO.getEarningsRatioHistory() + "/" +
+                                    marketInfo.getEarningsRatio());
+                            thisDTO.setExchangeRatioHistory(thisDTO.getExchangeRatioHistory() + "/" +
+                                    marketInfo.getExchangeRatio());
+
                             //目前是涨跌
                             int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
                             //当天数据是否更新过

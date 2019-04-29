@@ -24,6 +24,16 @@ public class Market {
 
     private Integer days;
 
+    private String highLow;
+
+    private BigDecimal earningsRatio;
+
+    private String earningsRatioHistory;
+
+    private BigDecimal exchangeRatio;
+
+    private String exchangeRatioHistory;
+
     private Integer watchingStatus;
 
     private String remarks;
@@ -107,7 +117,7 @@ public class Market {
     }
 
     public void setRiseFallHistory(String riseFallHistory) {
-        this.riseFallHistory = riseFallHistory;
+        this.riseFallHistory = riseFallHistory == null ? null : riseFallHistory.trim();
     }
 
     public Integer getDays() {
@@ -116,6 +126,46 @@ public class Market {
 
     public void setDays(Integer days) {
         this.days = days;
+    }
+
+    public String getHighLow() {
+        return highLow;
+    }
+
+    public void setHighLow(String highLow) {
+        this.highLow = highLow == null ? null : highLow.trim();
+    }
+
+    public BigDecimal getEarningsRatio() {
+        return earningsRatio;
+    }
+
+    public void setEarningsRatio(BigDecimal earningsRatio) {
+        this.earningsRatio = earningsRatio;
+    }
+
+    public String getEarningsRatioHistory() {
+        return earningsRatioHistory;
+    }
+
+    public void setEarningsRatioHistory(String earningsRatioHistory) {
+        this.earningsRatioHistory = earningsRatioHistory == null ? null : earningsRatioHistory.trim();
+    }
+
+    public BigDecimal getExchangeRatio() {
+        return exchangeRatio;
+    }
+
+    public void setExchangeRatio(BigDecimal exchangeRatio) {
+        this.exchangeRatio = exchangeRatio;
+    }
+
+    public String getExchangeRatioHistory() {
+        return exchangeRatioHistory;
+    }
+
+    public void setExchangeRatioHistory(String exchangeRatioHistory) {
+        this.exchangeRatioHistory = exchangeRatioHistory == null ? null : exchangeRatioHistory.trim();
     }
 
     public Integer getWatchingStatus() {
