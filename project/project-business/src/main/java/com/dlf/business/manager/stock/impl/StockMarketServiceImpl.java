@@ -185,11 +185,6 @@ public class StockMarketServiceImpl implements StockMarketService {
                             thisDTO.setHighLow(marketInfo.getPriceHighest() + "/" + marketInfo.getPriceLowest());
                             thisDTO.setEarningsRatio(marketInfo.getEarningsRatio());
                             thisDTO.setExchangeRatio(marketInfo.getExchangeRatio());
-                            thisDTO.setEarningsRatioHistory(thisDTO.getEarningsRatioHistory() + "/" +
-                                    marketInfo.getEarningsRatio());
-                            thisDTO.setExchangeRatioHistory(thisDTO.getExchangeRatioHistory() + "/" +
-                                    marketInfo.getExchangeRatio());
-
                             //目前是涨跌
                             int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
                             //当天数据是否更新过
@@ -213,14 +208,19 @@ public class StockMarketServiceImpl implements StockMarketService {
                                         isToday = true;
                                     }
                                 }
+                                if(!isToday){
+                                    thisDTO.setEarningsRatioHistory(thisDTO.getEarningsRatioHistory() + "/" +
+                                            marketInfo.getEarningsRatio());
+                                    thisDTO.setExchangeRatioHistory(thisDTO.getExchangeRatioHistory() + "/" +
+                                            marketInfo.getExchangeRatio());
+                                }
                                 if((historyType == currentType) && !isToday){
                                     thisDTO.setDays(thisDTO.getDays() + 1);
                                     //涨跌幅历史记录
                                     thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
+
                                 }else{
                                     thisDTO.setDays(1);
-                                    //涨跌幅历史记录
-                                    thisDTO.setRiseFallHistory(marketInfo.getRiseFallRatio() + "");
                                 }
                             }else{
                                 thisDTO.setDays(1);
