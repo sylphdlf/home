@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS `s_market` (
   `earnings_ratio_history` VARCHAR(2000) NULL COMMENT '市盈率历史',
   `exchange_ratio` DECIMAL(5,2) NOT NULL COMMENT '换手率',
   `exchange_ratio_history` VARCHAR(2000) NOT NULL COMMENT '换手率历史',
+  `price_boot_ratio` DECIMAL(10,2) NULL COMMENT '市净率',
+  `price_boot_ratio_history` VARCHAR(2000) NULL COMMENT '市净率历史',
   `watching_status` INT(2) DEFAULT 0 COMMENT '监控，0停止，1开启',
   `remarks` VARCHAR(255) DEFAULT NULL COMMENT '备注',
   `create_time` TIMESTAMP DEFAULT current_timestamp COMMENT '创建时间',

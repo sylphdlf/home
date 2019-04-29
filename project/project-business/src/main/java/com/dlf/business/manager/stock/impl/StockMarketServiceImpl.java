@@ -185,6 +185,7 @@ public class StockMarketServiceImpl implements StockMarketService {
                             thisDTO.setHighLow(marketInfo.getPriceHighest() + "/" + marketInfo.getPriceLowest());
                             thisDTO.setEarningsRatio(marketInfo.getEarningsRatio());
                             thisDTO.setExchangeRatio(marketInfo.getExchangeRatio());
+                            thisDTO.setPriceBootRatio(marketInfo.getPriceBootRatio());
                             //目前是涨跌
                             int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
                             //当天数据是否更新过
@@ -209,10 +210,15 @@ public class StockMarketServiceImpl implements StockMarketService {
                                     }
                                 }
                                 if(!isToday){
-                                    thisDTO.setEarningsRatioHistory(thisDTO.getEarningsRatioHistory() + "/" +
-                                            marketInfo.getEarningsRatio());
-                                    thisDTO.setExchangeRatioHistory(thisDTO.getExchangeRatioHistory() + "/" +
-                                            marketInfo.getExchangeRatio());
+                                    thisDTO.setEarningsRatioHistory(thisDTO.getEarningsRatioHistory()==null?
+                                            marketInfo.getEarningsRatio()+"":
+                                            thisDTO.getEarningsRatioHistory()  + "/" + marketInfo.getEarningsRatio());
+                                    thisDTO.setExchangeRatioHistory(thisDTO.getExchangeRatioHistory()==null?
+                                            marketInfo.getExchangeRatio()+"":
+                                            thisDTO.getExchangeRatioHistory() + "/" + marketInfo.getExchangeRatio());
+                                    thisDTO.setPriceBootRatioHistory(thisDTO.getPriceBootRatioHistory()==null?
+                                            marketInfo.getPriceBootRatio()+"":
+                                            thisDTO.getPriceBootRatioHistory() + "/" + marketInfo.getPriceBootRatio());
                                 }
                                 if((historyType == currentType) && !isToday){
                                     thisDTO.setDays(thisDTO.getDays() + 1);

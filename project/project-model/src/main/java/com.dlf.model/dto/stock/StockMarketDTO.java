@@ -25,6 +25,8 @@ public class StockMarketDTO {
     private String earningsRatioHistory;
     private BigDecimal exchangeRatio;
     private String exchangeRatioHistory;
+    private BigDecimal priceBootRatio;
+    private String priceBootRatioHistory;
     private Integer watchingStatus;
     private Date createTime;
     private Date updateTime;

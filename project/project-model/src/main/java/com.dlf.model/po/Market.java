@@ -12,8 +12,6 @@ public class Market {
 
     private String market;
 
-    private Integer type;
-
     private BigDecimal price;
 
     private BigDecimal riseFall;
@@ -33,6 +31,12 @@ public class Market {
     private BigDecimal exchangeRatio;
 
     private String exchangeRatioHistory;
+
+    private BigDecimal priceBootRatio;
+
+    private String priceBootRatioHistory;
+
+    private Integer type;
 
     private Integer watchingStatus;
 
@@ -78,14 +82,6 @@ public class Market {
 
     public void setMarket(String market) {
         this.market = market == null ? null : market.trim();
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public BigDecimal getPrice() {
@@ -166,6 +162,30 @@ public class Market {
 
     public void setExchangeRatioHistory(String exchangeRatioHistory) {
         this.exchangeRatioHistory = exchangeRatioHistory == null ? null : exchangeRatioHistory.trim();
+    }
+
+    public BigDecimal getPriceBootRatio() {
+        return priceBootRatio;
+    }
+
+    public void setPriceBootRatio(BigDecimal priceBootRatio) {
+        this.priceBootRatio = priceBootRatio;
+    }
+
+    public String getPriceBootRatioHistory() {
+        return priceBootRatioHistory;
+    }
+
+    public void setPriceBootRatioHistory(String priceBootRatioHistory) {
+        this.priceBootRatioHistory = priceBootRatioHistory == null ? null : priceBootRatioHistory.trim();
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getWatchingStatus() {
