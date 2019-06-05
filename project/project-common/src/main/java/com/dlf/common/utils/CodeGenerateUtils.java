@@ -1,10 +1,5 @@
 package com.dlf.common.utils;
 
-import org.apache.catalina.SessionIdGenerator;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Test;
-
 import java.util.UUID;
 
 /**
