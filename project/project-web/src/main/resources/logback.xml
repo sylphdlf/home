@@ -6,23 +6,23 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <!--<appender name="baselog"-->
-              <!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-        <!--<File>log/base.log</File>-->
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-            <!--<fileNamePattern>log/base.log.%d.%i</fileNamePattern>-->
-            <!--<timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
-                <!--&lt;!&ndash; or whenever the file size reaches 64 MB &ndash;&gt;-->
-                <!--<maxFileSize>64 MB</maxFileSize>-->
-            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
-        <!--</rollingPolicy>-->
-        <!--<encoder>-->
-            <!--<pattern>-->
-                <!--%d %p (%file:%line\)- %m%n-->
-            <!--</pattern>-->
-            <!--<charset>UTF-8</charset> &lt;!&ndash; 此处设置字符集 &ndash;&gt;-->
-        <!--</encoder>-->
-    <!--</appender>-->
+    <appender name="baselog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data/logs/home.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/logs/home.log.%d.%i</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 64 MB -->
+                <maxFileSize>64 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d %p (%file:%line\)- %m%n
+            </pattern>
+            <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+        </encoder>
+    </appender>
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
