@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 public class Application extends SpringBootServletInitializer {
 
     protected static Logger logger = LoggerFactory.getLogger(Application.class);
-    @Value("${upload.file.maxsize}")
-    private String uploadMaxSize;
-    @Value("${request.file.maxsize}")
-    private String requestMaxSize;
+//    @Value("${upload.file.maxsize}")
+//    private String uploadMaxSize;
+//    @Value("${request.file.maxsize}")
+//    private String requestMaxSize;
 
     @RequestMapping("/")
     public String greeting(HttpServletRequest request, Model model) {
@@ -46,9 +46,9 @@ public class Application extends SpringBootServletInitializer {
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         //允许上传的文件最大值
-        factory.setMaxFileSize(uploadMaxSize); //KB,MB
+        factory.setMaxFileSize("50MB"); //KB,MB
         /// 设置总上传数据总大小
-        factory.setMaxRequestSize(requestMaxSize);
+        factory.setMaxRequestSize("50MB");
         return factory.createMultipartConfig();
     }
 
