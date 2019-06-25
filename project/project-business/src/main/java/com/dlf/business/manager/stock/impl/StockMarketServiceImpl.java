@@ -167,7 +167,6 @@ public class StockMarketServiceImpl implements StockMarketService {
         List<StockMarketDTO> dtoList = marketMapper.queryListByParams(searchDTO);
         if(!CollectionUtils.isEmpty(dtoList)){
             new Thread(() -> {
-
                     StockMarketDTO thisDTO;
                     MarketInfo marketInfo = new MarketInfo();
                     for(int i=0;i<dtoList.size();i++){
@@ -219,12 +218,12 @@ public class StockMarketServiceImpl implements StockMarketService {
                                     thisDTO.setPriceBootRatioHistory(thisDTO.getPriceBootRatioHistory()==null?
                                             marketInfo.getPriceBootRatio()+"":
                                             thisDTO.getPriceBootRatioHistory() + "/" + marketInfo.getPriceBootRatio());
+                                    thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory()==null?
+                                            marketInfo.getRiseFallRatio() + "":
+                                            thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
                                 }
                                 if((historyType == currentType) && !isToday){
                                     thisDTO.setDays(thisDTO.getDays() + 1);
-                                    //涨跌幅历史记录
-                                    thisDTO.setRiseFallHistory(thisDTO.getRiseFallHistory() + "/" + marketInfo.getRiseFallRatio());
-
                                 }else{
                                     thisDTO.setDays(1);
                                 }
