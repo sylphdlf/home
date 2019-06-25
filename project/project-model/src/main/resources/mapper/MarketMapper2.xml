@@ -23,7 +23,9 @@
   </sql>
   <sql id="Base_Visible_List">
       id, code, name, market, type, price, rise_fall AS riseFall, rise_fall_ratio AS riseFallRatio,
-      rise_fall_history AS riseFallHistory, days,
+      rise_fall_history AS riseFallHistory, days, earnings_ratio AS earningRatio, earnings_ratio_history AS earningsRatioHistory,
+      exchange_ratio AS exchangeRatio, exchange_ratio_history AS exchangeRatioHistory,
+      price_boot_ratio AS priceBootRatio, price_boot_ratio_history AS priceBootRatioHistory,
       watching_status AS watchingStatus, remarks, create_time AS createTime, update_time AS updateTime,
       create_user_id AS createUserId, update_user_id AS updateUserId, is_deleted AS isDeleted
   </sql>
