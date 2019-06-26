@@ -174,17 +174,6 @@ public class StockMarketServiceImpl implements StockMarketService {
                             thisDTO = dtoList.get(i);
                             String[] strings = MarketUtils.queryMarketInfo(GtimgEnums.MARKET_URL.getName() + thisDTO.getMarket() + thisDTO.getCode());
                             GtimgEnums.setParams(marketInfo, strings);
-                            //价格
-                            thisDTO.setPrice(marketInfo.getPrice());
-                            //涨跌
-                            thisDTO.setRiseFall(marketInfo.getRiseFall());
-                            //涨跌幅
-                            thisDTO.setRiseFallRatio(marketInfo.getRiseFallRatio());
-
-                            thisDTO.setHighLow(marketInfo.getPriceHighest() + "/" + marketInfo.getPriceLowest());
-                            thisDTO.setEarningsRatio(marketInfo.getEarningsRatio());
-                            thisDTO.setExchangeRatio(marketInfo.getExchangeRatio());
-                            thisDTO.setPriceBootRatio(marketInfo.getPriceBootRatio());
                             //目前是涨跌
                             int currentType = marketInfo.getRiseFallRatio().compareTo(BigDecimal.ZERO) >= 0 ? 1 : 2;
                             //当天数据是否更新过
@@ -231,6 +220,17 @@ public class StockMarketServiceImpl implements StockMarketService {
                                 thisDTO.setDays(1);
                             }
                             thisDTO.setType(currentType);
+                            //价格
+                            thisDTO.setPrice(marketInfo.getPrice());
+                            //涨跌
+                            thisDTO.setRiseFall(marketInfo.getRiseFall());
+                            //涨跌幅
+                            thisDTO.setRiseFallRatio(marketInfo.getRiseFallRatio());
+
+                            thisDTO.setHighLow(marketInfo.getPriceHighest() + "/" + marketInfo.getPriceLowest());
+                            thisDTO.setEarningsRatio(marketInfo.getEarningsRatio());
+                            thisDTO.setExchangeRatio(marketInfo.getExchangeRatio());
+                            thisDTO.setPriceBootRatio(marketInfo.getPriceBootRatio());
                             Market market = new Market();
                             BeanUtils.copyProperties(thisDTO, market);
                             marketMapper.updateByPrimaryKey(market);
