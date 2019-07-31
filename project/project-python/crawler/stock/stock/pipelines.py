@@ -28,7 +28,7 @@ class StockPipeline(object):
         # 将爬取的信息保存到mysql
         try:
             now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            self.cursor.execute("""insert into s_market_20190503(code, name, market)  
+            self.cursor.execute("""insert into s_market(code, name, market)  
             value (%s, %s, %s)""",
                                 (item['code'], item['name'], item['market']))
             # 提交修改

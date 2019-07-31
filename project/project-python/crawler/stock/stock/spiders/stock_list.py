@@ -4,11 +4,18 @@ import re
 import scrapy
 from ..items import StockItem
 
+page_num = 1
+replace_url = "http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?cb=jQuery11240991152807102947_1560999580102&type=CT&token=4f1862fc3b5e77c150a2b985b12db0fd&sty=FCOIATC&js=(%7Bdata%3A%5B(x)%5D%2CrecordsFiltered%3A(tot)%7D)&cmd=C._A&st=(ChangePercent)&sr=-1&p=replaceStr&ps=20&_=1560999581694"
+
 
 class StockListSpider(scrapy.Spider):
     name = 'stock_list'
-    allowed_domains = ['quote.eastmoney.com']
-    start_urls = ['http://quote.eastmoney.com/stock_list.html']
+    # allowed_domains = ['quote.eastmoney.com']
+    allowed_domains = ['nufm.dfcfw.com']
+    # start_urls = ['http://quote.eastmoney.com/stock_list.html']
+    start_urls = ['http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?cb=jQuery11240991152807102947_1560999580102&type=CT'
+                  '&token=4f1862fc3b5e77c150a2b985b12db0fd&sty=FCOIATC&js=(%7Bdata%3A%5B(x)%5D%2CrecordsFiltered%3A(tot)%7D)'
+                  '&cmd=C._A&st=(ChangePercent)&sr=-1&p=replaceStr&ps=20&_=1560999581694']
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate',
@@ -25,19 +32,42 @@ class StockListSpider(scrapy.Spider):
     }
 
     def start_requests(self):
+        global page_num
         for url in self.start_urls:
-            yield scrapy.Request(url, headers=self.headers, callback=self.parse)
+            request_url = url.replace("replaceStr", str(page_num))
+            yield scrapy.Request(request_url, headers=self.headers, callback=self.parse)
 
     def parse(self, response):
+        request_url = response.url
+        global page_num
         # update_time_select = response.xpath('//ul[@class="wea_weather clearfix"]/strong/text()').re('\\d{1,2}:\\d{2}')
         # ul_list = response.body
-        print(response.body)
-        item = StockItem()
-        li_list = response.xpath("//ul/li/a[@target='_blank'][contains(@href,'quote.eastmoney.com')][re:test(text(), '.*(.{6})')]")
-        for li in li_list:
-            market_code = li.re("\w{2}\d{6}")[0]
-            item['market'] = re.search("\w{2}", market_code).group()
-            item['code'] = re.search("\d{6}", market_code).group()
-            item['name'] = li.xpath(".//text()").extract()[0].split("(", 1)[0]
+        return_str = response.body.decode("utf-8")
+        list = re.findall(r'\["(.*)"\]', return_str)[0].split('","')
+        for li in list:
+            item = StockItem()
+            content = li.split(",")
+            if int(content[0]) == 1:
+                item['market'] = "sh"
+            else:
+                item['market'] = "sz"
+            item['code'] = content[1]
+            item['name'] = content[2]
             yield item
+
+        if len(list) == 20:
+            page_num += 1
+            request_url = replace_url.replace("replaceStr", str(page_num))
+            yield scrapy.Request(request_url, headers=self.headers, callback=self.parse)
+
+        # item = StockItem()
+        # li_list = response.xpath("//ul/li/a[@target='_blank'][contains(@href,'quote.eastmoney.com')][re:test(text(), '.*(.{6})')]")
+        # for li in li_list:
+        #     market_code = li.re("\w{2}\d{6}")[0]
+        #     item['market'] = re.search("\w{2}", market_code).group()
+        #     item['code'] = re.search("\d{6}", market_code).group()
+        #     item['name'] = li.xpath(".//text()").extract()[0].split("(", 1)[0]
+        #     yield item
+
+
 

@@ -256,4 +256,9 @@ public class StockMarketServiceImpl implements StockMarketService {
         return GlobalResultDTO.SUCCESS("执行成功，再次点击查询进度");
     }
 
+    public static void main(String[] args) {
+        Integer a = 128;
+        Integer b = 128;
+        System.out.println(a == b);
+    }
 }
