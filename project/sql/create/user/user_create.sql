@@ -134,6 +134,6 @@ CREATE TABLE IF NOT EXISTS `u_access` (
   `create_user_id` BIGINT(20) NULL COMMENT '创建人',
   `update_user_id` BIGINT(20) NULL COMMENT '最后修改人',
   `is_deleted` INT(2) DEFAULT '0' COMMENT '是否逻辑删除:默认0未删除,1已删除',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_code` (`code`)
+  PRIMARY KEY (`id`)
+#   UNIQUE KEY `uk_code` (`code`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='访问记录';
