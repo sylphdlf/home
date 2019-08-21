@@ -199,6 +199,14 @@
                                 index: 'stockListMgr',
                                 title: '列表'
                             },
+                            {
+                                index: 'trafficChart',
+                                title: '通行时间统计'
+                            },
+                            {
+                                index: 'weatherChart',
+                                title: '温度统计'
+                            },
                         ]
                     }
                 ]
