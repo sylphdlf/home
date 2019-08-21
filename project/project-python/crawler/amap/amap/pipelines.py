@@ -13,7 +13,7 @@ class AmapPipeline(object):
     def __init__(self):
         # 连接数据库
         self.connect = pymysql.connect(
-            host='122.112.236.194',
+            host='118.25.197.159',
             port=3306,
             db='project',
             user='root',
