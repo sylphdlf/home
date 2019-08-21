@@ -46,6 +46,5 @@ CREATE TABLE `p_dict` (
   `remarks` VARCHAR(200) NULL COMMENT '备注',
   `create_time` TIMESTAMP DEFAULT current_timestamp COMMENT '创建时间',
   `is_deleted` TINYINT(1) DEFAULT 0 COMMENT '是否逻辑删除:默认0正常;1已删除',
-  PRIMARY KEY (`id`),
-  INDEX search_code_index(search_code)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通行时间统计';
