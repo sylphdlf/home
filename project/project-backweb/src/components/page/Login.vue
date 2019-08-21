@@ -53,7 +53,7 @@
                 });
                 this.$axios.post("/project-web/login/loginAjax", this.ruleForm).then(result =>{
                     if(result.data.code === "0"){
-                        this.$router.push('/weatherChart');
+                        this.$router.push('/trafficChart');
                     }else{
                         this.messageShow.error = result.data.msg;
                         return false;
