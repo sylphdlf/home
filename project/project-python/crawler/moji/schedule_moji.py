@@ -8,7 +8,7 @@ def start_crawl():
     os.system("scrapy crawl moji")
 
 
-schedule.every(2).minutes.do(start_crawl)
+schedule.every(10).minutes.do(start_crawl)
 
 
 while True:
