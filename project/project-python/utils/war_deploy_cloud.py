@@ -8,7 +8,6 @@
 # 7、复制war包到webapps下,修改文件名
 # 8、启动tomcat
 import hashlib
-import time
 import paramiko as paramiko
 import os
 # 服务器
@@ -18,20 +17,16 @@ port = 22
 # 用户名
 username = 'root'
 # 密码
-password = 'Dlf1989128'
+password = 'dlf@1989128'
 ssh = None
 # 项目地址
-root_path = "/data/project/office-cloud/project"
-git_pull_path = ["/data/project/office-cloud/project/mat-registry",
-                 "/data/project/office-cloud/project/mat-router",
-                 "/data/project/office-cloud/project/mat-web-api",
-                 "/data/project/office-cloud/project"]
+root_path = "/data/project/cloud"
+git_pull_path = ["/registry",
+                 "/router",
+                 "/service",
+                 "/webapi"]
 # 打包地址
 package_path = set([])
-    # ["/data/project/office-cloud/project",
-    #             "/data/project/office-cloud/project/mat-registry",
-    #             "/data/project/office-cloud/project/mat-router",
-    #             "/data/project/office-cloud/project/mat-web-api"]
 # 目标路径
 relate_path = {root_path + "/mat-registry/target/mat-registry-1.0-SNAPSHOT.jar": "mat-registry-1.0-SNAPSHOT.jar",
                root_path + "/mat-router/target/mat-router-1.0-SNAPSHOT.jar": "mat-router-1.0-SNAPSHOT.jar",
@@ -40,6 +35,10 @@ relate_path = {root_path + "/mat-registry/target/mat-registry-1.0-SNAPSHOT.jar":
 
 prepare_start = {}
 # jar包复制路径
+
+
+
+
 copy_path = "/data/code"
 
 
