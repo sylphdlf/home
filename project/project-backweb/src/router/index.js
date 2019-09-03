@@ -139,6 +139,11 @@ export default new Router({
                     component: resolve => require(['../components/page/dashboard/TrafficChart.vue'], resolve)
                 },
                 {
+                    // 高德热力图
+                    path: '/heatMap',
+                    component: resolve => require(['../components/page/dashboard/HeatMap.vue'], resolve)
+                },
+                {
                     // 拖拽列表组件
                     path: '/drag',
                     component: resolve => require(['../components/page/DragList.vue'], resolve)
